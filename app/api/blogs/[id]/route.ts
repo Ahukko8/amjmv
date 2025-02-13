@@ -10,13 +10,12 @@ function isValidObjectId(id: string) {
   return objectIdPattern.test(id);
 }
 
-// GET: Retrieve a single blog post
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const id = params?.id ? String(params.id) : '';
+    const { id } = await context.params;
     
     if (!isValidObjectId(id)) {
       return NextResponse.json(
@@ -45,13 +44,12 @@ export async function GET(
   }
 }
 
-// PATCH: Update a blog post
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const id = params?.id ? String(params.id) : '';
+    const { id } = await context.params;
     
     if (!isValidObjectId(id)) {
       return NextResponse.json(
@@ -70,7 +68,6 @@ export async function PATCH(
       );
     }
 
-    // Check if user is admin
     const isAdmin = user.publicMetadata.role === 'admin';
     if (!isAdmin) {
       return NextResponse.json(
@@ -109,72 +106,12 @@ export async function PATCH(
   }
 }
 
-// DELETE: Remove a blog post
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const id = params?.id ? String(params.id) : '';
-    
-    if (!isValidObjectId(id)) {
-      return NextResponse.json(
-        { message: "Invalid blog ID format" },
-        { status: 400 }
-      );
-    }
-
-    const { userId } = await auth();
-    const user = await currentUser();
-
-    if (!userId || !user) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
-    // Check if user is admin
-    const isAdmin = user.publicMetadata.role === 'admin';
-    if (!isAdmin) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 403 }
-      );
-    }
-
-    await connectDB();
-
-    const blog = await Blog.findById(id);
-    if (!blog) {
-      return NextResponse.json(
-        { message: "Blog not found" },
-        { status: 404 }
-      );
-    }
-
-    await Blog.findByIdAndDelete(id);
-
-    return NextResponse.json(
-      { message: "Blog deleted successfully" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Error deleting blog:', error);
-    return NextResponse.json(
-      { message: "Error deleting blog" },
-      { status: 500 }
-    );
-  }
-}
-
-// PUT: Update blog status (publish/unpublish)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const id = params?.id ? String(params.id) : '';
+    const { id } = await context.params;
     
     if (!isValidObjectId(id)) {
       return NextResponse.json(
@@ -193,7 +130,6 @@ export async function PUT(
       );
     }
 
-    // Check if user is admin
     const isAdmin = user.publicMetadata.role === 'admin';
     if (!isAdmin) {
       return NextResponse.json(
@@ -232,6 +168,63 @@ export async function PUT(
     console.error('Error updating blog status:', error);
     return NextResponse.json(
       { message: "Error updating blog status" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    
+    if (!isValidObjectId(id)) {
+      return NextResponse.json(
+        { message: "Invalid blog ID format" },
+        { status: 400 }
+      );
+    }
+
+    const { userId } = await auth();
+    const user = await currentUser();
+
+    if (!userId || !user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const isAdmin = user.publicMetadata.role === 'admin';
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    await connectDB();
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    await Blog.findByIdAndDelete(id);
+
+    return NextResponse.json(
+      { message: "Blog deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error deleting blog:', error);
+    return NextResponse.json(
+      { message: "Error deleting blog" },
       { status: 500 }
     );
   }
