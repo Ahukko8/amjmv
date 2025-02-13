@@ -2,30 +2,27 @@
 // app/admin/dashboard/edit/[id]/page.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import BlogEditor from '@/components/BlogEditor';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import BlogEditor from "@/components/BlogEditor";
 
-// Define the Blog type to ensure type safety throughout the component
+// Define the Blog type
 interface Blog {
   _id: string;
   title: string;
   content: string;
   fontFamily: string;
   fontSize: string;
-  status: 'draft' | 'published';
+  status: "draft" | "published";
 }
 
-// Define correct props type for Next.js 15 App Router
-type Props = {
-  params: {
-    id: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
+// ✅ Define correct props manually
+interface EditBlogProps {
+  params: { id: string };
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
-export default function EditBlog(props: Props) {
-  const { params, searchParams } = props;
+export default function EditBlog({ params, searchParams }: EditBlogProps) {
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
@@ -33,16 +30,18 @@ export default function EditBlog(props: Props) {
 
   useEffect(() => {
     const fetchBlog = async () => {
+      if (!params?.id) return; // ✅ Ensure params.id exists
+
       try {
         const response = await fetch(`/api/blogs/${params.id}`);
         if (!response.ok) {
-          throw new Error('Blog not found');
+          throw new Error("Blog not found");
         }
         const data = await response.json();
         setBlog(data.blog);
       } catch (error) {
-        console.error('Error fetching blog:', error);
-        router.push('/admin/dashboard');
+        console.error("Error fetching blog:", error);
+        router.push("/admin/dashboard");
       }
     };
 
@@ -50,43 +49,47 @@ export default function EditBlog(props: Props) {
   }, [params.id, router]);
 
   const handleSubmit = async (blogData: Partial<Blog>) => {
+    if (!params?.id) return;
+
     setLoading(true);
     try {
       const response = await fetch(`/api/blogs/${params.id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(blogData),
       });
 
       if (response.ok) {
-        router.push('/admin/dashboard');
+        router.push("/admin/dashboard");
       }
     } catch (error) {
-      console.error('Error updating blog:', error);
+      console.error("Error updating blog:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handlePublishToggle = async () => {
+    if (!params?.id || !blog) return;
+
     setPublishing(true);
     try {
-      const newStatus = blog?.status === 'published' ? 'draft' : 'published';
+      const newStatus = blog.status === "published" ? "draft" : "published";
       const response = await fetch(`/api/blogs/${params.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: newStatus }),
       });
 
       if (response.ok) {
-        setBlog(prev => prev ? { ...prev, status: newStatus } : null);
+        setBlog((prev) => (prev ? { ...prev, status: newStatus } : null));
       }
     } catch (error) {
-      console.error('Error toggling publish status:', error);
+      console.error("Error toggling publish status:", error);
     } finally {
       setPublishing(false);
     }
@@ -108,20 +111,16 @@ export default function EditBlog(props: Props) {
           onClick={handlePublishToggle}
           disabled={publishing}
           className={`px-4 py-2 rounded ${
-            blog.status === 'published'
-              ? 'bg-yellow-500 hover:bg-yellow-600'
-              : 'bg-green-500 hover:bg-green-600'
+            blog.status === "published"
+              ? "bg-yellow-500 hover:bg-yellow-600"
+              : "bg-green-500 hover:bg-green-600"
           } text-white`}
         >
-          {publishing ? 'Processing...' : blog.status === 'published' ? 'Unpublish' : 'Publish'}
+          {publishing ? "Processing..." : blog.status === "published" ? "Unpublish" : "Publish"}
         </button>
       </div>
-      
-      <BlogEditor
-        initialData={blog}
-        onSubmit={handleSubmit}
-        loading={loading}
-      />
+
+      <BlogEditor initialData={blog} onSubmit={handleSubmit} loading={loading} />
     </div>
   );
 }
