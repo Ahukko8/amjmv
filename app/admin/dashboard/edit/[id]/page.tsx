@@ -1,28 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // app/admin/dashboard/edit/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BlogEditor from "@/components/BlogEditor";
+import { Blog } from "@/types/blog"; // Import the Blog type
 
-// Define the Blog type
-interface Blog {
-  _id: string;
-  title: string;
-  content: string;
-  fontFamily: string;
-  fontSize: string;
-  status: "draft" | "published";
-}
+type EditBlogProps = {
+  params: {
+    id: string;
+  };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
 
-// ✅ Define correct props manually
-interface EditBlogProps {
-  params: { id: string };
-  searchParams: Record<string, string | string[] | undefined>;
-}
-
-export default function EditBlog({ params, searchParams }: EditBlogProps) {
+export default function EditBlog({ params }: EditBlogProps) {
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +21,7 @@ export default function EditBlog({ params, searchParams }: EditBlogProps) {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      if (!params?.id) return; // ✅ Ensure params.id exists
+      if (!params?.id) return;
 
       try {
         const response = await fetch(`/api/blogs/${params.id}`);
