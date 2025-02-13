@@ -1,8 +1,8 @@
-// app/blog/[id]/error.tsx
+// app/admin/dashboard/edit/[id]/error.tsx
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Error({
   error,
@@ -11,33 +11,29 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
-    console.error('Blog error:', error);
+    console.error(error);
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Error loading the blog post
-          </h2>
-          <div className="space-x-4">
-            <button
-              onClick={reset}
-              className="text-blue-600 hover:text-blue-800"
-            >
-              Try again
-            </button>
-            <Link
-              href="/"
-              className="text-blue-600 hover:text-blue-800"
-            >
-              Go back home
-            </Link>
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h2 className="text-2xl font-semibold mb-4">Something went wrong!</h2>
+      <div className="flex space-x-4">
+        <button
+          onClick={() => reset()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Try again
+        </button>
+        <button
+          onClick={() => router.push('/admin/dashboard')}
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+        >
+          Go back to dashboard
+        </button>
       </div>
-    </main>
+    </div>
   );
 }
