@@ -1,4 +1,3 @@
-// app/admin/dashboard/edit/[id]/EditBlogClient.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,26 +12,34 @@ interface EditBlogClientProps {
 export default function EditBlogClient({ id }: EditBlogClientProps) {
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const response = await fetch(`/api/blogs/${id}`);
         if (!response.ok) {
-          throw new Error("Blog not found");
+          if (response.status === 404) {
+            setError("Blog not found");
+          } else {
+            setError("Failed to fetch blog");
+          }
+          return;
         }
         const data = await response.json();
         setBlog(data.blog);
       } catch (error) {
         console.error("Error fetching blog:", error);
-        router.push("/admin/dashboard");
+        setError("An error occurred while fetching the blog");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchBlog();
-  }, [id, router]);
+  }, [id]);
 
   const handleSubmit = async (blogData: Partial<Blog>) => {
     if (!blog) return;
@@ -47,11 +54,14 @@ export default function EditBlogClient({ id }: EditBlogClientProps) {
         body: JSON.stringify(blogData),
       });
 
-      if (response.ok) {
-        router.push("/admin/dashboard");
+      if (!response.ok) {
+        throw new Error("Failed to update blog");
       }
+
+      router.push("/admin/dashboard");
     } catch (error) {
       console.error("Error updating blog:", error);
+      setError("Failed to update blog");
     } finally {
       setLoading(false);
     }
@@ -71,20 +81,39 @@ export default function EditBlogClient({ id }: EditBlogClientProps) {
         body: JSON.stringify({ status: newStatus }),
       });
 
-      if (response.ok) {
-        setBlog((prev) => (prev ? { ...prev, status: newStatus } : null));
+      if (!response.ok) {
+        throw new Error("Failed to toggle publish status");
       }
+
+      setBlog((prev) => (prev ? { ...prev, status: newStatus } : null));
     } catch (error) {
       console.error("Error toggling publish status:", error);
+      setError("Failed to toggle publish status");
     } finally {
       setPublishing(false);
     }
   };
 
-  if (!blog) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-red-500 text-lg">{error}</p>
+      </div>
+    );
+  }
+
+  if (!blog) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-700 text-lg">Blog not found</p>
       </div>
     );
   }
@@ -102,7 +131,11 @@ export default function EditBlogClient({ id }: EditBlogClientProps) {
               : "bg-green-500 hover:bg-green-600"
           } text-white`}
         >
-          {publishing ? "Processing..." : blog.status === "published" ? "Unpublish" : "Publish"}
+          {publishing
+            ? "Processing..."
+            : blog.status === "published"
+            ? "Unpublish"
+            : "Publish"}
         </button>
       </div>
 
