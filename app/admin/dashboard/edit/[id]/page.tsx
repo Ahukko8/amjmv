@@ -1,120 +1,238 @@
-// app/admin/dashboard/edit/[id]/page.tsx
-"use client";
+// app/api/blogs/[id]/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import connectDB from "@/lib/db";
+import Blog from "@/models/Blog";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import BlogEditor from '@/components/BlogEditor';
-
-// Define the Blog type to ensure type safety throughout the component
-interface Blog {
-  _id: string;
-  title: string;
-  content: string;
-  fontFamily: string;
-  fontSize: string;
-  status: 'draft' | 'published';
+// Helper function to validate MongoDB ObjectId format
+function isValidObjectId(id: string) {
+  const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+  return objectIdPattern.test(id);
 }
 
-export default function EditBlog({ params }: { params: { id: string } }) {
-  const router = useRouter();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [publishing, setPublishing] = useState(false);
-
-  // Fetch the blog data when the component mounts
-  useEffect(() => {
-    const fetchBlog = async () => {
-      try {
-        const response = await fetch(`/api/blogs/${params.id}`);
-        if (!response.ok) {
-          throw new Error('Blog not found');
-        }
-        const data = await response.json();
-        setBlog(data.blog);
-      } catch (error) {
-        console.error('Error fetching blog:', error);
-        router.push('/admin/dashboard');
-      }
-    };
-
-    fetchBlog();
-  }, [params.id, router]);
-
-  // Handle blog updates
-  const handleSubmit = async (blogData: Partial<Blog>) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/blogs/${params.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(blogData),
-      });
-
-      if (response.ok) {
-        router.push('/admin/dashboard');
-      }
-    } catch (error) {
-      console.error('Error updating blog:', error);
-    } finally {
-      setLoading(false);
+// GET: Retrieve a single blog post
+export async function GET(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    
+    if (!isValidObjectId(id)) {
+      return NextResponse.json(
+        { message: "Invalid blog ID format" },
+        { status: 400 }
+      );
     }
-  };
 
-  // Handle publishing/unpublishing the blog
-  const handlePublishToggle = async () => {
-    setPublishing(true);
-    try {
-      const newStatus = blog?.status === 'published' ? 'draft' : 'published';
-      const response = await fetch(`/api/blogs/${params.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (response.ok) {
-        setBlog(prev => prev ? { ...prev, status: newStatus } : null);
-      }
-    } catch (error) {
-      console.error('Error toggling publish status:', error);
-    } finally {
-      setPublishing(false);
+    await connectDB();
+    const blog = await Blog.findById(id).populate('author', 'name');
+    
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
     }
-  };
 
-  if (!blog) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
+    return NextResponse.json({ blog });
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    return NextResponse.json(
+      { message: "Error fetching blog" },
+      { status: 500 }
     );
   }
+}
 
-  return (
-    <div className="max-w-4xl mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Edit Blog</h1>
-        <button
-          onClick={handlePublishToggle}
-          disabled={publishing}
-          className={`px-4 py-2 rounded ${
-            blog.status === 'published'
-              ? 'bg-yellow-500 hover:bg-yellow-600'
-              : 'bg-green-500 hover:bg-green-600'
-          } text-white`}
-        >
-          {publishing ? 'Processing...' : blog.status === 'published' ? 'Unpublish' : 'Publish'}
-        </button>
-      </div>
-      
-      <BlogEditor
-        initialData={blog}
-        onSubmit={handleSubmit}
-        loading={loading}
-      />
-    </div>
-  );
+// PATCH: Update a blog post
+export async function PATCH(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    
+    if (!isValidObjectId(id)) {
+      return NextResponse.json(
+        { message: "Invalid blog ID format" },
+        { status: 400 }
+      );
+    }
+
+    const { userId } = await auth();
+    const user = await currentUser();
+
+    if (!userId || !user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const isAdmin = user.publicMetadata.role === 'admin';
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    const updates = await request.json();
+    await connectDB();
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { 
+        ...updates,
+        author: userId
+      },
+      { new: true, runValidators: true }
+    ).populate('author', 'name');
+
+    return NextResponse.json({ blog: updatedBlog });
+  } catch (error) {
+    console.error('Error updating blog:', error);
+    return NextResponse.json(
+      { message: "Error updating blog" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE: Remove a blog post
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    
+    if (!isValidObjectId(id)) {
+      return NextResponse.json(
+        { message: "Invalid blog ID format" },
+        { status: 400 }
+      );
+    }
+
+    const { userId } = await auth();
+    const user = await currentUser();
+
+    if (!userId || !user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const isAdmin = user.publicMetadata.role === 'admin';
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    await connectDB();
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    await Blog.findByIdAndDelete(id);
+
+    return NextResponse.json(
+      { message: "Blog deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error deleting blog:', error);
+    return NextResponse.json(
+      { message: "Error deleting blog" },
+      { status: 500 }
+    );
+  }
+}
+
+// PUT: Update blog status (publish/unpublish)
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { id } = await context.params;
+    
+    if (!isValidObjectId(id)) {
+      return NextResponse.json(
+        { message: "Invalid blog ID format" },
+        { status: 400 }
+      );
+    }
+
+    const { userId } = await auth();
+    const user = await currentUser();
+
+    if (!userId || !user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const isAdmin = user.publicMetadata.role === 'admin';
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    const { status } = await request.json();
+    
+    if (!['draft', 'published'].includes(status)) {
+      return NextResponse.json(
+        { message: "Invalid status value" },
+        { status: 400 }
+      );
+    }
+
+    await connectDB();
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog not found" },
+        { status: 404 }
+      );
+    }
+
+    blog.status = status;
+    await blog.save();
+
+    return NextResponse.json(
+      { message: `Blog ${status === 'published' ? 'published' : 'unpublished'} successfully` },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error updating blog status:', error);
+    return NextResponse.json(
+      { message: "Error updating blog status" },
+      { status: 500 }
+    );
+  }
 }
