@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root Theme Colors */
+:root {
+  --foreground-rgb: 30, 30, 30;
+  --background-rgb: 245, 245, 250;
+  --primary-rgb: 59, 130, 246;
+  --secondary-rgb: 139, 92, 246;
+  --accent-rgb: 16, 185, 129;
+  --text-light: 255, 255, 255;
+}
+
+/* Smooth Light Mode */
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 240, 240, 240;
+    --background-rgb: 20, 20, 30;
+    --primary-rgb: 96, 165, 250;
+    --secondary-rgb: 167, 139, 250;
+    --accent-rgb: 52, 211, 153;
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+  }
+}
+
+/* Custom Components */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg text-white font-semibold shadow-md transition-all;
+    background: linear-gradient(135deg, rgb(var(--primary-rgb)) 0%, rgb(var(--secondary-rgb)) 100%);
+  }
+
+  .btn-primary:hover {
+    @apply opacity-90;
+  }
+
+  .container {
+    @apply max-w-6xl mx-auto px-6;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6;
+  }
+
+  .heading {
+    @apply text-3xl font-bold text-gray-900 dark:text-gray-100;
+  }
+}
