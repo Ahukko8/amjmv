@@ -16,15 +16,16 @@ interface Blog {
   status: 'draft' | 'published';
 }
 
-// Define proper page props type for Next.js 13+
-interface PageProps {
+// Define correct props type for Next.js 15 App Router
+type Props = {
   params: {
     id: string;
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function EditBlog({ params, searchParams }: PageProps) {
+export default function EditBlog(props: Props) {
+  const { params, searchParams } = props;
   const router = useRouter();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(false);
