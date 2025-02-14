@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 /* Root Theme Colors */
 :root {
   --foreground-rgb: 30, 30, 30;
@@ -18,6 +21,7 @@ body {
   background: rgb(var(--background-rgb));
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease-in-out;
+  font: var(--custom-font);
 }
 
 /* Dark Mode Support */

@@ -59,7 +59,7 @@ export default async function BlogPage({ params }: PageProps) {
             <Link href="/" className="flex items-center text-white hover:opacity-80">
               <ArrowLeft className="w-5 h-5 mr-2" /> އަނބުރާ ދިއުން
             </Link>
-            <h2 className="text-lg font-semibold">Dhivehi Blog</h2>
+            <h2 className="text-lg font-semibold"></h2>
           </div>
         </header>
         
@@ -72,7 +72,7 @@ export default async function BlogPage({ params }: PageProps) {
         <main className="min-h-screen bg-gray-100 py-12">
           <div className="max-w-4xl mx-auto px-6">
             <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h1 className="text-4xl font-bold text-right mb-6 text-gray-800 break-words" style={{ fontFamily: blog.fontFamily }}>
+              <h1 className="text-4xl font-bold text-right mb-6 text-gray-800 break-words font-faseyha">
                 {blog.title}
               </h1>
 
@@ -92,10 +92,8 @@ export default async function BlogPage({ params }: PageProps) {
               </div>
 
               <div 
-                className="prose prose-lg md:prose-xl text-gray-800 mt-8 text-right break-words overflow-hidden"
+                className="prose prose-lg md:prose-xl text-gray-800 mt-8  break-words overflow-hidden font-faseyha text-justify"
                 style={{ 
-                  fontFamily: blog.fontFamily, 
-                  fontSize: blog.fontSize === 'small' ? '0.875rem' : blog.fontSize === 'large' ? '1.125rem' : '1rem',
                   maxWidth: '100%',
                   wordWrap: 'break-word'
                 }} 

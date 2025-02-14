@@ -107,12 +107,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold">Your Blogs</h1>
+        <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
         <Link
           href="/admin/dashboard/create"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
         >
-          Create New Blog
+          ބުލޮގެއް ހަދާ
         </Link>
       </div>
 
@@ -121,16 +121,16 @@ export default function Dashboard() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
+                ނަން
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                ސުޓޭޓަސް
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Created At
+              ތާރީޚު
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                ހަދަންވީދޮތް
               </th>
             </tr>
           </thead>
@@ -163,19 +163,19 @@ export default function Dashboard() {
                         : 'text-green-600 hover:text-green-900'
                     } mx-2`}
                   >
-                    {blog.status === 'published' ? 'Unpublish' : 'Publish'}
+                    {blog.status === 'published' ? 'އަންޕަބްލިޝް' : 'ޕަބްލިޝް'}
                   </button>
                   <button
                     onClick={() => router.push(`/admin/dashboard/edit/${blog._id}`)}
                     className="text-indigo-600 hover:text-indigo-900 mx-2"
                   >
-                    Edit
+                    އެޑިޓް
                   </button>
                   <button
                     onClick={() => handleDelete(blog._id)}
                     className="text-red-600 hover:text-red-900 mx-2"
                   >
-                    Delete
+                    ޑިލީޓް
                   </button>
                 </td>
               </tr>

@@ -38,7 +38,7 @@ export default async function BlogPosts(){
         return (
             <section className="py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-3xl font-bold mb-12 text-right">
+              <h2 className="text-3xl font-bold mb-12 text-right font-faseyha">
                 އެންމެ ފަހުގެ ލިޔުންތައް
               </h2>
               <BlogList blogs={recentPosts} />

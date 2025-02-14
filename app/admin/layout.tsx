@@ -33,18 +33,18 @@ export default async function AdminLayout({
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <span className="text-2xl font-bold">Admin Dashboard</span>
+                <span className="text-2xl font-bold font-faseyha">އެޑްމިން ޑޭޝްބޯޑް</span>
               </div>
             </div>
             <div className="flex items-center">
-              <span className="text-gray-700 mr-4">
-                Welcome, {user.firstName || user.username}
+              <span className="text-gray-700 mr-4 font-faseyha">
+                މަރުޙަބާ, {user.firstName || user.username}
               </span>
             </div>
           </div>
         </div>
       </nav>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 font-faseyha">
         {children}
       </main>
     </div>

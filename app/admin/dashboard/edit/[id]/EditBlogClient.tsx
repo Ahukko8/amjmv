@@ -97,7 +97,7 @@ export default function EditBlogClient({ id }: EditBlogClientProps) {
   const handleDelete = async () => {
     if (!blog) return;
   
-    if (!window.confirm('Are you sure you want to delete this blog?')) {
+    if (!window.confirm('މި ބުލޮގު ޑިޅީޓުކުރަންވީ؟')) {
       return;
     }
   
@@ -142,7 +142,7 @@ export default function EditBlogClient({ id }: EditBlogClientProps) {
   if (!blog) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-gray-700 text-lg">Blog not found</p>
+        <p className="text-gray-700 text-lg">އަންހަ..ބުލޮގު ނުފެނުން</p>
       </div>
     );
   }

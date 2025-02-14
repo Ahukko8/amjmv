@@ -11,6 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-arabic)"],
+        faseyha: ['var(--font-custom)'],
       },
     },
   },
@@ -18,3 +19,5 @@ const config: Config = {
 }
 
 export default config
+
+
