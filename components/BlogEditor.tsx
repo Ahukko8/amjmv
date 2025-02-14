@@ -18,14 +18,6 @@ interface BlogEditorProps {
     loading?: boolean;
   }
 
-// Keeping your original font options
-// const fontFamilies = [
-//     'IBM Plex Sans Arabic',
-//     'Noto Sans Arabic',
-//     'faseyha',
-//     yourFont,
-//   ] as const; 
-
 
 export default function BlogEditor({ initialData, onSubmit, loading }: BlogEditorProps) {
   // State management remains the same
