@@ -10,10 +10,13 @@ function isValidObjectId(id: string) {
   return objectIdPattern.test(id);
 }
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
-
+    const { id } = await context.params;
+    
     if (!isValidObjectId(id)) {
       return NextResponse.json(
         { message: "Invalid blog ID format" },
@@ -23,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     await connectDB();
     const blog = await Blog.findById(id).populate('author', 'name');
-
+    
     if (!blog) {
       return NextResponse.json(
         { message: "Blog not found" },
@@ -41,10 +44,13 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
-
+    const { id } = await context.params;
+    
     if (!isValidObjectId(id)) {
       return NextResponse.json(
         { message: "Invalid blog ID format" },
@@ -83,7 +89,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      {
+      { 
         ...updates,
         author: userId
       },
@@ -100,10 +106,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
-
+    const { id } = await context.params;
+    
     if (!isValidObjectId(id)) {
       return NextResponse.json(
         { message: "Invalid blog ID format" },
@@ -130,7 +139,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const { status } = await request.json();
-
+    
     if (!['draft', 'published'].includes(status)) {
       return NextResponse.json(
         { message: "Invalid status value" },
@@ -164,10 +173,13 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
-
+    const { id } = await context.params;
+    
     if (!isValidObjectId(id)) {
       return NextResponse.json(
         { message: "Invalid blog ID format" },
