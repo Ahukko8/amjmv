@@ -11,9 +11,13 @@ const blogSchema = new mongoose.Schema({
     required: true,
   },
   author: {
-    type: String, // Changed from ObjectId to String for Clerk userId
+    type: String, // Keeping as String for Clerk userId
     required: true,
   },
+  categories: [{ // This was missing in your schema
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  }],
   status: {
     type: String,
     enum: ['draft', 'published'],

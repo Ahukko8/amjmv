@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // types/blog.ts
 export interface Author {
   _id: string;
@@ -5,6 +6,7 @@ export interface Author {
 }
 
 export interface Blog {
+  categories: any;
   _id: string;
   title: string;
   content: string;

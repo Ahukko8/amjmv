@@ -1,59 +1,71 @@
-import connectDB from "@/lib/db";
-import Blog from "@/models/Blog";
-import { MongoDBBlog } from "@/types/mongodb";
-import BlogList from "./BlogList";
-import { Blog as BlogType } from '@/types/blog';
+// components/BlogPosts.tsx
+"use client";
 
+import { useEffect, useState } from 'react';
+import { Blog } from '@/types/blog';
+import BlogList from './BlogList';
 
-export default async function BlogPosts(){
-    try {
-        await connectDB();
-        
-        const blogsFromDB = await Blog.find({ status: 'published' })
-          .sort({ createdAt: -1 })
-          .lean<MongoDBBlog[]>();
-    
-        // Add null check and type guard for author
-        const blogs: BlogType[] = blogsFromDB.map(blog => ({
-          _id: blog._id.toString(),
-          title: blog.title,
-          content: blog.content,
-          author: blog.author ? {
-            _id: blog.author._id?.toString() || '',
-            name: blog.author.name || 'Anonymous'
-          } : {
-            _id: '',
-            name: 'Anonymous'
-          },
-          featured: blog.featured,
-          status: blog.status,
-          fontFamily: blog.fontFamily || 'default',
-          fontSize: blog.fontSize || 'medium',
-          createdAt: blog.createdAt?.toISOString() || new Date().toISOString(),
-          updatedAt: blog.updatedAt?.toISOString() || new Date().toISOString()
-        }));
-    
-        const recentPosts = blogs
+interface BlogPostsProps {
+  initialBlogs?: Blog[] | null;
+}
 
-        return (
-            <section className="py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-3xl font-bold mb-12 text-right font-faseyha">
-                އެންމެ ފަހުގެ ލިޔުންތައް
-              </h2>
-              <BlogList blogs={recentPosts} />
-            </div>
-          </section>
-        )
-} catch (error) {
-    console.error('Error in Home page:', error);
+export default function BlogPosts({ initialBlogs }: BlogPostsProps) {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(!initialBlogs);
+
+  useEffect(() => {
+    if (initialBlogs) {
+      setBlogs(initialBlogs);
+      return;
+    }
+
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('/api/blogs');
+        if (!response.ok) throw new Error('Failed to fetch blogs');
+        const data = await response.json();
+        setBlogs(data.blogs);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [initialBlogs]);
+
+  if (loading) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl text-gray-800 mb-4">Something went wrong</h1>
-          <p className="text-gray-600">Please try again later</p>
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gradient-to-b from-indigo-100 to-white rounded w-1/4 mb-12 ml-auto" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-64 bg-gray-200 rounded-xl" />
+              ))}
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
     );
   }
+
+  return (
+    <section className="py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-bold mb-12 text-right font-faseyha">
+          {initialBlogs ? 'ހޯދުނު ނަތީޖާ' : 'އެންމެ ފަހުގެ ލިޔުންތައް'}
+        </h2>
+        {blogs.length > 0 ? (
+          <BlogList blogs={blogs} />
+        ) : (
+          <div className="text-center text-gray-500 py-12 font-faseyha">
+            ލިޔުމެއް ނުފެނުނު
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }

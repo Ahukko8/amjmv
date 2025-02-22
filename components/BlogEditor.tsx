@@ -1,29 +1,36 @@
+// components/BlogEditor.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
 import 'tailwindcss/tailwind.css';
 import { yourFont } from '@/app/fonts';
+import { Category } from '@/types/category';
 
 interface BlogData {
-    title: string;
-    content: string;
-  }
-// Maintaining the same interface as your original code
-interface BlogEditorProps {
-    initialData?: BlogData;
-    onSubmit: (data: BlogData) => void;  // Now properly typed
-    loading?: boolean;
-  }
+  title: string;
+  content: string;
+  categories: string[];
+}
 
+interface BlogEditorProps {
+  initialData?: {
+    title?: string;
+    content?: string;
+    categories?: string[];
+  };
+  onSubmit: (data: BlogData) => void;
+  loading?: boolean;
+}
 
 export default function BlogEditor({ initialData, onSubmit, loading }: BlogEditorProps) {
-  // State management remains the same
   const [title, setTitle] = useState(initialData?.title || '');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialData?.categories?.[0] || '');
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
-  // Initialize TipTap editor with similar functionality to React Quill
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -40,17 +47,34 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
     },
   });
 
-  // Maintain the same form submission logic
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        const data = await response.json();
+        setCategories(data.categories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editor) return;
 
     const blogData: BlogData = {
-        title,
-        content: editor.getHTML(),
-      };
+      title,
+      content: editor.getHTML(),
+      categories: selectedCategory ? [selectedCategory] : [], // Send as array with single selected category
+    };
     
-      onSubmit(blogData);
+    onSubmit(blogData);
   };
 
   return (
@@ -66,7 +90,24 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-lg font-medium text-gray-700 mb-2">ކެޓަގަރީ</label>
+        {categoriesLoading ? (
+          <div className="text-gray-500">Loading categories...</div>
+        ) : (
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          >
+            <option value="">ކެޓަގަރީއެއް ހޮވާ</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       <div>
@@ -74,7 +115,7 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
         <div className="mt-1">
           <EditorContent 
             editor={editor} 
-            className='min-h-[200px] p-4 border rounded-md shadow-sm font-faseyha'
+            className="min-h-[200px] p-4 border rounded-md shadow-sm font-faseyha"
           />
         </div>
       </div>

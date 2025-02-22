@@ -1,4 +1,3 @@
-// app/admin/dashboard/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -10,12 +9,19 @@ interface Author {
   name: string;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 interface Blog {
   _id: string;
   title: string;
   content: string;
   status: 'draft' | 'published';
   author: Author;
+  categories: Category[];
   createdAt: string;
   updatedAt: string;
   fontFamily: string;
@@ -48,7 +54,7 @@ export default function Dashboard() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog?')) return;
+    if (!confirm('ޑިލީޓް ކުރަންވީތަ؟')) return;
 
     try {
       const response = await fetch(`/api/blogs/${id}`, {
@@ -108,12 +114,20 @@ export default function Dashboard() {
     <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
-        <Link
-          href="/admin/dashboard/create"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          ބުލޮގެއް ހަދާ
-        </Link>
+        <div className="space-x-4">
+          <Link
+            href="/admin/dashboard/categories"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+          >
+            ކެޓަގަރީތައް
+          </Link>
+          <Link
+            href="/admin/dashboard/create"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            ބުލޮގެއް ހަދާ
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -124,13 +138,16 @@ export default function Dashboard() {
                 ނަން
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ކެޓަގަރީތައް
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 ސުޓޭޓަސް
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              ތާރީޚު
+                ތާރީޚު
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ހަދަންވީދޮތް
+                ހަދަންވީގޮތް
               </th>
             </tr>
           </thead>
@@ -139,6 +156,18 @@ export default function Dashboard() {
               <tr key={blog._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <div className="text-sm font-medium text-gray-900">{blog.title}</div>
+                </td>
+                <td className="px-6 py-4 text-right">
+                  <div className="flex flex-wrap justify-end gap-1">
+                    {blog.categories?.map((category) => (
+                      <span
+                        key={category._id}
+                        className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full"
+                      >
+                        {category.name}
+                      </span>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <span

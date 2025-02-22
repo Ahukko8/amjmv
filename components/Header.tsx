@@ -1,9 +1,21 @@
+
 "use client"
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import Hero from './Hero';
+import { Blog } from '@/types/blog';
 
-const Header = () => {
+interface HeaderProps {
+  onSearch?: (blogs: Blog[]) => void;
+}
+
+const Header :  React.FC<HeaderProps> = ({ onSearch }) => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  
+   const handleSearch = (blogs: Blog[]) => {
+    onSearch?.(blogs);
+  };
 
   const navLinks = [
     { name: 'ފުރަތަމަ ޞަފްޙާ', href: '#' },
@@ -18,12 +30,12 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="flex space-x-8">
+            <div className="flex space-x-8 ">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-lg font-custom transition-colors"
+                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-lg transition-colors"
                 >
                   {link.name}
                 </a>
@@ -63,14 +75,7 @@ const Header = () => {
 
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-5 md:py-10">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-right leading-tight text-white">
-          الشيخ أحمد موسى جبريل حفظه الله
-          </h2>
-          <p className="text-xl text-gray-300  mr-auto text-right leading-relaxed">
-           ޝެއިޚުގެ މަސައްކަތް ފުޅުތަކުގެ ދިވެހި އަރުޝީފު
-          </p>
-        </div>
+        <Hero onSearch={handleSearch}/>
       </div>
     </nav>
   );

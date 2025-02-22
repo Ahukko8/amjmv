@@ -2,12 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
 import Blog from "@/models/Blog";
-
-// Helper function to validate MongoDB ObjectId format
-function isValidObjectId(id: string) {
-  const objectIdPattern = /^[0-9a-fA-F]{24}$/;
-  return objectIdPattern.test(id);
-}
+import { isValidObjectId } from "mongoose";
 
 export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -22,7 +17,9 @@ export async function GET(request: NextRequest, props: { params: Promise<{ id: s
     }
 
     await connectDB();
-    const blog = await Blog.findById(id).populate("author", "name");
+    const blog = await Blog.findById(id)
+      .populate('author', 'name')
+      .populate('categories', 'name slug');
 
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
@@ -63,6 +60,20 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     }
 
     const updates = await request.json();
+    
+    // Validate categories if they exist
+    if (updates.categories && Array.isArray(updates.categories)) {
+      const invalidCategories = updates.categories.some(
+        (categoryId: string) => !isValidObjectId(categoryId)
+      );
+      if (invalidCategories) {
+        return NextResponse.json(
+          { message: "Invalid category ID format" },
+          { status: 400 }
+        );
+      }
+    }
+
     await connectDB();
 
     const blog = await Blog.findById(id);
@@ -77,7 +88,9 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
         author: userId,
       },
       { new: true, runValidators: true }
-    ).populate("author", "name");
+    )
+      .populate('author', 'name')
+      .populate('categories', 'name slug');
 
     return NextResponse.json({ blog: updatedBlog });
   } catch (error) {
@@ -88,7 +101,6 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
     );
   }
 }
-
 export async function PUT(request: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   try {

@@ -1,5 +1,5 @@
 "use client";
-
+//app/admin/dashboard/edit/[id]/EditBlogClient
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BlogEditor from "@/components/BlogEditor";
