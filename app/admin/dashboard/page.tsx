@@ -111,106 +111,172 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
-        <div className="space-x-4">
+    <div className="space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-xl sm:text-2xl font-semibold">ބުލޮގްތައް</h1>
+        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-4 w-full sm:w-auto">
           <Link
             href="/admin/dashboard/categories"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors text-center"
           >
             ކެޓަގަރީތައް
           </Link>
           <Link
             href="/admin/dashboard/create"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-center"
           >
             ބުލޮގެއް ހަދާ
           </Link>
         </div>
       </div>
 
+      {/* Mobile: Card layout, Desktop: Table */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ނަން
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ކެޓަގަރީތައް
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ސުޓޭޓަސް
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ތާރީޚު
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ހަދަންވީގޮތް
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {blogs.map((blog) => (
-              <tr key={blog._id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <div className="text-sm font-medium text-gray-900">{blog.title}</div>
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex flex-wrap justify-end gap-1">
-                    {blog.categories?.map((category) => (
-                      <span
-                        key={category._id}
-                        className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full"
-                      >
-                        {category.name}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      blog.status === 'published'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}
-                  >
-                    {blog.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                  {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    onClick={() => handlePublishToggle(blog)}
-                    className={`${
-                      blog.status === 'published'
-                        ? 'text-yellow-600 hover:text-yellow-900'
-                        : 'text-green-600 hover:text-green-900'
-                    } mx-2`}
-                  >
-                    {blog.status === 'published' ? 'އަންޕަބްލިޝް' : 'ޕަބްލިޝް'}
-                  </button>
-                  <button
-                    onClick={() => router.push(`/admin/dashboard/edit/${blog._id}`)}
-                    className="text-indigo-600 hover:text-indigo-900 mx-2"
-                  >
-                    އެޑިޓް
-                  </button>
-                  <button
-                    onClick={() => handleDelete(blog._id)}
-                    className="text-red-600 hover:text-red-900 mx-2"
-                  >
-                    ޑިލީޓް
-                  </button>
-                </td>
+        {/* Table for medium screens and up */}
+        <div className="hidden md:block">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ނަން
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ކެޓަގަރީތައް
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ސުޓޭޓަސް
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ތާރީޚު
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ހަދަންވީގޮތް
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {blogs.map((blog) => (
+                <tr key={blog._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <div className="text-sm font-medium text-gray-900">{blog.title}</div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex flex-wrap justify-end gap-1">
+                      {blog.categories?.map((category) => (
+                        <span
+                          key={category._id}
+                          className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full"
+                        >
+                          {category.name}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        blog.status === 'published'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
+                      {blog.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                    {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => handlePublishToggle(blog)}
+                      className={`${
+                        blog.status === 'published'
+                          ? 'text-yellow-600 hover:text-yellow-900'
+                          : 'text-green-600 hover:text-green-900'
+                      } mx-2`}
+                    >
+                      {blog.status === 'published' ? 'އަންޕަބްލިޝް' : 'ޕަބްލިޝް'}
+                    </button>
+                    <button
+                      onClick={() => router.push(`/admin/dashboard/edit/${blog._id}`)}
+                      className="text-indigo-600 hover:text-indigo-900 mx-2"
+                    >
+                      އެޑިޓް
+                    </button>
+                    <button
+                      onClick={() => handleDelete(blog._id)}
+                      className="text-red-600 hover:text-red-900 mx-2"
+                    >
+                      ޑިލީޓް
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Card layout for mobile screens */}
+        <div className="md:hidden space-y-4 p-4">
+          {blogs.map((blog) => (
+            <div
+              key={blog._id}
+              className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <h2 className="text-sm font-medium text-gray-900 text-right">{blog.title}</h2>
+              <div className="mt-2 text-right">
+                <p className="text-xs text-gray-500">
+                  {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
+                </p>
+                <div className="flex flex-wrap justify-end gap-1 mt-1">
+                  {blog.categories?.map((category) => (
+                    <span
+                      key={category._id}
+                      className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full"
+                    >
+                      {category.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-2 text-right">
+                <span
+                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    blog.status === 'published'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}
+                >
+                  {blog.status}
+                </span>
+              </div>
+              <div className="mt-3 flex justify-end gap-2 text-sm">
+                <button
+                  onClick={() => handlePublishToggle(blog)}
+                  className={`${
+                    blog.status === 'published'
+                      ? 'text-yellow-600 hover:text-yellow-900'
+                      : 'text-green-600 hover:text-green-900'
+                  }`}
+                >
+                  {blog.status === 'published' ? 'އަންޕަބްލިޝް' : 'ޕަބްލިޝް'}
+                </button>
+                <button
+                  onClick={() => router.push(`/admin/dashboard/edit/${blog._id}`)}
+                  className="text-indigo-600 hover:text-indigo-900"
+                >
+                  އެޑިޓް
+                </button>
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className="text-red-600 hover:text-red-900"
+                >
+                  ޑިލީޓް
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
