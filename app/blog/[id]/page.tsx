@@ -2,10 +2,16 @@ import { notFound } from 'next/navigation';
 import connectDB from '@/lib/db';
 import Blog from '@/models/Blog';
 import Link from 'next/link';
-import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 import ClientReadingProgress from './ClientReadingProgress';
 import { Suspense } from 'react';
 import Footer from '@/components/Footer';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+
+// Initialize DOMPurify with JSDOM
+const window = new JSDOM('').window;
+const purify = DOMPurify(window);
 
 interface BlogAuthor {
   _id: string;
@@ -48,7 +54,25 @@ export default async function BlogPage({ params }: PageProps) {
       return notFound();
     }
 
-    const wordsPerMinute = 200;
+    // Sanitize the HTML content with specific allowed tags and attributes
+    const cleanHtml = purify.sanitize(blog.content, {
+      ALLOWED_TAGS: [
+        'p', 'b', 'i', 'em', 'strong', 'a', 'h1', 'h2', 'h3', 
+        'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'br',
+        'div', 'span', 'img'  // Add any other tags you need
+      ],
+      ALLOWED_ATTR: [
+        'href', 'title', 'target', 'rel', 'src', 'alt', 
+        'class', 'id', 'style'  // Add any other attributes you need
+      ],
+      ALLOW_DATA_ATTR: false,
+      ADD_TAGS: ['iframe'],  // Only if you need to embed content
+      ADD_ATTR: ['allowfullscreen', 'frameborder', 'sandbox'],  // For iframes if needed
+      FORBID_TAGS: ['script', 'style', 'form', 'input', 'textarea', 'select'],
+      FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover']
+    });
+
+    const wordsPerMinute = 55;
     const wordCount = blog.content.trim().split(/\s+/).length;
     const readingTime = Math.ceil(wordCount / wordsPerMinute);
 
@@ -76,28 +100,28 @@ export default async function BlogPage({ params }: PageProps) {
                 {blog.title}
               </h1>
 
-              <div className="flex flex-wrap justify-end items-center gap-4 text-gray-600 text-sm">
-                <div className="flex items-center">
+              <div className="flex flex-wrap justify-start items-center gap-4 text-gray-600 text-sm">
+                <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 mr-2 text-blue-500" />
                   <time>{new Date(blog.createdAt).toLocaleDateString('dv-MV')}</time>
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <User className="w-4 h-4 mr-2 text-purple-500" />
                   <span>{blog.author.name}</span>
-                </div>
-                <div className="flex items-center">
+                </div> */}
+                <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 mr-2 text-green-500" />
-                  <span>{readingTime} min read</span>
+                  <span>{readingTime} މިނިޓު</span>
                 </div>
               </div>
 
               <div 
-                className="prose prose-lg md:prose-xl text-gray-800 mt-8  break-words overflow-hidden font-faseyha text-justify"
+                className="prose prose-lg md:prose-xl text-gray-800 mt-8 break-words overflow-hidden font-faseyha text-justify"
                 style={{ 
                   maxWidth: '100%',
                   wordWrap: 'break-word'
                 }} 
-                dangerouslySetInnerHTML={{ __html: blog.content }} 
+                dangerouslySetInnerHTML={{ __html: cleanHtml }} 
               />
             </div>
           </div>
@@ -130,12 +154,16 @@ export async function generateMetadata({ params }: PageProps) {
       };
     }
 
+    // Sanitize the content for meta description
+    const cleanContent = purify.sanitize(blog.content, { ALLOWED_TAGS: [] });
+    const description = cleanContent.slice(0, 155) + '...';
+
     return {
       title: blog.title,
-      description: blog.content.slice(0, 155) + '...',
+      description,
       openGraph: {
         title: blog.title,
-        description: blog.content.slice(0, 155) + '...',
+        description,
         type: 'article',
         authors: [blog.author.name],
         publishedTime: new Date(blog.createdAt).toISOString(),
