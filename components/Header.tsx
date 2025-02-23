@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     { name: 'ފުރަތަމަ ޞަފްޙާ', href: '/' },
     { name: 'ޝެއިޚުގެ ތަޢާރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '#' },
-    { name: 'ގުޅުއްވާ', href: '#' },
+    { name: 'ޕި.ޑީ.އެފް', href: '/pdfs' },
   ];
 
   return (

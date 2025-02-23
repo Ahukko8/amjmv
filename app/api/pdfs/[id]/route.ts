@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
+import { put, del } from '@vercel/blob';
 import connectDB from '@/lib/db';
 import PDF from '@/models/PDF';
-import fs from 'fs/promises';
-import path from 'path';
-
 
 export const config = {
   api: {
@@ -14,17 +12,12 @@ export const config = {
   },
 };
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   try {
     await connectDB();
     const pdf = await PDF.findById(id).populate('author', 'name');
-    if (!pdf) {
-      return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
-    }
+    if (!pdf) return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
     return NextResponse.json({ pdf });
   } catch (error) {
     console.error('Error fetching PDF:', error);
@@ -32,11 +25,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> } // Type params as a Promise
-) {
-  const { id } = await params; // Await params to resolve the id
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const { userId } = await auth();
     const user = await currentUser();
@@ -53,38 +43,23 @@ export async function PUT(
     const pdfFile = formData.get('pdfFile') as File | null;
     const imageFile = formData.get('image') as File | null;
 
-    if (!title) {
-      return NextResponse.json({ message: 'Title is required' }, { status: 400 });
-    }
+    if (!title) return NextResponse.json({ message: 'Title is required' }, { status: 400 });
 
     const existingPDF = await PDF.findById(id);
-    if (!existingPDF) {
-      return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
-    }
-
-    const uploadDir = path.join(process.cwd(), 'public/uploads/pdfs');
-    await fs.mkdir(uploadDir, { recursive: true });
+    if (!existingPDF) return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
 
     let pdfPath = existingPDF.pdfFile;
     if (pdfFile) {
-      const pdfFileName = `${Date.now()}-${pdfFile.name}`;
-      pdfPath = `/uploads/pdfs/${pdfFileName}`;
-      const pdfBuffer = Buffer.from(await pdfFile.arrayBuffer());
-      await fs.writeFile(path.join(uploadDir, pdfFileName), pdfBuffer);
-      if (existingPDF.pdfFile) {
-        await fs.unlink(path.join(process.cwd(), 'public', existingPDF.pdfFile)).catch(() => {});
-      }
+      const pdfBlob = await put(`${Date.now()}-${pdfFile.name}`, pdfFile, { access: 'public' });
+      pdfPath = pdfBlob.url;
+      if (existingPDF.pdfFile) await del(existingPDF.pdfFile);
     }
 
     let imagePath = existingPDF.image;
     if (imageFile) {
-      const imageFileName = `${Date.now()}-${imageFile.name}`;
-      imagePath = `/uploads/pdfs/${imageFileName}`;
-      const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-      await fs.writeFile(path.join(uploadDir, imageFileName), imageBuffer);
-      if (existingPDF.image) {
-        await fs.unlink(path.join(process.cwd(), 'public', existingPDF.image)).catch(() => {});
-      }
+      const imageBlob = await put(`${Date.now()}-${imageFile.name}`, imageFile, { access: 'public' });
+      imagePath = imageBlob.url;
+      if (existingPDF.image) await del(existingPDF.image);
     }
 
     const updatedPDF = await PDF.findByIdAndUpdate(
@@ -100,11 +75,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> } // Type params as a Promise
-) {
-  const { id } = await params; // Await params to resolve the id
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const { userId } = await auth();
     const user = await currentUser();
@@ -116,16 +88,10 @@ export async function DELETE(
     await connectDB();
 
     const pdf = await PDF.findById(id);
-    if (!pdf) {
-      return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
-    }
+    if (!pdf) return NextResponse.json({ message: 'PDF not found' }, { status: 404 });
 
-    if (pdf.pdfFile) {
-      await fs.unlink(path.join(process.cwd(), 'public', pdf.pdfFile)).catch(() => {});
-    }
-    if (pdf.image) {
-      await fs.unlink(path.join(process.cwd(), 'public', pdf.image)).catch(() => {});
-    }
+    if (pdf.pdfFile) await del(pdf.pdfFile);
+    if (pdf.image) await del(pdf.image);
 
     await PDF.findByIdAndDelete(id);
 
