@@ -114,6 +114,12 @@ export default function Dashboard() {
     <div className="space-y-6 p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-xl sm:text-2xl font-semibold">ބުލޮގްތައް</h1>
+        <Link
+           href="/admin/dashboard/pdfs"
+           className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors"
+        >
+             PDF މެނޭޖްމަންޓް
+        </Link>
         <div className="flex flex-col sm:flex-row gap-2 sm:space-x-4 w-full sm:w-auto">
           <Link
             href="/admin/dashboard/categories"

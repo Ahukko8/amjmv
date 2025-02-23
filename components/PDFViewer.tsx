@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Download, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { Download, ZoomIn, ZoomOut } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface PDFViewerProps {
@@ -9,7 +9,6 @@ interface PDFViewerProps {
 }
 
 const PDFViewer = ({ pdfUrl, filename = 'document.pdf' }: PDFViewerProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [scale, setScale] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,42 +38,15 @@ const PDFViewer = ({ pdfUrl, filename = 'document.pdf' }: PDFViewerProps) => {
     setScale(prev => Math.max(prev - 0.1, 0.5));
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage(prev => prev + 1);
-  };
-
   return (
-    <div className="flex flex-col w-full max-w-4xl mx-auto p-4 space-y-4">
+    <div className="flex flex-col w-full max-w-4xl mx-auto p-4 space-y-4 font-faseyha">
       {error && (
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
       
-      <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow">
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm">Page {currentPage}</span>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleNextPage}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-
+      <div className="flex justify-end items-center bg-white p-4 rounded-lg shadow">
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -99,12 +71,12 @@ const PDFViewer = ({ pdfUrl, filename = 'document.pdf' }: PDFViewerProps) => {
             className="ml-4"
           >
             <Download className="h-4 w-4 mr-2" />
-            Download
+            ޑައުންލޯޑް
           </Button>
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-lg shadow p-4 min-h-[600px] flex items-center justify-center">
+      <div className="bg-gray-100 rounded-lg shadow p-4 h-[calc(100vh-200px)] flex items-center justify-center">
         <object
           data={pdfUrl}
           type="application/pdf"
@@ -121,7 +93,7 @@ const PDFViewer = ({ pdfUrl, filename = 'document.pdf' }: PDFViewerProps) => {
             className="w-full h-full"
           />
           <p className="text-center text-gray-500">
-            PDF cannot be displayed. Please download to view.
+            PDF ދައްކަން ނުމަގާނެ. ޑައުންލޯޑް ކޮށްލުމަށް ކަމަންދާރު.
           </p>
         </object>
       </div>
