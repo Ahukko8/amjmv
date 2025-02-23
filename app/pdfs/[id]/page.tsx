@@ -11,7 +11,7 @@ interface PDFPageProps {
 }
 
 export default function PDFReader({ params }: PDFPageProps) {
-  const { id } = React.use(params);
+  const { id } = React.use(params); // Unwrap params with React.use()
   const [pdf, setPdf] = useState<any>(null);
   const router = useRouter();
 

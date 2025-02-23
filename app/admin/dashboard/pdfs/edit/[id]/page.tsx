@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface PDF {
   _id: string;
@@ -12,7 +13,7 @@ interface PDF {
 }
 
 interface EditPDFProps {
-  params: { id: string };
+  params: Promise<{ id: string }>; // Updated to Promise type
 }
 
 export default function EditPDF({ params }: EditPDFProps) {
@@ -24,10 +25,12 @@ export default function EditPDF({ params }: EditPDFProps) {
   const [initialData, setInitialData] = useState<PDF | null>(null);
   const router = useRouter();
 
+  const { id } = React.use(params); // Unwrap params with React.use()
+
   useEffect(() => {
     const fetchPDF = async () => {
       try {
-        const response = await fetch(`/api/pdfs/${params.id}`);
+        const response = await fetch(`/api/pdfs/${id}`);
         if (!response.ok) throw new Error('Failed to fetch PDF');
         const data = await response.json();
         setInitialData(data.pdf);
@@ -38,9 +41,8 @@ export default function EditPDF({ params }: EditPDFProps) {
         router.push('/admin/dashboard/pdfs');
       }
     };
-
     fetchPDF();
-  }, [params.id, router]); // Added dependencies
+  }, [id, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +55,7 @@ export default function EditPDF({ params }: EditPDFProps) {
     if (image) formData.append('image', image);
 
     try {
-      const response = await fetch(`/api/pdfs/${params.id}`, {
+      const response = await fetch(`/api/pdfs/${id}`, {
         method: 'PUT',
         body: formData,
       });
