@@ -7,6 +7,8 @@ import TextAlign from '@tiptap/extension-text-align';
 import 'tailwindcss/tailwind.css';
 import { yourFont } from '@/app/fonts';
 import { Category } from '@/types/category';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 interface BlogData {
   title: string;
@@ -29,6 +31,7 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>(initialData?.categories?.[0] || '');
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const router = useRouter(); // Initialize useRouter
 
   const editor = useEditor({
     extensions: [
@@ -44,7 +47,7 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
         style: `font-family: ${yourFont}`,
       },
     },
-    immediatelyRender: false, // Explicitly disable immediate rendering for SSR compatibility
+    immediatelyRender: false,
   });
 
   useEffect(() => {
@@ -77,7 +80,10 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
     onSubmit(blogData);
   };
 
-  // Prevent rendering until the editor is initialized to avoid hydration issues
+  const handleCancel = () => {
+    router.back(); // Navigate to the previous page
+  };
+
   if (!editor) {
     return null; // Or a loading spinner if preferred
   }
@@ -125,14 +131,22 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button
+      <div className="flex gap-2 justify-end">
+      <Button
+          type="button" // Change to type="button" to prevent form submission
+          onClick={handleCancel}
+          className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm sm:text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-red-400"
+        >
+          ކެންސަލްކުރޭ
+        </Button>
+      <Button
           type="submit"
           disabled={loading}
           className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm sm:text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400"
         >
           {loading ? 'ސޭވްކުަރަނީ...' : 'ސޭވްކުރޭ'}
-        </button>
+        </Button>
+       
       </div>
     </form>
   );

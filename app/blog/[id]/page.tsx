@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation';
 import connectDB from '@/lib/db';
 import Blog from '@/models/Blog';
-import Link from 'next/link';
-import { ArrowLeft, Clock, Calendar } from 'lucide-react';
+import { Clock, Calendar } from 'lucide-react';
 import ClientReadingProgress from './ClientReadingProgress';
 import { Suspense } from 'react';
 import Footer from '@/components/Footer';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
+import Header from '@/components/Header';
 
 // Initialize DOMPurify with JSDOM
 const window = new JSDOM('').window;
@@ -78,14 +78,9 @@ export default async function BlogPage({ params }: PageProps) {
 
     return (
       <>
-        <header className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-6 shadow-lg">
-          <div className="max-w-4xl mx-auto px-6 flex justify-between items-center">
-            <Link href="/" className="flex items-center text-white hover:opacity-80">
-              <ArrowLeft className="w-5 h-5 mr-2" /> އަނބުރާ ދިއުން
-            </Link>
-            <h2 className="text-lg font-semibold"></h2>
-          </div>
-        </header>
+        
+          <Header />
+        
         
         <div className="top-0 z-50 w-full">
           <Suspense fallback={<div className="h-1 bg-gray-200" />}>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Pagination as PaginationComponent,
   PaginationContent,
@@ -11,57 +11,28 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
-import { Blog } from '@/types/blog';
 import Categories from './Categories';
+import { useAllBlogs } from '@/hooks/useAllBlogs';
 
 interface Category {
   _id: string;
   name: string;
 }
 
-interface BlogListProps {
-  blogs: Blog[];
-}
+const ITEMS_PER_PAGE = 10;
+const MAX_VISIBLE_PAGES = 5;
 
-const cardStyles = [
-  'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500',
-  'bg-gradient-to-br from-blue-500 via-teal-500 to-green-500',
-  'bg-gradient-to-br from-violet-500 via-rose-500 to-red-500',
-];
-
-const ITEMS_PER_PAGE = 6;
-const MAX_VISIBLE_PAGES = 5; // Show 5 page numbers max, with ellipsis
-
-export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
+export default function BlogList() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
-  const [totalBlogs, setTotalBlogs] = useState(initialBlogs.length);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    fetchBlogs(currentPage, selectedCategory);
-  }, [currentPage, selectedCategory]);
+  const { blogs, total, isLoading, error } = useAllBlogs({
+    page: currentPage,
+    limit: ITEMS_PER_PAGE,
+    categoryId: selectedCategory,
+  });
 
-  const fetchBlogs = async (page: number, categoryId: string | null) => {
-    setIsLoading(true);
-    try {
-      const url = new URL('/api/blogs', window.location.origin);
-      url.searchParams.set('page', page.toString());
-      url.searchParams.set('limit', ITEMS_PER_PAGE.toString());
-      if (categoryId) url.searchParams.set('category', categoryId);
-
-      const response = await fetch(url.toString());
-      if (!response.ok) throw new Error('Failed to fetch blogs');
-      const data = await response.json();
-      setBlogs(data.blogs);
-      setTotalBlogs(data.total); // Assuming API returns total count
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   const handleCategorySelect = (categoryId: string | null) => {
     setSelectedCategory(categoryId);
@@ -72,9 +43,6 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
     setCurrentPage(page);
   };
 
-  const totalPages = Math.ceil(totalBlogs / ITEMS_PER_PAGE);
-
-  // Calculate visible page numbers with ellipsis
   const getPageNumbers = () => {
     if (totalPages <= MAX_VISIBLE_PAGES) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -122,33 +90,32 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
       <div className="flex-1">
         {isLoading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-72 bg-gray-200 rounded-2xl animate-pulse shadow-md" />
+            {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
+              <div key={i} className="h-48 bg-gray-200 rounded-lg animate-pulse shadow-md" />
             ))}
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 py-12 font-faseyha">
+            {error}
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog, index) => (
+            {blogs.map((blog) => (
               <Link key={blog._id} href={`/blog/${blog._id}`} className="block group">
-                <article
-                  className={`relative h-72 p-6 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 ${
-                    cardStyles[index % cardStyles.length]
-                  }`}
-                >
-                  <div className="absolute inset-0 opacity-10 bg-[url('/noise.png')] mix-blend-overlay" />
-                  <div className="relative z-10 flex flex-col h-full">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-3 text-right text-white line-clamp-2 font-faseyha">
+                <article className="relative h-48 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1 border border-gray-200">
+                  <div className="p-4 flex flex-col h-full">
+                    <h2 className="text-lg font-semibold mb-2 text-right text-gray-900 line-clamp-2 font-faseyha">
                       {blog.title}
                     </h2>
-                    <div className="text-white/80 text-sm text-right mb-4">
+                    <div className="text-gray-500 text-xs text-right mb-2">
                       {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
                     </div>
                     {blog.categories && blog.categories.length > 0 && (
-                      <div className="flex flex-wrap gap-2 justify-end mb-4">
+                      <div className="flex flex-wrap gap-2 justify-end mb-2">
                         {blog.categories.map((category: Category) => (
                           <span
                             key={category._id}
-                            className="px-2 py-1 rounded-full bg-white/20 text-white text-xs sm:text-sm"
+                            className="px-2 py-1 rounded-full bg-gray-100 text-gray-700 text-xs"
                           >
                             {category.name}
                           </span>
@@ -156,7 +123,7 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
                       </div>
                     )}
                     <div
-                      className="mt-auto text-right text-white/90 line-clamp-2 text-sm sm:text-base font-faseyha"
+                      className="mt-auto text-right text-gray-600 line-clamp-2 text-sm font-faseyha"
                       style={{
                         fontSize:
                           blog.fontSize === 'small'
@@ -174,7 +141,7 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
           </div>
         )}
 
-        {/* Pagination with Ellipsis */}
+        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-8 flex justify-center">
             <PaginationComponent>
@@ -182,26 +149,16 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    className={
-                      currentPage === 1
-                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                        : 'cursor-pointer'
-                    }
+                    className={currentPage === 1 ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                   />
                 </PaginationItem>
 
                 {pageNumbers[0] > 1 && (
                   <>
                     <PaginationItem>
-                      <PaginationLink onClick={() => handlePageChange(1)} className="cursor-pointer">
-                        1
-                      </PaginationLink>
+                      <PaginationLink onClick={() => handlePageChange(1)} className="cursor-pointer">1</PaginationLink>
                     </PaginationItem>
-                    {pageNumbers[0] > 2 && (
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    )}
+                    {pageNumbers[0] > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
                   </>
                 )}
 
@@ -220,15 +177,10 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
                 {pageNumbers[pageNumbers.length - 1] < totalPages && (
                   <>
                     {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
+                      <PaginationItem><PaginationEllipsis /></PaginationItem>
                     )}
                     <PaginationItem>
-                      <PaginationLink
-                        onClick={() => handlePageChange(totalPages)}
-                        className="cursor-pointer"
-                      >
+                      <PaginationLink onClick={() => handlePageChange(totalPages)} className="cursor-pointer">
                         {totalPages}
                       </PaginationLink>
                     </PaginationItem>
@@ -237,14 +189,8 @@ export default function BlogList({ blogs: initialBlogs }: BlogListProps) {
 
                 <PaginationItem>
                   <PaginationNext
-                    onClick={() =>
-                      currentPage < totalPages && handlePageChange(currentPage + 1)
-                    }
-                    className={
-                      currentPage === totalPages
-                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                        : 'cursor-pointer'
-                    }
+                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                    className={currentPage === totalPages ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                   />
                 </PaginationItem>
               </PaginationContent>

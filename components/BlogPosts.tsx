@@ -59,7 +59,7 @@ export default function BlogPosts({ initialBlogs }: BlogPostsProps) {
           {initialBlogs ? 'ހޯދުނު ނަތީޖާ' : 'އެންމެ ފަހުގެ ލިޔުންތައް'}
         </h2>
         {blogs.length > 0 ? (
-          <BlogList blogs={blogs} />
+          <BlogList />
         ) : (
           <div className="text-center text-gray-500 py-12 font-faseyha">
             ލިޔުމެއް ނުފެނުނު

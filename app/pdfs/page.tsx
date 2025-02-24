@@ -13,6 +13,8 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 interface PDF {
   _id: string;
@@ -78,15 +80,7 @@ export default function PDFsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-indigo-50 to-gray-100 font-faseyha">
-      {/* Minimal Header */}
-      <header className="bg-white shadow-md py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-indigo-600">ފީސީ ލިޔުން</h1>
-          <Link href="/" className="text-indigo-600 hover:text-indigo-800 text-sm sm:text-base">
-            ފުރަތަމަ ޞަފްޙާ
-          </Link>
-        </div>
-      </header>
+     <Header />
 
       {/* Main Content */}
       <section className="py-12 sm:py-16">
@@ -189,12 +183,7 @@ export default function PDFsPage() {
         </div>
       </section>
 
-      {/* Minimal Footer */}
-      <footer className="bg-indigo-900 text-white py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm">© {new Date().getFullYear()} PDFs Page. ހަމަ ހައްގުތައް ރައްކާތެރި.</p>
-        </div>
-      </footer>
+     <Footer />
     </main>
   );
 }

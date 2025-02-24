@@ -4,14 +4,6 @@ import { put } from '@vercel/blob';
 import connectDB from '@/lib/db';
 import PDF from '@/models/PDF';
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '1000mb',
-    },
-  },
-};
-
 export async function POST(request: Request) {
   try {
     const { userId } = await auth();
@@ -23,20 +15,17 @@ export async function POST(request: Request) {
 
     await connectDB();
 
-    const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-    const pdfFile = formData.get('pdfFile') as File | null;
-    const imageFile = formData.get('image') as File | null;
+    const { title, description, pdfFileName, imageFileName } = await request.json();
 
-    if (!title || !pdfFile || pdfFile.type !== 'application/pdf') {
-      return NextResponse.json({ message: 'Title and valid PDF required' }, { status: 400 });
+    if (!title || !pdfFileName) {
+      return NextResponse.json({ message: 'Title and PDF file name required' }, { status: 400 });
     }
 
-    const pdfBlob = await put(`${Date.now()}-${pdfFile.name}`, pdfFile, { access: 'public' });
+    // Generate presigned URLs for client-side upload
+    const pdfBlob = await put(pdfFileName, '', { access: 'public', token: process.env.BLOB_READ_WRITE_TOKEN, addRandomSuffix: false });
     let imageUrl: string | null = null;
-    if (imageFile) {
-      const imageBlob = await put(`${Date.now()}-${imageFile.name}`, imageFile, { access: 'public' });
+    if (imageFileName) {
+      const imageBlob = await put(imageFileName, '', { access: 'public', token: process.env.BLOB_READ_WRITE_TOKEN, addRandomSuffix: false });
       imageUrl = imageBlob.url;
     }
 
@@ -49,13 +38,12 @@ export async function POST(request: Request) {
     });
 
     const populatedPDF = await PDF.findById(pdfDoc._id).populate('author', 'name');
-    return NextResponse.json({ pdf: populatedPDF }, { status: 201 });
+    return NextResponse.json({ pdf: populatedPDF, pdfUploadUrl: pdfBlob.url, imageUploadUrl: imageUrl || undefined });
   } catch (error) {
     console.error('Error creating PDF:', error);
     return NextResponse.json({ message: 'Error creating PDF' }, { status: 500 });
   }
 }
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function UploadPDF() {
   const [title, setTitle] = useState('');
@@ -9,36 +10,70 @@ export default function UploadPDF() {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    if (pdfFile) formData.append('pdfFile', pdfFile);
-    if (image) formData.append('image', image);
+    if (!title || !pdfFile) {
+      setError('Title and PDF file are required');
+      setLoading(false);
+      return;
+    }
 
     try {
+      // Step 1: Request presigned URLs from the API
       const response = await fetch('/api/pdfs', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description,
+          pdfFileName: `${Date.now()}-${pdfFile.name}`,
+          imageFileName: image ? `${Date.now()}-${image.name}` : undefined,
+        }),
       });
 
-      if (!response.ok) throw new Error('Failed to upload PDF');
-      router.push('/admin/dashboard');
+      if (!response.ok) throw new Error('Failed to create PDF entry');
+      const { pdfUploadUrl, imageUploadUrl } = await response.json();
+
+      // Step 2: Upload files directly to Vercel Blob using presigned URLs
+      await fetch(pdfUploadUrl, {
+        method: 'PUT',
+        body: pdfFile,
+      });
+
+      if (image && imageUploadUrl) {
+        await fetch(imageUploadUrl, {
+          method: 'PUT',
+          body: image,
+        });
+      }
+
+      router.push('/admin/dashboard/pdfs');
     } catch (error) {
       console.error('Error uploading PDF:', error);
+      setError('Failed to upload PDF. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCancel = () => {
+    router.back(); // Navigate to the previous page
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 font-faseyha">
-      <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-right">Upload PDF</h1>
+      <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-right">PDF އަޕްލޯޑް</h1>
+      {error && (
+        <div className="mb-4 p-4 text-red-700 bg-red-100 rounded-md text-right">
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-base sm:text-lg font-medium text-gray-700 text-right">ސުރުޙީ</label>
@@ -78,14 +113,21 @@ export default function UploadPDF() {
             className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
           />
         </div>
-        <div className="flex justify-end">
-          <button
+        <div className="flex gap-2 justify-end">
+        <Button
+          type="button" // Change to type="button" to prevent form submission
+          onClick={handleCancel}
+          className="w-full sm:w-auto px-6 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400"
+          >
+          ކެންސަލްކުރޭ
+        </Button>
+          <Button
             type="submit"
             disabled={loading}
             className="w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-400"
           >
             {loading ? 'އަޅާލަނީ...' : 'PDF އަޅާލަން'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

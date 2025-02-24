@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@clerk/nextjs';
 
 interface Author {
   _id: string;
@@ -29,14 +30,23 @@ interface Blog {
 }
 
 export default function Dashboard() {
+  const { isSignedIn, isLoaded } = useAuth();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    if (isLoaded && !isSignedIn) {
+      router.push('/admin'); // Redirect to admin home if not signed in
+    }
+  }, [isSignedIn, isLoaded, router]);
+
+  useEffect(() => {
+    if (isSignedIn) fetchBlogs();
+  }, [isSignedIn]);
+
+
 
   const fetchBlogs = async () => {
     try {
@@ -110,32 +120,24 @@ export default function Dashboard() {
     );
   }
 
-  return (
-    <div className="space-y-6 p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-xl sm:text-2xl font-semibold">ބުލޮގްތައް</h1>
-        <Link
-           href="/admin/dashboard/pdfs"
-           className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors"
-        >
-             PDF މެނޭޖްމަންޓް
-        </Link>
-        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-4 w-full sm:w-auto">
-          <Link
-            href="/admin/dashboard/categories"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors text-center"
-          >
-            ކެޓަގަރީތައް
-          </Link>
-          <Link
-            href="/admin/dashboard/create"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-center"
-          >
-            ބުލޮގެއް ހަދާ
-          </Link>
-        </div>
-      </div>
+  if (!isSignedIn) return null;
 
+  return (
+    <div className="space-y-6 p-6">
+    <div className="flex justify-between items-center">
+      <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
+      <div className="gap-2 flex flex-row">
+        <Link href="/admin/dashboard/pdfs" className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
+          PDF މެނޭޖްމަންޓް
+        </Link>
+        <Link href="/admin/dashboard/categories" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+          ކެޓަގަރީތައް
+        </Link>
+        <Link href="/admin/dashboard/create" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+          ބުލޮގެއް ހަދާ
+        </Link>
+      </div>
+    </div>
       {/* Mobile: Card layout, Desktop: Table */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
         {/* Table for medium screens and up */}
