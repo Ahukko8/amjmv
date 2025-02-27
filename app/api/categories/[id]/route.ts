@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
-import Category from "@/models/Categories";
+import Category from "@/models/Category";
 import Blog from "@/models/Blog";
 import { isValidObjectId } from "mongoose";
 

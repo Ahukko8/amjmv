@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import connectDB from "@/lib/db";
-import Blog from "@/models/Blog";
-import { isValidObjectId } from "mongoose";
-import { FilterQuery } from "mongoose";
-import { MongoDBBlog } from "@/types/mongodb";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// app/api/blogs/route.ts
+import { NextResponse } from 'next/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
+import connectDB from '@/lib/db';
+import { Blog, Category } from '@/models'; // Import both models
+import { FilterQuery, isValidObjectId } from 'mongoose';
+import { MongoDBBlog } from '@/types/mongodb';
 
 export async function GET(request: Request) {
   try {
@@ -16,33 +18,25 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '6', 10);
 
+    // Connect to database first
     await connectDB();
 
-    // Base query with proper typing
-    const query: FilterQuery<MongoDBBlog> = {};
+    // Verify models are registered
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    console.log('Available models:', Object.keys(require('mongoose').models));
 
-    // Restrict to published blogs for non-admins
+    const query: FilterQuery<MongoDBBlog> = {};
     if (!userId || user?.publicMetadata.role !== 'admin') {
       query.status = 'published';
     }
-
-    // Add search condition if search term exists
     if (search) {
-      query.title = {
-        $regex: search,
-        $options: 'i', // case-insensitive
-      };
+      query.title = { $regex: search, $options: 'i' };
     }
-
-    // Add category filter if provided
-    if (category && isValidObjectId(category)) {
+    if (category) {
       query.categories = category;
     }
 
-    // Calculate skip for pagination
     const skip = (page - 1) * limit;
-
-    // Fetch paginated blogs and total count
     const [blogs, total] = await Promise.all([
       Blog.find(query)
         .sort({ createdAt: -1 })
@@ -54,12 +48,13 @@ export async function GET(request: Request) {
     ]);
 
     return NextResponse.json({ blogs, total });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching blogs:', error);
-    return NextResponse.json(
-      { message: 'Error fetching blogs' },
-      { status: 500 }
-    );
+    return NextResponse.json({ 
+      message: 'Error fetching blogs', 
+      error: error.toString(),
+      stack: error.stack || 'No stack trace'
+    }, { status: 500 });
   }
 }
 
@@ -97,6 +92,7 @@ export async function POST(request: Request) {
       }
     }
 
+    // Connect to database
     await connectDB();
 
     const blog = await Blog.create({
@@ -114,10 +110,10 @@ export async function POST(request: Request) {
       .populate('categories', 'name slug');
 
     return NextResponse.json({ blog: populatedBlog }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating blog:', error);
     return NextResponse.json(
-      { message: 'Error creating blog' },
+      { message: 'Error creating blog', error: error.toString() },
       { status: 500 }
     );
   }

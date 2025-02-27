@@ -1,13 +1,11 @@
-// app/admin/dashboard/edit/[id]/page.tsx
-import EditBlogClient from './EditBlogClient';
+"use client";
 
-interface PageProps {
+import BlogEdit from './EditBlogClient'; // Adjust path if needed
+
+interface BlogEditProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function EditBlogPage({ params }: PageProps) {
-  // Await the params object to get the actual route parameters
-  const { id } = await params;
-
-  return <EditBlogClient id={id} />;
+export default function EditBlogPage({ params }: BlogEditProps) {
+  return <BlogEdit params={params} />;
 }

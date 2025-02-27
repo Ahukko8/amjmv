@@ -1,183 +1,112 @@
 "use client";
-//app/admin/dashboard/edit/[id]/EditBlogClient
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import BlogEditor from "@/components/BlogEditor";
-import { Blog } from "@/types/blog";
 
-interface EditBlogClientProps {
-  id: string;
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import BlogEditor from '@/components/BlogEditor';
+import React from 'react';
+
+interface BlogEditProps {
+  params: Promise<{ id: string }>;
 }
 
-export default function EditBlogClient({ id }: EditBlogClientProps) {
-  const router = useRouter();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [publishing, setPublishing] = useState(false);
+export default function BlogEdit({ params }: BlogEditProps) {
+  const [id, setId] = useState<string | null>(null);
+  const [initialData, setInitialData] = useState<{ title?: string; content?: string; categories?: string[] } | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
+  // Unwrap params safely with error handling
   useEffect(() => {
+    const unwrapParams = async () => {
+      try {
+        const resolvedParams = await params;
+        console.log('Resolved params:', resolvedParams); // Debug params
+        setId(resolvedParams.id);
+      } catch (err) {
+        console.error('Error unwrapping params:', err);
+        setError('Failed to load blog ID');
+      }
+    };
+    unwrapParams();
+  }, [params]);
+
+  // Fetch blog data once ID is available
+  useEffect(() => {
+    if (!id) return;
+
     const fetchBlog = async () => {
       try {
+        setLoading(true);
         const response = await fetch(`/api/blogs/${id}`);
-        if (!response.ok) {
-          if (response.status === 404) {
-            setError("Blog not found");
-          } else {
-            setError("Failed to fetch blog");
-          }
-          return;
-        }
+        if (!response.ok) throw new Error('Failed to fetch blog');
         const data = await response.json();
-        setBlog(data.blog);
-      } catch (error) {
-        console.error("Error fetching blog:", error);
-        setError("An error occurred while fetching the blog");
+        console.log('Fetched blog data:', data); // Debug data
+        setInitialData({
+          title: data.blog.title,
+          content: data.blog.content,
+          categories: data.blog.categories.map((cat: { _id: string }) => cat._id),
+        });
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        setError('Failed to load blog details');
+        router.push('/admin/dashboard');
       } finally {
         setLoading(false);
       }
     };
-
     fetchBlog();
-  }, [id]);
+  }, [id, router]);
 
-  const handleSubmit = async (blogData: Partial<Blog>) => {
-    if (!blog) return;
+  const handleSubmit = async (blogData: { title: string; content: string; categories: string[] }) => {
+    if (!id) return;
 
     setLoading(true);
+    setError(null);
+
     try {
       const response = await fetch(`/api/blogs/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(blogData),
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: blogData.title,
+          content: blogData.content,
+          categories: blogData.categories,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update blog");
-      }
-
-      router.push("/admin/dashboard");
-    } catch (error) {
-      console.error("Error updating blog:", error);
-      setError("Failed to update blog");
+      if (!response.ok) throw new Error('Failed to update blog');
+      console.log('Blog update successful'); // Debug success
+      router.push('/admin/dashboard');
+    } catch (err) {
+      console.error('Error updating blog:', err);
+      setError('Failed to update blog post. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-
-  const handlePublishToggle = async () => {
-    if (!blog) return;
-
-    setPublishing(true);
-    try {
-      const newStatus = blog.status === "published" ? "draft" : "published";
-      const response = await fetch(`/api/blogs/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to toggle publish status");
-      }
-
-      setBlog((prev) => (prev ? { ...prev, status: newStatus } : null));
-    } catch (error) {
-      console.error("Error toggling publish status:", error);
-      setError("Failed to toggle publish status");
-    } finally {
-      setPublishing(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!blog) return;
-  
-    if (!window.confirm('މި ބުލޮގު ޑިޅީޓުކުރަންވީ؟')) {
-      return;
-    }
-  
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/blogs/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to delete blog");
-      }
-  
-      router.push("/admin/dashboard");
-    } catch (error) {
-      console.error("Error deleting blog:", error);
-      setError("Failed to delete blog");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500 text-lg">{error}</p>
+      <div className="text-center py-12 font-faseyha text-red-500">
+        {error}
       </div>
     );
   }
 
-  if (!blog) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-gray-700 text-lg">އަންހަ..ބުލޮގު ނުފެނުން</p>
-      </div>
-    );
+  if (!id || !initialData) {
+    return <div className="text-center py-12 font-faseyha">ލޯޑިން...</div>;
   }
 
   return (
-    <>
-    <div className="flex justify-between items-center mb-6">
-  <h1 className="text-2xl font-semibold">Edit Blog</h1>
-  <div className="flex gap-4"> {/* Added this wrapper div */}
-    <button
-      onClick={handleDelete}
-      disabled={loading}
-      className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white"
-    >
-      {loading ? "Deleting..." : "Delete"}
-    </button>
-    <button
-      onClick={handlePublishToggle}
-      disabled={publishing}
-      className={`px-4 py-2 rounded ${
-        blog.status === "published"
-          ? "bg-yellow-500 hover:bg-yellow-600"
-          : "bg-green-500 hover:bg-green-600"
-      } text-white`}
-    >
-      {publishing
-        ? "Processing..."
-        : blog.status === "published"
-        ? "Unpublish"
-        : "Publish"}
-    </button>
-  </div>
-</div>
-      <BlogEditor initialData={blog} onSubmit={handleSubmit} loading={loading} />
-    </>
-    
+    <div className="max-w-4xl mx-auto py-6 font-faseyha">
+      <h1 className="text-2xl font-semibold mb-6 text-right">Edit Blog</h1>
+      {error && (
+        <div className="mb-4 p-4 text-red-700 bg-red-100 rounded-md text-right">
+          {error}
+        </div>
+      )}
+      <BlogEditor initialData={initialData} onSubmit={handleSubmit} loading={loading} />
+    </div>
   );
 }
