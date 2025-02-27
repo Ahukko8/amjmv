@@ -24,46 +24,37 @@ export default function UploadPDF() {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('title', title);
+    if (description) formData.append('description', description);
+    formData.append('pdfFile', pdfFile);
+    if (image) formData.append('image', image);
+
     try {
-      // Step 1: Request presigned URLs from the API
+      console.log('Sending form data to /api/pdfs');
       const response = await fetch('/api/pdfs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          description,
-          pdfFileName: `${Date.now()}-${pdfFile.name}`,
-          imageFileName: image ? `${Date.now()}-${image.name}` : undefined,
-        }),
+        body: formData, // Directly send FormData
       });
 
-      if (!response.ok) throw new Error('Failed to create PDF entry');
-      const { pdfUploadUrl, imageUploadUrl } = await response.json();
-
-      // Step 2: Upload files directly to Vercel Blob using presigned URLs
-      await fetch(pdfUploadUrl, {
-        method: 'PUT',
-        body: pdfFile,
-      });
-
-      if (image && imageUploadUrl) {
-        await fetch(imageUploadUrl, {
-          method: 'PUT',
-          body: image,
-        });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload PDF');
       }
 
+      console.log('PDF upload successful');
       router.push('/admin/dashboard/pdfs');
-    } catch (error) {
-      console.error('Error uploading PDF:', error);
-      setError('Failed to upload PDF. Please try again.');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Error uploading PDF:', errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   const handleCancel = () => {
-    router.back(); // Navigate to the previous page
+    router.back();
   };
 
   return (
@@ -114,13 +105,13 @@ export default function UploadPDF() {
           />
         </div>
         <div className="flex gap-2 justify-end">
-        <Button
-          type="button" // Change to type="button" to prevent form submission
-          onClick={handleCancel}
-          className="w-full sm:w-auto px-6 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400"
+          <Button
+            type="button"
+            onClick={handleCancel}
+            className="w-full sm:w-auto px-6 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400"
           >
-          ކެންސަލްކުރޭ
-        </Button>
+            ކެންސަލްކުރޭ
+          </Button>
           <Button
             type="submit"
             disabled={loading}

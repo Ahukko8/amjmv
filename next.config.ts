@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'pwnuhep2fivctf79.public.blob.vercel-storage.com', // Your Vercel Blob Store domain
+        hostname: 'amjpdf1.blr1.digitaloceanspaces.com', 
         pathname: '/**', // Allow all paths under this hostname
       },
     ],
