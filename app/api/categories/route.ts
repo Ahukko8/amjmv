@@ -1,4 +1,4 @@
-// app/api/categories/route.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
@@ -31,31 +31,57 @@ export async function POST(request: Request) {
     }
 
     const { name } = await request.json();
-    if (!name) {
+    if (!name || typeof name !== 'string' || name.trim() === '') {
       return NextResponse.json(
-        { message: "Name is required" },
+        { message: "Category name is required and must be a non-empty string" },
         { status: 400 }
       );
     }
 
-    // Generate slug from name
-    const slug = name
+    const trimmedName = name.trim();
+    await connectDB();
+
+    // Check for existing category with the same name
+    const existingCategory = await Category.findOne({ name: trimmedName });
+    if (existingCategory) {
+      return NextResponse.json(
+        { message: "A category with this name already exists" },
+        { status: 400 }
+      );
+    }
+
+    // Generate slug as a fallback in case pre('save') fails
+    let slug = trimmedName
       .toLowerCase()
-      .replace(/[^a-z0-9\u0780-\u07BF]/g, '-') // Added Thaana unicode range
+      .replace(/[^a-z0-9\u0780-\u07BF]/g, '-') // Support Thaana characters
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
+    if (!slug) {
+      slug = `category-${Date.now()}`; // Ensure slug is never empty
+    }
 
-    await connectDB();
     const category = await Category.create({ 
-      name,
-      slug 
+      name: trimmedName,
+      slug // Explicitly pass slug as a fallback
     });
     
     return NextResponse.json({ category }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating category:', error);
+    if (error.code === 11000) {
+      return NextResponse.json(
+        { message: "A category with this name or slug already exists" },
+        { status: 400 }
+      );
+    }
+    if (error.name === 'ValidationError') {
+      return NextResponse.json(
+        { message: "Category validation failed", errors: error.errors },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { message: "Error creating category" },
+      { message: "Error creating category", error: error.toString() },
       { status: 500 }
     );
   }

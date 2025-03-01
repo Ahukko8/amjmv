@@ -9,14 +9,25 @@ const categorySchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-// Create slug from name before saving
+// Create slug from name before saving, supporting Thaana script
 categorySchema.pre('save', function(next) {
+  if (!this.isModified('name') && this.slug) {
+    return next(); // Skip if name unchanged and slug exists
+  }
+
   if (this.name) {
-    this.slug = this.name
+    let slug = this.name
       .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-')
+      .replace(/[^a-z0-9\u0780-\u07BF]/g, '-') // Include Thaana unicode range
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
+
+    // Prevent empty slugs
+    if (!slug) {
+      slug = `category-${Date.now()}`; // Fallback to ensure uniqueness
+    }
+
+    this.slug = slug;
   }
   next();
 });
@@ -33,3 +44,5 @@ const blogSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
+export { categorySchema, blogSchema };

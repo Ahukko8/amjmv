@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -27,7 +28,7 @@ export default function CategoriesPage() {
       setCategories(data.categories);
     } catch (error) {
       console.error('Error:', error);
-      setError('Failed to load categories');
+      setError('ކެޓަގަރީތައް ލޯޑެއް ނުވި');
     } finally {
       setLoading(false);
     }
@@ -35,7 +36,10 @@ export default function CategoriesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCategory.trim()) return;
+    if (!newCategory.trim()) {
+      setError('ކެޓަގަރީގެ ނަން އެންގިފައި ނެތީ');
+      return;
+    }
 
     try {
       const response = await fetch('/api/categories', {
@@ -43,17 +47,23 @@ export default function CategoriesPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: newCategory }),
+        body: JSON.stringify({ name: newCategory.trim() }),
       });
 
-      if (!response.ok) throw new Error('Failed to create category');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create category');
+      }
 
       const data = await response.json();
       setCategories([...categories, data.category]);
       setNewCategory('');
-    } catch (error) {
+      setError(null);
+    } catch (error: any) {
       console.error('Error:', error);
-      setError('Failed to create category');
+      setError(error.message === 'E11000 duplicate key error' ? 
+        'މި ނަމާއި އެއްފަދަ ކެޓަގަރީއެއް އެބައިނެވެ' : 
+        'ކެޓަގަރީ އިތުރުކުރުން ފައިލްވެއްޖެ');
     }
   };
 
@@ -68,9 +78,10 @@ export default function CategoriesPage() {
       if (!response.ok) throw new Error('Failed to delete category');
 
       setCategories(categories.filter(cat => cat._id !== categoryId));
+      setError(null);
     } catch (error) {
       console.error('Error:', error);
-      setError('Failed to delete category');
+      setError('ކެޓަގަރީ ޑިލީޓް ނުކުރެވުން');
     }
   };
 
@@ -83,9 +94,9 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto font-faseyha">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">ކެޓަގަރީތައް</h1>
+        <h1 className="text-2xl font-semibold text-right">ކެޓަގަރީތައް</h1>
         <Link
           href="/admin/dashboard"
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
@@ -101,7 +112,7 @@ export default function CategoriesPage() {
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="އާ ކެޓަގަރީގެ ނަން"
-            className="flex-1 px-4 py-2 border rounded-md"
+            className="flex-1 px-4 py-2 border rounded-md text-right"
           />
           <button
             type="submit"
@@ -113,7 +124,7 @@ export default function CategoriesPage() {
       </form>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-right">
           {error}
         </div>
       )}
@@ -125,7 +136,7 @@ export default function CategoriesPage() {
               key={category._id}
               className="flex justify-between items-center p-4 hover:bg-gray-50"
             >
-              <span className="text-lg">{category.name}</span>
+              <span className="text-lg text-right">{category.name}</span>
               <button
                 onClick={() => handleDelete(category._id)}
                 className="text-red-600 hover:text-red-800 px-3 py-1 rounded-md"
@@ -138,7 +149,7 @@ export default function CategoriesPage() {
       </div>
 
       {categories.length === 0 && (
-        <p className="text-center text-gray-500 mt-4">
+        <p className="text-center text-gray-500 mt-4 ">
           އަދި ކެޓަގަރީއެއް ނެތް
         </p>
       )}

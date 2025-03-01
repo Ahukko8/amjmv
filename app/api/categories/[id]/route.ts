@@ -1,4 +1,3 @@
-// app/api/categories/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
@@ -11,7 +10,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Await the params
     const { id } = await params;
 
     const { userId } = await auth();
@@ -33,13 +31,12 @@ export async function DELETE(
 
     await connectDB();
 
-    // First, remove this category from all blogs that reference it
+    // Remove this category from all blogs that reference it
     await Blog.updateMany(
       { categories: id },
       { $pull: { categories: id } }
     );
 
-    // Then delete the category
     const deletedCategory = await Category.findByIdAndDelete(id);
 
     if (!deletedCategory) {
