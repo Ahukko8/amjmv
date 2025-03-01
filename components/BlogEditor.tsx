@@ -8,12 +8,14 @@ import 'tailwindcss/tailwind.css';
 import { yourFont } from '@/app/fonts';
 import { Category } from '@/types/category';
 import { Button } from './ui/button';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface BlogData {
   title: string;
   content: string;
   categories: string[];
+  image?: string | File | null; // Changed from undefined to null
 }
 
 interface BlogEditorProps {
@@ -21,6 +23,7 @@ interface BlogEditorProps {
     title?: string;
     content?: string;
     categories?: string[];
+    image?: string;
   };
   onSubmit: (data: BlogData) => void;
   loading?: boolean;
@@ -30,8 +33,10 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
   const [title, setTitle] = useState(initialData?.title || '');
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>(initialData?.categories?.[0] || '');
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   const editor = useEditor({
     extensions: [
@@ -67,6 +72,16 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
     fetchCategories();
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editor) return;
@@ -75,17 +90,18 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
       title,
       content: editor.getHTML(),
       categories: selectedCategory ? [selectedCategory] : [],
+      image: image || imagePreview,
     };
     
     onSubmit(blogData);
   };
 
   const handleCancel = () => {
-    router.back(); // Navigate to the previous page
+    router.back();
   };
 
   if (!editor) {
-    return null; // Or a loading spinner if preferred
+    return null;
   }
 
   return (
@@ -122,6 +138,32 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
       </div>
 
       <div>
+        <label className="block text-base sm:text-lg font-medium text-gray-700">ފޮޓޯ</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="mt-1 block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-md file:border-0
+            file:text-sm file:font-semibold
+            file:bg-indigo-50 file:text-indigo-700
+            hover:file:bg-indigo-100"
+        />
+        {imagePreview && (
+          <div className="mt-2">
+            <Image 
+              src={imagePreview} 
+              alt="Preview" 
+              className="max-w-xs rounded-md"
+              width={50}
+              height={50}
+            />
+          </div>
+        )}
+      </div>
+
+      <div>
         <label className="block text-sm sm:text-base font-medium text-gray-700">މައިގަނޑު</label>
         <div className="mt-1 border rounded-md shadow-sm">
           <EditorContent 
@@ -132,21 +174,20 @@ export default function BlogEditor({ initialData, onSubmit, loading }: BlogEdito
       </div>
 
       <div className="flex gap-2 justify-end">
-      <Button
-          type="button" // Change to type="button" to prevent form submission
+        <Button
+          type="button"
           onClick={handleCancel}
           className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm sm:text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-red-400"
         >
           ކެންސަލްކުރޭ
         </Button>
-      <Button
+        <Button
           type="submit"
           disabled={loading}
           className="w-full sm:w-auto inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm sm:text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400"
         >
           {loading ? 'ސޭވްކުަރަނީ...' : 'ސޭވްކުރޭ'}
         </Button>
-       
       </div>
     </form>
   );

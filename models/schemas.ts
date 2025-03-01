@@ -27,6 +27,7 @@ const blogSchema = new Schema({
   fontFamily: { type: String, default: 'default' },
   fontSize: { type: String, default: 'medium', enum: ['small', 'medium', 'large'] },
   author: { type: String, required: true },
+  image: { type: String },
   status: { type: String, default: 'draft', enum: ['draft', 'published'] },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   createdAt: { type: Date, default: Date.now },

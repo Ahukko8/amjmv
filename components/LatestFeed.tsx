@@ -96,20 +96,27 @@ const LatestFeed = () => {
               {latestBlogs.map((blog) => (
                 <motion.div key={blog._id} variants={fadeInUp}>
                   <Link href={`/blog/${blog._id}`} className="block group">
-                    <article className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full">
-                      <div className="p-5 flex flex-col h-full">
-                        <h3 className="text-base sm:text-lg font-semibold text-right text-emerald-900 line-clamp-2 font-faseyha">
+                    <article 
+                      className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
+                      style={{
+                        backgroundImage: blog.image ? `url(${blog.image})` : 'none',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    >
+                      <div className="p-5 flex flex-col h-full bg-black/40"> {/* Overlay for readability */}
+                        <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha">
                           {blog.title}
                         </h3>
-                        <div className="text-emerald-600 text-xs sm:text-sm text-right mt-2">
+                        <div className="text-emerald-200 text-xs sm:text-sm text-right mt-2">
                           {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
                         </div>
                         <div
-                          className="mt-3 text-right text-emerald-700 line-clamp-2 text-sm sm:text-base font-faseyha"
+                          className="mt-3 text-right text-emerald-100 line-clamp-2 text-sm sm:text-base font-faseyha"
                           dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 100) + '...' }}
                         />
                         <div className="mt-auto text-right">
-                          <span className="text-emerald-500 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span className="text-emerald-400 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             ފުރިހަމަ ކިޔާ
                           </span>
                         </div>
@@ -129,11 +136,11 @@ const LatestFeed = () => {
             className="mt-10 sm:mt-14 text-center"
           >
             <Link
-            href="/about"
-            className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
-          >
-            އިތުރު ދައްކާ
-          </Link>
+              href="/blog"
+              className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
+            >
+              އިތުރު ދައްކާ
+            </Link>
           </motion.div>
         </div>
       </section>

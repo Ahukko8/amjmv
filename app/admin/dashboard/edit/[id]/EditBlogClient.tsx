@@ -3,7 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BlogEditor from '@/components/BlogEditor';
-import React from 'react';
+
+interface BlogData {
+  title: string;
+  content: string;
+  categories: string[];
+  image?: File | string | null;
+}
 
 interface BlogEditProps {
   params: Promise<{ id: string }>;
@@ -11,7 +17,12 @@ interface BlogEditProps {
 
 export default function BlogEdit({ params }: BlogEditProps) {
   const [id, setId] = useState<string | null>(null);
-  const [initialData, setInitialData] = useState<{ title?: string; content?: string; categories?: string[] } | null>(null);
+  const [initialData, setInitialData] = useState<{ 
+    title?: string; 
+    content?: string; 
+    categories?: string[];
+    image?: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -21,7 +32,7 @@ export default function BlogEdit({ params }: BlogEditProps) {
     const unwrapParams = async () => {
       try {
         const resolvedParams = await params;
-        console.log('Resolved params:', resolvedParams); // Debug params
+        console.log('Resolved params:', resolvedParams);
         setId(resolvedParams.id);
       } catch (err) {
         console.error('Error unwrapping params:', err);
@@ -41,11 +52,12 @@ export default function BlogEdit({ params }: BlogEditProps) {
         const response = await fetch(`/api/blogs/${id}`);
         if (!response.ok) throw new Error('Failed to fetch blog');
         const data = await response.json();
-        console.log('Fetched blog data:', data); // Debug data
+        console.log('Fetched blog data:', data);
         setInitialData({
           title: data.blog.title,
           content: data.blog.content,
           categories: data.blog.categories.map((cat: { _id: string }) => cat._id),
+          image: data.blog.image, // Include existing image URL
         });
       } catch (err) {
         console.error('Error fetching blog:', err);
@@ -58,25 +70,31 @@ export default function BlogEdit({ params }: BlogEditProps) {
     fetchBlog();
   }, [id, router]);
 
-  const handleSubmit = async (blogData: { title: string; content: string; categories: string[] }) => {
+  const handleSubmit = async (blogData: BlogData) => {
     if (!id) return;
 
     setLoading(true);
     setError(null);
 
     try {
+      const formData = new FormData();
+      formData.append('title', blogData.title);
+      formData.append('content', blogData.content);
+      formData.append('categories', JSON.stringify(blogData.categories));
+      if (blogData.image instanceof File) {
+        formData.append('image', blogData.image);
+      }
+
       const response = await fetch(`/api/blogs/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: blogData.title,
-          content: blogData.content,
-          categories: blogData.categories,
-        }),
+        body: formData, // Use FormData instead of JSON
       });
 
-      if (!response.ok) throw new Error('Failed to update blog');
-      console.log('Blog update successful'); // Debug success
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update blog');
+      }
+      console.log('Blog update successful');
       router.push('/admin/dashboard');
     } catch (err) {
       console.error('Error updating blog:', err);

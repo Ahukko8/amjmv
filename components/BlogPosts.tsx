@@ -1,4 +1,3 @@
-// components/BlogPosts.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -56,7 +55,7 @@ export default function BlogPosts({ initialBlogs }: BlogPostsProps) {
     <section className="py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {blogs.length > 0 ? (
-          <BlogList />
+          <BlogList /> // This now uses BlogCard internally
         ) : (
           <div className="text-center text-emerald-600 py-10 sm:py-12 font-faseyha text-base sm:text-lg">
             ލިޔުމެއް ނުފެނުނު

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Link from 'next/link';
@@ -36,7 +37,7 @@ export default function BlogList() {
 
   const handleCategorySelect = (categoryId: string | null) => {
     setSelectedCategory(categoryId);
-    setCurrentPage(1); // Reset to first page when category changes
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
@@ -63,7 +64,6 @@ export default function BlogList() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
-      {/* Categories Sidebar */}
       <div className="lg:w-64 shrink-0">
         <div className="lg:sticky lg:top-6">
           <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-right text-emerald-900 font-faseyha">
@@ -86,7 +86,6 @@ export default function BlogList() {
         </div>
       </div>
 
-      {/* Blog Grid */}
       <div className="flex-1">
         {isLoading ? (
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -102,38 +101,30 @@ export default function BlogList() {
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {blogs.map((blog) => (
               <Link key={blog._id} href={`/blog/${blog._id}`} className="block group">
-                <article className="relative h-56 sm:h-64 bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1 border border-emerald-100">
-                  <div className="p-4 sm:p-5 flex flex-col h-full">
-                    <h2 className="text-base sm:text-lg font-semibold mb-2 text-right text-emerald-900 line-clamp-2 font-faseyha">
+                <article 
+                  className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
+                  style={{
+                    backgroundImage: blog.image ? `url(${blog.image})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <div className="p-5 flex flex-col h-full bg-black/40">
+                    <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha">
                       {blog.title}
-                    </h2>
-                    <div className="text-emerald-600 text-xs text-right mb-2">
+                    </h3>
+                    <div className="text-emerald-200 text-xs sm:text-sm text-right mt-2">
                       {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
                     </div>
-                    {blog.categories && blog.categories.length > 0 && (
-                      <div className="flex flex-wrap gap-2 justify-end mb-2">
-                        {blog.categories.map((category: Category) => (
-                          <span
-                            key={category._id}
-                            className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs"
-                          >
-                            {category.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                     <div
-                      className="mt-auto text-right text-emerald-600 line-clamp-2 text-sm sm:text-base font-faseyha"
-                      style={{
-                        fontSize:
-                          blog.fontSize === 'small'
-                            ? '0.875rem'
-                            : blog.fontSize === 'large'
-                            ? '1.125rem'
-                            : '1rem',
-                      }}
+                      className="mt-3 text-right text-emerald-100 line-clamp-2 text-sm sm:text-base font-faseyha"
                       dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 100) + '...' }}
                     />
+                    <div className="mt-auto text-right">
+                      <span className="text-emerald-400 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        ފުރިހަމަ ކިޔާ
+                      </span>
+                    </div>
                   </div>
                 </article>
               </Link>
@@ -141,7 +132,6 @@ export default function BlogList() {
           </div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-6 sm:mt-8 flex justify-center">
             <PaginationComponent>

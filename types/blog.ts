@@ -17,4 +17,5 @@ export interface Blog {
   featured: boolean;
   createdAt: string;
   updatedAt: string;
+  image?: string;
 }

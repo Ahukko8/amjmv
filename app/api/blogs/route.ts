@@ -1,12 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/api/blogs/route.ts
 import { NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import connectDB from '@/lib/db';
-import { Blog, Category } from '@/models'; // Import both models
+import { Blog, Category } from '@/models';
 import { FilterQuery, isValidObjectId } from 'mongoose';
-import { MongoDBBlog } from '@/types/mongodb';
+
+// Spaces configuration
+const ENDPOINT = process.env.DO_SPACES_ENDPOINT || 'blr1.digitaloceanspaces.com';
+const REGION = ENDPOINT.split('.')[0];
+const s3Client = new S3Client({
+  region: REGION,
+  endpoint: `https://${ENDPOINT}`,
+  credentials: {
+    accessKeyId: process.env.DO_SPACES_KEY!,
+    secretAccessKey: process.env.DO_SPACES_SECRET!,
+  },
+});
 
 export async function GET(request: Request) {
   try {
@@ -18,14 +29,9 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '6', 10);
 
-    // Connect to database first
     await connectDB();
 
-    // Verify models are registered
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    console.log('Available models:', Object.keys(require('mongoose').models));
-
-    const query: FilterQuery<MongoDBBlog> = {};
+    const query: FilterQuery<any> = {};
     if (!userId || user?.publicMetadata.role !== 'admin') {
       query.status = 'published';
     }
@@ -64,14 +70,22 @@ export async function POST(request: Request) {
     const user = await currentUser();
 
     if (!userId || !user) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
-    const { title, content, fontFamily, fontSize, categories } = body;
+    if (!process.env.DO_SPACES_KEY || !process.env.DO_SPACES_SECRET || !process.env.DO_SPACES_BUCKET) {
+      throw new Error('Spaces credentials or bucket not configured');
+    }
+
+    await connectDB();
+
+    const formData = await request.formData();
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const fontFamily = formData.get('fontFamily') as string | null;
+    const fontSize = formData.get('fontSize') as string | null;
+    const categories = formData.get('categories') as string;
+    const imageFile = formData.get('image') as File | null;
 
     if (!title || !content) {
       return NextResponse.json(
@@ -80,20 +94,21 @@ export async function POST(request: Request) {
       );
     }
 
-    if (categories && Array.isArray(categories)) {
-      const invalidCategories = categories.some(
-        (categoryId) => !isValidObjectId(categoryId)
+    let imageUrl: string | null = null;
+    if (imageFile) {
+      const imageFileName = `${Date.now()}-${imageFile.name}`;
+      const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+      await s3Client.send(
+        new PutObjectCommand({
+          Bucket: process.env.DO_SPACES_BUCKET,
+          Key: `blog-images/${imageFileName}`,
+          Body: imageBuffer,
+          ACL: 'public-read',
+          ContentType: imageFile.type,
+        })
       );
-      if (invalidCategories) {
-        return NextResponse.json(
-          { message: 'Invalid category ID format' },
-          { status: 400 }
-        );
-      }
+      imageUrl = `https://${process.env.DO_SPACES_BUCKET}.${ENDPOINT}/blog-images/${imageFileName}`;
     }
-
-    // Connect to database
-    await connectDB();
 
     const blog = await Blog.create({
       title,
@@ -102,7 +117,8 @@ export async function POST(request: Request) {
       fontSize: fontSize || 'medium',
       author: userId,
       status: 'draft',
-      categories: categories || [],
+      categories: categories ? JSON.parse(categories) : [],
+      image: imageUrl,
     });
 
     const populatedBlog = await Blog.findById(blog._id)

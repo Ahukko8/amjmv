@@ -8,6 +8,7 @@ interface BlogData {
   title: string;
   content: string;
   categories: string[];
+  image?: File | string | null;
 }
 
 export default function CreateBlog() {
@@ -20,20 +21,22 @@ export default function CreateBlog() {
     setError(null);
     
     try {
+      const formData = new FormData();
+      formData.append('title', blogData.title);
+      formData.append('content', blogData.content);
+      formData.append('categories', JSON.stringify(blogData.categories));
+      if (blogData.image instanceof File) {
+        formData.append('image', blogData.image);
+      }
+
       const response = await fetch('/api/blogs', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: blogData.title,
-          content: blogData.content,
-          categories: blogData.categories
-        }),
+        body: formData, // Send as FormData instead of JSON
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create blog');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create blog');
       }
 
       router.push('/admin/dashboard');
