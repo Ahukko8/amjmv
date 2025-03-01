@@ -3,58 +3,99 @@ import Link from 'next/link';
 
 const Footer = () => {
   const footerLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '#' },
+    { name: 'ހޯމް', href: '/' },
+    { name: 'ޝެއިޚުގެ ތަޢާރރަފ', href: '/about' },
+    { name: 'ލިޔުންތައް', href: '/blog' },
+    { name: 'ޕީ.ޑީ.އެފް', href: '/pdfs' },
   ];
 
   return (
-    <footer className="bg-gray-900 text-gray-300 py-10 sm:py-12 mt-16">
+    <footer className="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 text-emerald-100 py-12 sm:py-16 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* Brand */}
-          <div>
-            <h3 className="text-lg sm:text-xl font-bold text-white font-faseyha">
-              ދިވެހި ބުލޮގް
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <svg 
+                className="w-8 h-8 text-emerald-300"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                />
+              </svg>
+              <Link 
+              href="/"
+            >
+              <h3 className="text-xl sm:text-2xl font-bold font-faseyha text-white">
+            أَحْمَد مُوسَى جِبْرِيل            
             </h3>
-            <p className="mt-2 text-sm sm:text-base">
-              Sharing stories and insights from the Maldives.
+              </Link>
+            </div>
+            <p className="text-emerald-200 text-sm sm:text-base leading-relaxed">
+              ޝެއިޚް އަޙްމަދު މޫސާ ޖިބްރީލްގެ ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެިވފައިވާ ލިޔުންތައް.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="text-base sm:text-lg font-semibold text-white">Links</h4>
-            <ul className="mt-2 space-y-2">
+            <h4 className="text-lg font-semibold text-white">ލިންކްސް</h4>
+            <ul className="mt-4 space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm sm:text-base transition-colors duration-200">
+                  <Link 
+                    href={link.href} 
+                    className="text-emerald-200 hover:text-white text-base transition-all duration-300 relative group"
+                  >
                     {link.name}
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Social or Extra */}
+          {/* Social */}
           <div>
-            <h4 className="text-base sm:text-lg font-semibold text-white">Follow Us</h4>
-            <div className="mt-2 flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 5.5 4.46 9.96 9.96 9.96s9.96-4.46 9.96-9.96c0-5.5-4.46-9.96-9.96-9.96zm0 1.5c4.67 0 8.46 3.79 8.46 8.46s-3.79 8.46-8.46 8.46-8.46-3.79-8.46-8.46 3.79-8.46 8.46-8.46zm-1.5 3.5v3.5h-2v1.5h2v3.5h1.5v-3.5h2v-1.5h-2v-3.5h-1.5z" />
-                </svg>
+            <h4 className="text-lg font-semibold text-white">ސޯޝަލް މީޑިޔާ</h4>
+            <div className="mt-4 flex space-x-6">
+              <a 
+                href="https://t.me/ShaykhAMJmv" 
+                className="text-emerald-200 hover:text-white transform hover:scale-110 transition-all duration-200"
+                aria-label="Telegram"
+              >
+              <svg
+                className="w-6 h-6 sm:w-7 sm:h-7"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+             >
+              <path d="M21.5 2.5L2 10.5l6.5 2.5 2 6.5 3.5-4 5 3 2.5-15.5zM9 12l9-6-7 7-2 5.5-1-6z" />
+             </svg>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 2.87 8.14 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.8.61-3.4-1.35-3.4-1.35-.46-1.17-1.12-1.48-1.12-1.48-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.56 9.56 0 012.5-.34c.85 0 1.71.11 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A9.97 9.97 0 0022.96 12c0-5.5-4.46-9.96-9.96-9.96z" />
+              <a 
+                href="#" 
+                className="text-emerald-200 hover:text-white transform hover:scale-110 transition-all duration-200"
+                aria-label="Facebook"
+              >
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9.73 14.5v7.24h3.02v-7.24h2.03l.3-2.5h-2.33v-1.6c0-.72.2-1.22 1.23-1.22h1.32V6.5h-1.83c-2 0-2.74 1.22-2.74 2.5v1.5H8.42v2.5h2.31zM22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.98 3.64 9.11 8.42 9.87v-6.97H8.42v-2.5h2V9.5c0-2 1.22-3.5 3-3.5h2.5v2.5h-1.5c-.83 0-1 .5-1 1v2h2.5l-.5 2.5h-2v6.97C18.36 21.11 22 16.98 22 12z" />
                 </svg>
               </a>
             </div>
           </div>
         </div>
-        <div className="mt-8 text-center text-sm sm:text-base">
-          <p>© {new Date().getFullYear()} Dhivehi Blog. All Rights Reserved.</p>
+
+        {/* Copyright */}
+        <div className="mt-12 pt-8 border-t border-emerald-700/50 text-center">
+          <p className="text-emerald-200 text-sm sm:text-base">
+            © {new Date().getFullYear()} ދިވެހި ބުލޮގް. ހަމަ ހައްގު ރައްކާތެރި.
+          </p>
         </div>
       </div>
     </footer>

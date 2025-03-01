@@ -37,13 +37,13 @@ export default function BlogPosts({ initialBlogs }: BlogPostsProps) {
 
   if (loading) {
     return (
-      <section className="py-16">
+      <section className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse">
-            <div className="h-8 bg-gradient-to-b from-indigo-100 to-white rounded w-1/4 mb-12 ml-auto" />
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="h-8 bg-emerald-100 rounded-xl w-1/3 sm:w-1/4 mb-8 sm:mb-12 ml-auto" />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-64 bg-gray-200 rounded-xl" />
+                <div key={i} className="h-64 bg-emerald-50 rounded-xl shadow-sm" />
               ))}
             </div>
           </div>
@@ -53,15 +53,12 @@ export default function BlogPosts({ initialBlogs }: BlogPostsProps) {
   }
 
   return (
-    <section className="py-16">
+    <section className="py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-12 text-right font-faseyha">
-          {initialBlogs ? 'ހޯދުނު ނަތީޖާ' : 'އެންމެ ފަހުގެ ލިޔުންތައް'}
-        </h2>
         {blogs.length > 0 ? (
           <BlogList />
         ) : (
-          <div className="text-center text-gray-500 py-12 font-faseyha">
+          <div className="text-center text-emerald-600 py-10 sm:py-12 font-faseyha text-base sm:text-lg">
             ލިޔުމެއް ނުފެނުނު
           </div>
         )}

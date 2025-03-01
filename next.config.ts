@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'amjpdf1.blr1.digitaloceanspaces.com', 
         pathname: '/**', // Allow all paths under this hostname
-      },
+      }
     ],
   },
 };

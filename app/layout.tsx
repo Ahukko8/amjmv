@@ -2,7 +2,7 @@
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css'
-import { yourFont } from './fonts';
+import {  yourFont } from './fonts';
 
 export default function RootLayout({
   children,

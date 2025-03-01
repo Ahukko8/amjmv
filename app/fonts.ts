@@ -15,3 +15,13 @@ export const yourFont = localFont({
   ],
   variable: '--font-custom' // This creates a CSS variable
 })
+
+
+export const arabicFont = localFont({
+  src: [
+    {
+      path: '../public/fonts/arabic.ttf',
+    }
+  ],
+  variable: '--font-arabicAmj'
+})

@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PDFViewer from '@/components/PDFViewer';
 import React from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 interface PDFPageProps {
   params: Promise<{ id: string }>;
@@ -33,16 +35,25 @@ export default function PDFReader({ params }: PDFPageProps) {
   if (!pdf) return <div className="text-center py-12 font-faseyha">ލޯޑިން...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 font-faseyha">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-right">
-          {pdf.title}
-        </h1>
-        <PDFViewer
-          pdfUrl={pdf.pdfFile}
-          filename={`${pdf.title}.pdf`}
-        />
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <Header />
+
+      {/* Main Content */}
+      <div className="flex-grow bg-gray-100 py-6 sm:py-8 font-faseyha">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
+            {pdf.title}
+          </h1>
+          <PDFViewer
+            pdfUrl={pdf.pdfFile}
+            filename={`${pdf.title}.pdf`}
+          />
+        </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

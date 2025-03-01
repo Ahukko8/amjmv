@@ -16,7 +16,10 @@ const config: Config = {
   			],
   			faseyha: [
   				'var(--font-custom)'
-  			]
+  			],
+			arabicAmj: [
+				'var(--font-arabicAmj)'
+			]
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

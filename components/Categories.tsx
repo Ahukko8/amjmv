@@ -37,9 +37,9 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-3">
+      <div className="animate-pulse space-y-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-10 bg-gray-200 rounded-xl shadow-sm" />
+          <div key={i} className="h-12 bg-emerald-100/50 rounded-xl shadow-sm" />
         ))}
       </div>
     );
@@ -50,11 +50,11 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
       <select
         value={selectedCategory || ''}
         onChange={(e) => onSelectCategory(e.target.value || null)}
-        className="w-full p-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-faseyha text-right"
+        className="w-full p-3 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-faseyha text-right shadow-sm transition-all duration-200"
       >
-        <option value="">އެންމެހާ ލިޔުންތައް</option>
+        <option value="" className="bg-white">އެންމެހާ ލިޔުންތައް</option>
         {categories.map((category) => (
-          <option key={category._id} value={category._id}>
+          <option key={category._id} value={category._id} className="bg-white">
             {category.name}
           </option>
         ))}
@@ -63,13 +63,13 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <button
         onClick={() => onSelectCategory(null)}
-        className={`w-full text-right px-4 py-2 rounded-xl text-sm sm:text-base font-medium font-faseyha transition-all duration-200 ${
+        className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
           !selectedCategory
-            ? 'bg-indigo-100 text-indigo-700 shadow-sm'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600'
+            ? 'bg-emerald-100 text-emerald-800 shadow-md border border-emerald-200'
+            : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 hover:shadow-md'
         }`}
       >
         އެންމެހާ ލިޔުންތައް
@@ -78,10 +78,10 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
         <button
           key={category._id}
           onClick={() => onSelectCategory(category._id)}
-          className={`w-full text-right px-4 py-2 rounded-xl text-sm sm:text-base font-medium font-faseyha transition-all duration-200 ${
+          className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
             selectedCategory === category._id
-              ? 'bg-indigo-100 text-indigo-700 shadow-sm'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600'
+              ? 'bg-emerald-100 text-emerald-800 shadow-md border border-emerald-200'
+              : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 hover:shadow-md'
           }`}
         >
           {category.name}
