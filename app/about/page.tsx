@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-// import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -152,33 +151,6 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Footer Call-to-Action
-      <section className="py-12 sm:py-16 bg-emerald-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-2xl sm:text-3xl font-semibold">
-              ތިމާގެ ތަޢާރަފް އަދި ޢިލްމު
-            </h2>
-            <p className="mt-4 text-base sm:text-lg max-w-xl mx-auto">
-              ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލްގެ ޢިލްމާއި ދަޢުވަތްތަކާއި ގުޅިގެން ތަފްޞީލް އެއްލާލުމަށް މަގުފަރިކަމެއް ނެތްތަ؟
-            </p>
-            <div className="mt-8">
-              <Link
-                href="/contact"
-                className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-lg font-semibold hover:bg-emerald-50 transition-colors shadow-md"
-              >
-                ގުޅުން
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section> */}
       <Footer />
     </div>
   );
