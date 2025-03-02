@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -31,7 +31,7 @@ export default function AboutPage() {
             variants={fadeIn}
             className="text-3xl sm:text-5xl font-bold tracking-tight"
           >
-            ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް
+            ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް حفظه الله
           </motion.h1>
           <motion.p 
             initial="hidden"
@@ -39,12 +39,12 @@ export default function AboutPage() {
             variants={fadeIn}
             className="mt-4 text-lg sm:text-xl max-w-2xl mx-auto"
           >
-            އިސްލާމިކް ޢިލްމުގެ ޝެއިޚެއް އަދި ދަޢުވަތްތެރިޔެއް
+            ޝެއިޚުގެ ހަޔާތާއި ބެހޭގޮތުން ކުރު ތަޢާރަފެއް
           </motion.p>
         </div>
         <div className="absolute inset-0 opacity-10">
           <Image
-            src="/images/hero-pattern.svg" // Optional: Subtle background pattern
+            src="/logo.webp" // Optional: Subtle background pattern
             alt="Background pattern"
             fill
             className="object-cover"
@@ -65,7 +65,7 @@ export default function AboutPage() {
             {/* Sheikh's Picture */}
             <div className="relative w-64 h-64 lg:w-80 lg:h-80 flex-shrink-0">
               <Image
-                src="/images/sheikh-ahmed-musa-jibril.jpg" // Placeholder path, replace with actual image
+                src="/images/about.jpeg" // Placeholder path, replace with actual image
                 alt="Sheikh Ahmed Musa Jibril"
                 fill
                 className="object-cover rounded-full shadow-lg border-4 border-emerald-100"
@@ -74,15 +74,13 @@ export default function AboutPage() {
 
             {/* Biography Text */}
             <div className="text-center lg:text-right">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-emerald-900 mb-4">
-                ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލްގެ ޢުމުރުގެ ތަފްޞީލް
+              <h2 className="text-2xl  sm:text-3xl font-semibold text-emerald-900 mb-4">
+                ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް
               </h2>
-              <p className="text-base sm:text-lg text-emerald-700 leading-relaxed">
-                ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް 1971 ވަނަ އަހަރު އެމްރިކާގައި ފަލަސްތީނީ އެއް ޢައިލައަށް އުފަންވެއެވެ. އެމީހުންގެ މަނިކުފާނު، ޝެއިޚު މޫސާ ޖިބްރީލް، ސައުދި ޢަރަބިއްޔާގައި މަދީނަތުލް-މުނައްވަރާގެ އިސްލާމިކް ޔުނިވަރސިޓީގައި ޢިލްމު އުގަންނައިފިތަން، އެ ވަގުތު ޝެއިޚު އަޙްމަދު އަދި 11 އަހަރުގެ ޢުމުރުގައި ޤުރުއާން ހިފުޒު ކޮށްފިއެވެ. 1989 ގައި އެމީހުން އެމްރިކާއަށް އެނބުރި އައިސްފައި، އެންމެ ފަހުން ހައި ސްކޫލް ފުންކޮށްފިއެވެ. އެއަށްފަހު ޝެއިޚު އަޙްމަދު މަދީނަތުލް-މުނައްވަރާގެ އިސްލާމިކް ޔުނިވަރސިޓީއަށް ދިވެ ޝަރީޢަތުގެ ޑިގްރީއެއް ހަމަޖައްސައިފިއެވެ.
-              </p>
-              <p className="mt-4 text-base sm:text-lg text-emerald-700 leading-relaxed">
-                އެމީހުން އެމްރިކާއަށް އެނބުރި އައިސްފައި، މިޝިގަންގެ ލޯ ސްކޫލްތަކުން ޖޭ.ޑީ/އެލް.އެލް.އެމް (މާސްޓަރސް އޮފް ލޯ) ޑިގްރީ ހަމަޖައްސައިފިއެވެ. ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް އިސްލާމިކް ޢިލްމުގެ ޝެއިޚެއް ގައި ވަޒީފާތަކަށް އަދި ދަޢުވަތްތެރިޔެއް ގައި މަޝްހޫރު ވެގެން އިސްލާމިކް ޢިލްމު އުގަންނައިފިއެވެ. އެމީހުން ދިވެހި ބަހަށް އިސްލާމިކް ދަޢުވަތް ކުރުމުގައި މަޝްހޫރު ވެގެން އެމީހުންގެ ދަޢުވަތްތަކީ ދިވެހި ބަހުގައި އަދި ޢަރަބި ބަހުގައި ފައިސަލު ކުރެވިފައި ވެއެވެ.
-              </p>
+              <p className="text-justify sm:text-lg text-emerald-700 leading-relaxed">
+              ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލް އުފަންވެވަޑައިގަތީ ޔުނައިޓެޑް ސްޓޭޓްސް (އެމެރިކާ) ގައެވެ. އަދި ޝައިޚްގެ ތުއްޕުޅުޢުމުރުން ބައެއް ހޭދަކުރެއްވީ ބިލާދުލް ޙަރަމައިންގެ މަދީނާގައެވެ. އޭރު ޝައިޚްގެ ބައްޕާފުޅު، ޝައިޚް މޫސާ ޖިބްރީލް އަކީ މަދީނާގެ އިސްލާމިކް ޔުނިވާރސިޓީގެ ދަރިވަރެކެވެ. ޝައިޚް އަޙްމަދުގެ ޢުމުރުފުޅުން 11 އަހަރުގައި ޤުރްއާން ހިތުދަސްކުރެއްވީ އެތަނުގައެވެ. އެއަށްފަހު ޝައިޚްގެ ޒުވާން ޢުމުރުފުޅުގެ އަހަރުތައް ހޭދަކުރެއްވީ ޔުނައިޓެޑް ސްޓޭޓްސްގައެވެ. އަދި 1989 ގައި ހައި ސްކޫލުން ގްރެޖުއޭޓް ވުމަށްފަހު، ދެން އުނގެނިވަޑައިގެންނެވީ މަދީނާގެ އިސްލާމިކް ޔުނިވާރސިޓީގައެވެ. އެތަނުން ޝަރީޢާގެ ދާއިރާއިން ޑިގްރީ ޙާޞިލްކުރެއްވިއެވެ. އެއަށްފަހު އަނެއްކާވެސް ޔުނައިޓެޑް ސްޓޭޓްސް އަށް އެނބުރި ވަޑައިގެން ލޯ އިން މާސްޓާރސް ޑިގްރީ ނިންމަވާލެއްވިއެވެ.              </p>
+              <p className="mt-4 text-justify sm:text-lg text-emerald-700 leading-relaxed">
+              الله تعالى ޝައިޚްއާއި ޝައިޚްގެ ޢާއިލާގެ ފަރާތުންކުރައްވާ މިންނެތް މަސައްކަތްތަކަށް އިމެއްނެތް އަޖުރު ދެއްވާށިއެވެ. އަދި الله تعالى ޝައިޚްއަށާއި އަދި ޝައިޚްގެ ބައްޕާފުޅަށް ހެޔޮ ޢަމަލުތަކުން ފުރިގެންވާ ދިގު ޢުމުރެއް ދެއްވާށިއެވެ. އަދި الله تعالى ޝައިޚްގެ މަންމާފުޅުގެ ދަރަޖަ އުފުއްލަވައި ޖަންނަތުލް ފިރްދައުސްގައި ލައްވާށިއެވެ. آمين              </p>
             </div>
           </motion.div>
         </div>
@@ -102,7 +100,7 @@ export default function AboutPage() {
               ޝެއިޚުގެ ޚިދުމަތްތައް
             </h2>
             <p className="mt-4 text-lg text-emerald-700 max-w-3xl mx-auto">
-              އިސްލާމިކް ދަޢުވަތުގެ ދާއިރާއިން ޝެއިޚު ކުރައްވާފައިވާ މަސައްކަތްތައް
+              އިސްލާމި ދަޢުވަތު ފެތުރެއްވުމުގައި މަސައްކަތް ކުރެއްވުމުގެ ގޮތުން
             </p>
           </motion.div>
           
@@ -120,9 +118,9 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-center text-emerald-900 mb-2">ޢިލްމީ ލިޔުންތައް</h3>
+              <h3 className="text-xl font-semibold text-center text-emerald-900 mb-2">ޢިލްމީ ލިޔުންތައް އެކުލަވާލެއްވުން</h3>
               <p className="text-emerald-700 text-center">
-                ޝެއިޚު ދިވެހި އަދި ޢަރަބި ބަހުން ލިޔުއްވާފައިވާ ފޮތްތަކާއި މަޒުމޫނުތައް
+                ޝެއިޚުގެ ދަރިވަރުންވަނީ ޝެއިޚުގެ ދަރުސްތައް ލިޔުމުގެ ގޮތައި އެކުލަވާލާފައެވެ.
               </p>
             </div>
             
@@ -135,7 +133,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-center text-emerald-900 mb-2">ދަރުސްތައް</h3>
               <p className="text-emerald-700 text-center">
-                އިސްލާމިކް މުޖުތަމަޢުތަކުގައި ޝެއިޚު ދެއްވާފައިވާ ދަރުސްތަކާއި ޚުޠުބާތައް
+                އިހުގެ ޢިލްމުވެރިންގެ ފޮތްތަކުން ދަރުސްދެއްވުން. ތަވްޙީދު އުނގަންނަވައި ދެއްވުން.
               </p>
             </div>
             
@@ -148,14 +146,14 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-center text-emerald-900 mb-2">ބައިނަލްއަޤްވާމީ ދަޢުވަތު</h3>
               <p className="text-emerald-700 text-center">
-                އިސްލާމިކް ދަޢުވަތުގެ ދާއިރާއިން ޝެއިޚު ބައިނަލްއަޤްވާމީ ފެންވަރުގައި ކޮށްދެއްވާފައިވާ ޚިދުމަތްތައް
+                ދުނިޔޭގެ އެކި ކަންކޮޅުތަކުގައި އަނިޔާ ލިބެމުންދާ މުސްލިމުންގެ ހާލާއި މެދު ހޭލުންތެރިކުރެއްވުން
               </p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer Call-to-Action */}
+      {/* Footer Call-to-Action
       <section className="py-12 sm:py-16 bg-emerald-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -180,7 +178,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
       <Footer />
     </div>
   );

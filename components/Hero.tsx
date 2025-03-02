@@ -4,19 +4,19 @@ import React, { useState, useEffect } from 'react';
 
 const slides = [
   {
-    image: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-    title: 'ދިވެހި ލިޔުންތަކުގެ ޙާލު',
-    subtitle: 'މަޢުލޫމާތު ހޯދުމަށް އަދި ހިއްސާ ކުރުމަށް',
+    image: '/images/slide1.jpg',
+    title: 'ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެވިފައިވާ ލިޔުންތައް',
+    subtitle: 'އެންމެ ފަހުގެ ދަރުސްތަކުން ނެގިފައި',
   },
   {
-    image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-    title: 'ތަފްޞީލު އަދި މަޢުލޫމާތު',
-    subtitle: 'ދިވެހި ބަސްފުޅުގެ ތެރޭގައި ހޯދާ',
+    image: '/images/slide2.jpg',    
+    title: 'ދިމަކުރާތީ ނިޒާމުގެ ހަޤީޤަތްތައް',
+    subtitle: 'މުރުޖިޢާއިންގެ ޝުބުހަތައް ކަޝްފުކުރުން',
   },
   {
-    image: 'https://images.unsplash.com/photo-1497436072909-60f34c89a287?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-    title: 'ހަމަޖެހުން ކުރުމަށް',
-    subtitle: 'އަލުން ލިޔުންތައް ޝާއިޢު ކުރޭ',
+    image: '/images/slide3.jpg',    
+    title: 'އިސްލާމީ ޝަރީޢަތް ތަންފީޛުކުރުން',
+    subtitle: 'އިސްލާމީ ޝަރީޢަތް ތަންފީޛުކުރުން ލަސްނުކުރެވޭނެކަން ހާމަކުރުން',
   },
 ];
 
@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000); // Adjust timing as needed (5000ms = 5s)
+    }, 8000); // Adjust timing as needed (5000ms = 5s)
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);

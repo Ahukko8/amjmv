@@ -1,16 +1,16 @@
 "use client";
 
 import React from 'react';
-// import Image from 'next/image';
+import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-
-// Sample images (replace with your own)
+// Sample images and Telegram links (replace with your actual data)
 const introImages = [
-  { src: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0', alt: 'Dhivehi Culture' },
-  { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05', alt: 'Nature' },
-  { src: 'https://images.unsplash.com/photo-1497436072909-60f34c89a287', alt: 'Literature' },
-  { src: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470', alt: 'Community' },
+  { src: '/images/galandhaan.jpg', alt: 'ގަލަންދާނު', telegram: 'https://t.me/qalandhar' },
+  { src: '/images/tazkirat.jpg', alt: 'ތަޒްކރަތު_ނުފޫސް', telegram: 'https://t.me/Tazkirat_Nufoos' },
+  { src: '/images/qanadeel.jpg', alt: 'އަލް-ޤަނާދީލް', telegram: 'https://t.me/alqanaadeel' },
+  { src: '/images/akhbar.jpg', alt: 'އަޚްބަރް އަލް އުއްމަ', telegram: 'https://t.me/Akhbaralumma' },
 ];
 
 const Intro: React.FC = () => {
@@ -40,10 +40,10 @@ const Intro: React.FC = () => {
           className="text-center mb-10 sm:mb-14"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-faseyha">
-            ދިވެހި ލިޔުންތަކުގެ ޢާލަމަށް މަރުޙަލާ
+            ދިވެހި ތަރުޖަމާތައް ނެގިފައިވާ ބައެއް ޓެލެގްރާމް ޗެނަލްތައް
           </h2>
           <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
-            މި ވެބްސައިޓްގައި ދިވެހި ބަސްފުޅުގެ ތަފްޞީލާއި، ވާހަކަތަކާއި، އަދި މަޢުލޫމާތު ޝާއިޢު ކުރަމުން ދިޔަ އެއްޗެކެވެ
+            މި ބޭފުޅުންގެ މަސައްކަތުގައި الله تعالى ބަރަކާތް ލައްވައި ޤަބޫލްކުރައްވާށި. އާމީން!
           </p>
         </motion.div>
 
@@ -61,17 +61,19 @@ const Intro: React.FC = () => {
               variants={fadeInUp}
               className="relative h-56 sm:h-64 rounded-xl overflow-hidden shadow-md group"
             >
-              {/* <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              /> */}
-              <div className="absolute inset-0 bg-emerald-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span className="text-white text-base sm:text-lg font-semibold font-faseyha drop-shadow-md">
-                  {img.alt}
-                </span>
-              </div>
+              <Link href={img.telegram} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-emerald-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-white text-base sm:text-lg font-semibold font-faseyha drop-shadow-md">
+                    {img.alt}
+                  </span>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

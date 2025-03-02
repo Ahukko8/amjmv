@@ -117,7 +117,7 @@ const LatestFeed = () => {
                         />
                         <div className="mt-auto text-right">
                           <span className="text-emerald-400 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            ފުރިހަމަ ކިޔާ
+                            އިތުރަށް ބަލާ
                           </span>
                         </div>
                       </div>
@@ -139,7 +139,7 @@ const LatestFeed = () => {
               href="/blog"
               className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
             >
-              އިތުރު ދައްކާ
+              ހުރިހާ ބުލޮގްތައް
             </Link>
           </motion.div>
         </div>
@@ -156,7 +156,7 @@ const LatestFeed = () => {
             className="text-center mb-10 sm:mb-14"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-faseyha">
-              އެންމެ ފަހުގެ PDFs
+              އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
               އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް މިތަނުން ޑައުންލޯޑްކުރެވޭނެއެވެ
@@ -223,7 +223,7 @@ const LatestFeed = () => {
               href="/pdfs"
               className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
             >
-              އިތުރު ފެންނަން
+          ހުރިހާ ޕީ.ޑީ.އެފް
             </Link>
           </motion.div>
         </div>
