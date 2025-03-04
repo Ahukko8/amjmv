@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+
+// Set up the worker for react-pdf (using CDN for simplicity)
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFViewerProps {
   pdfUrl: string;
@@ -9,20 +13,12 @@ interface PDFViewerProps {
 }
 
 const PDFViewer = ({ pdfUrl, filename = "document.pdf" }: PDFViewerProps) => {
+  const [numPages, setNumPages] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile devices
-  useEffect(() => {
-    const checkMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor;
-      const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-      setIsMobile(mobileRegex.test(userAgent.toLowerCase()));
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -33,44 +29,36 @@ const PDFViewer = ({ pdfUrl, filename = "document.pdf" }: PDFViewerProps) => {
           </Alert>
         )}
 
-        <div className="bg-gray-100 rounded-xl shadow-lg p-4 sm:p-6 h-[calc(100vh-80px)] sm:h-[calc(100vh-100px)] flex flex-col items-center justify-center overflow-hidden">
-          {/* For Desktop: Try embedding PDF */}
-          {!isMobile ? (
-            <object
-              data={pdfUrl}
-              type="application/pdf"
-              className="w-full h-full rounded-lg"
-              onError={() => setError("Failed to load PDF. Please download it instead.")}
+        <div className="bg-gray-100 rounded-xl shadow-lg p-4 sm:p-6 h-[calc(100vh-80px)] sm:h-[calc(100vh-100px)] overflow-auto">
+          <Document
+            file={pdfUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={(err) => setError(`Failed to load PDF: ${err.message}. Please download it instead.`)}
+          >
+            {numPages &&
+              Array.from(new Array(numPages), (_, index) => (
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  width={Math.min(800, window.innerWidth - 40)} // Responsive width
+                  renderTextLayer={false} // Optional: Disable text layer for performance
+                  renderAnnotationLayer={false} // Optional: Disable annotations
+                />
+              ))}
+          </Document>
+          <div className="mt-4 text-center">
+            <a
+              href={pdfUrl}
+              download={filename}
+              className="text-emerald-600 hover:text-emerald-800 underline font-medium"
             >
-              <embed
-                src={pdfUrl}
-                type="application/pdf"
-                className="w-full h-full rounded-lg"
-              />
-              <FallbackContent pdfUrl={pdfUrl} filename={filename} />
-            </object>
-          ) : (
-            /* For Mobile: Show download link directly */
-            <FallbackContent pdfUrl={pdfUrl} filename={filename} />
-          )}
+              Download {filename}
+            </a>
+          </div>
         </div>
       </main>
     </div>
   );
 };
-
-// Fallback content for when PDF can't be displayed
-const FallbackContent = ({ pdfUrl, filename }: PDFViewerProps) => (
-  <div className="p-4 text-center text-gray-500 text-sm sm:text-base">
-    <p>PDF cannot be displayed. Download it instead:</p>
-    <a
-      href={pdfUrl}
-      download={filename}
-      className="mt-2 inline-block text-emerald-600 hover:text-emerald-800 underline font-medium"
-    >
-      Download {filename}
-    </a>
-  </div>
-);
 
 export default PDFViewer;
