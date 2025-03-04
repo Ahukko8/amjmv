@@ -51,8 +51,6 @@ export default function PDFReader({ params }: PDFPageProps) {
           />
         </div>
       </div>
-
-      {/* Footer */}
       <Footer />
     </div>
   );
