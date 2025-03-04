@@ -71,7 +71,7 @@ const LatestFeed = () => {
             variants={fadeInUp}
             className="text-center mb-10 sm:mb-14"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-faseyha">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-headingDhivehi">
               އެންމެ ފަހުގެ ބުލޮގުތައް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
@@ -139,7 +139,7 @@ const LatestFeed = () => {
               href="/blog"
               className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
             >
-              ހުރިހާ ބުލޮގްތައް
+              ހުރިހާ ލިޔުންތައް
             </Link>
           </motion.div>
         </div>
@@ -155,11 +155,11 @@ const LatestFeed = () => {
             variants={fadeInUp}
             className="text-center mb-10 sm:mb-14"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-faseyha">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-headingDhivehi">
               އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
-              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް މިތަނުން ޑައުންލޯޑްކުރެވޭނެއެވެ
+              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް މިތަނުން ޑައުންލޯޑްކުރައްވާ
             </p>
           </motion.div>
           

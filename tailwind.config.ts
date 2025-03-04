@@ -19,6 +19,9 @@ const config: Config = {
   			],
 			arabicAmj: [
 				'var(--font-arabicAmj)'
+			],
+			headingDhivehi: [
+				'var(--font-headingDhivehi)'
 			]
   		},
   		borderRadius: {

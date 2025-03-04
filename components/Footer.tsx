@@ -4,7 +4,7 @@ import Link from 'next/link';
 const Footer = () => {
   const footerLinks = [
     { name: 'ހޯމް', href: '/' },
-    { name: 'ޝެއިޚުގެ ތަޢާރރަފ', href: '/about' },
+    { name: 'ޝައިޚްގެ ތަޢާރރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '/blog' },
     { name: 'ޕީ.ޑީ.އެފް', href: '/pdfs' },
   ];
@@ -38,7 +38,7 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-emerald-200 text-sm sm:text-base leading-relaxed">
-              ޝެއިޚް އަޙްމަދު މޫސާ ޖިބްރީލްގެ ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެިވފައިވާ ލިޔުންތައް.
+              ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލްގެ ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެިވފައިވާ ލިޔުންތައް.
             </p>
           </div>
 

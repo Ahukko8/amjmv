@@ -30,7 +30,7 @@ export default function AboutPage() {
             variants={fadeIn}
             className="text-3xl sm:text-5xl font-bold tracking-tight"
           >
-            ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް حفظه الله
+            ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލް حفظه الله
           </motion.h1>
           <motion.p 
             initial="hidden"
@@ -38,7 +38,7 @@ export default function AboutPage() {
             variants={fadeIn}
             className="mt-4 text-lg sm:text-xl max-w-2xl mx-auto"
           >
-            ޝެއިޚުގެ ހަޔާތާއި ބެހޭގޮތުން ކުރު ތަޢާރަފެއް
+            ޝައިޚްގެ ހަޔާތާއި ބެހޭގޮތުން ކުރު ތަޢާރަފެއް
           </motion.p>
         </div>
         <div className="absolute inset-0 opacity-10">
@@ -74,7 +74,7 @@ export default function AboutPage() {
             {/* Biography Text */}
             <div className="text-center lg:text-right">
               <h2 className="text-2xl  sm:text-3xl font-semibold text-emerald-900 mb-4">
-                ޝެއިޚު އަޙްމަދު މޫސާ ޖިބްރީލް
+                ޝެއިޚް އަޙްމަދު މޫސާ ޖިބްރީލް
               </h2>
               <p className="text-justify sm:text-lg text-emerald-700 leading-relaxed">
               ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލް އުފަންވެވަޑައިގަތީ ޔުނައިޓެޑް ސްޓޭޓްސް (އެމެރިކާ) ގައެވެ. އަދި ޝައިޚްގެ ތުއްޕުޅުޢުމުރުން ބައެއް ހޭދަކުރެއްވީ ބިލާދުލް ޙަރަމައިންގެ މަދީނާގައެވެ. އޭރު ޝައިޚްގެ ބައްޕާފުޅު، ޝައިޚް މޫސާ ޖިބްރީލް އަކީ މަދީނާގެ އިސްލާމިކް ޔުނިވާރސިޓީގެ ދަރިވަރެކެވެ. ޝައިޚް އަޙްމަދުގެ ޢުމުރުފުޅުން 11 އަހަރުގައި ޤުރްއާން ހިތުދަސްކުރެއްވީ އެތަނުގައެވެ. އެއަށްފަހު ޝައިޚްގެ ޒުވާން ޢުމުރުފުޅުގެ އަހަރުތައް ހޭދަކުރެއްވީ ޔުނައިޓެޑް ސްޓޭޓްސްގައެވެ. އަދި 1989 ގައި ހައި ސްކޫލުން ގްރެޖުއޭޓް ވުމަށްފަހު، ދެން އުނގެނިވަޑައިގެންނެވީ މަދީނާގެ އިސްލާމިކް ޔުނިވާރސިޓީގައެވެ. އެތަނުން ޝަރީޢާގެ ދާއިރާއިން ޑިގްރީ ޙާޞިލްކުރެއްވިއެވެ. އެއަށްފަހު އަނެއްކާވެސް ޔުނައިޓެޑް ސްޓޭޓްސް އަށް އެނބުރި ވަޑައިގެން ލޯ އިން މާސްޓާރސް ޑިގްރީ ނިންމަވާލެއްވިއެވެ.              </p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             className="text-center mb-10"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-emerald-900">
-              ޝެއިޚުގެ ޚިދުމަތްތައް
+              ޝައިޚްގެ ޚިދުމަތްތައް
             </h2>
             <p className="mt-4 text-lg text-emerald-700 max-w-3xl mx-auto">
               އިސްލާމި ދަޢުވަތު ފެތުރެއްވުމުގައި މަސައްކަތް ކުރެއްވުމުގެ ގޮތުން
@@ -119,7 +119,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-center text-emerald-900 mb-2">ޢިލްމީ ލިޔުންތައް އެކުލަވާލެއްވުން</h3>
               <p className="text-emerald-700 text-center">
-                ޝެއިޚުގެ ދަރިވަރުންވަނީ ޝެއިޚުގެ ދަރުސްތައް ލިޔުމުގެ ގޮތައި އެކުލަވާލާފައެވެ.
+                ޝެއިޚްގެ ދަރިވަރުންވަނީ ޝެއިޚުގެ ދަރުސްތައް ލިޔުމުގެ ގޮތައި އެކުލަވާލާފައެވެ.
               </p>
             </div>
             

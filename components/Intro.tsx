@@ -8,9 +8,9 @@ import { motion } from 'framer-motion';
 // Sample images and Telegram links (replace with your actual data)
 const introImages = [
   { src: '/images/galandhaan.jpg', alt: 'ގަލަންދާނު', telegram: 'https://t.me/qalandhar' },
-  { src: '/images/tazkirat.jpg', alt: 'ތަޒްކރަތު_ނުފޫސް', telegram: 'https://t.me/Tazkirat_Nufoos' },
+  { src: '/images/tazkirat.jpg', alt: 'ތަޒްކިރަތުއް ނުފޫސް', telegram: 'https://t.me/Tazkirat_Nufoos' },
   { src: '/images/qanadeel.jpg', alt: 'އަލް-ޤަނާދީލް', telegram: 'https://t.me/alqanaadeel' },
-  { src: '/images/akhbar.jpg', alt: 'އަޚްބަރް އަލް އުއްމަ', telegram: 'https://t.me/Akhbaralumma' },
+
 ];
 
 const Intro: React.FC = () => {
@@ -53,7 +53,7 @@ const Intro: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={staggerChildren}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {introImages.map((img, index) => (
             <motion.div

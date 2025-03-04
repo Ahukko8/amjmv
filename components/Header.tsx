@@ -9,7 +9,7 @@ const Header: React.FC = () => {
 
   const navLinks = [
     { name: 'ހޯމް', href: '/' },
-    { name: 'ޝެއިޚުގެ ތަޢާރަފް', href: '/about' },
+    { name: 'ޝައިޚްގެ ތަޢާރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '/blog' },
     { name: 'ޕި.ޑީ.އެފް', href: '/pdfs' },
   ];
@@ -36,7 +36,7 @@ const Header: React.FC = () => {
             <Link 
               href="/"
             >
-              <h1 className="text-xl sm:text-2xl font-bold text-emerald-100 font-faseyha tracking-wide">
+              <h1 className="text-xl sm:text-2xl font-bold text-emerald-100 font-arabicAmj tracking-wide">
             أَحْمَد مُوسَى جِبْرِيل            
             </h1>
               </Link>

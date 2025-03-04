@@ -2,7 +2,7 @@
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css'
-import {  yourFont } from './fonts';
+import {  arabicFont, headingDhivehi, yourFont } from './fonts';
 
 export default function RootLayout({
   children,
@@ -11,8 +11,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="dv" dir="rtl" className={`${yourFont.variable}`}>
-        <body className='font-faseyha'>
+      <html lang="dv" dir="rtl" className={`${headingDhivehi.variable}, ${arabicFont.variable}`}>
+        <body className={`${yourFont.variable}`}>
           <ErrorBoundary>
             {children}
           </ErrorBoundary>

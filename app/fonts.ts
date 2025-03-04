@@ -25,3 +25,11 @@ export const arabicFont = localFont({
   ],
   variable: '--font-arabicAmj'
 })
+
+export const headingDhivehi = localFont({
+  src: [{
+    path: '../public/fonts/Veli.otf'
+  }
+],
+  variable: '--font-headingDhivehi'
+})
