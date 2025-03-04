@@ -112,7 +112,7 @@ export default function PDFsPage() {
                ޕީޑީއެފް ލިޔުންތައް
             </h1>
             <p className="text-lg sm:text-xl max-w-3xl mx-auto text-black">
-               ޕީޑީއެފް ލިޔުންތަކާއި ފޮތްތައް ޑައުންލޯޑް ކުރުމަށް މިތަނުން ފެންނާނެއެވެ.
+          ޕީޑީއެފް ލިޔުންތަކާއި ފޮތްތައް ޑައުންލޯޑް ކުރުމަށް މިތަނުން ފެންނާނެ
             </p>
           </motion.div>
         </div>
