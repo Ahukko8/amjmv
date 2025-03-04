@@ -108,7 +108,7 @@ export default function PDFsPage() {
             variants={fadeInUp}
             className="text-center"
           >
-            <h1 className="text-3xl sm:text-4xl sm:mt-10 md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl sm:text-4xl mt-5 md:text-5xl font-bold mb-4">
                ޕީޑީއެފް ލިޔުންތައް
             </h1>
             <p className="text-lg sm:text-xl max-w-3xl mx-auto text-black">
