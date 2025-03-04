@@ -72,7 +72,7 @@ const LatestFeed = () => {
             className="text-center mb-10 sm:mb-14"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-headingDhivehi">
-              އެންމެ ފަހުގެ ބުލޮގުތައް
+              އެންމެ ފަހުގެ ލިޔުންތައް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
               އެންމެ ފަހުގެ ބުލޮގުތަކާއި ލިޔުންތައް މިތަނުން ބައްލަވާ
