@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -5,10 +6,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface PDFViewerProps {
   pdfUrl: string;
+  imageUrl?: string; // Optional URL to the preview image
   filename?: string;
 }
 
-const PDFViewer = ({ pdfUrl, filename = "document.pdf" }: PDFViewerProps) => {
+const PDFViewer = ({
+  pdfUrl,
+  imageUrl,
+  filename = "document.pdf",
+}: PDFViewerProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -35,8 +41,16 @@ const PDFViewer = ({ pdfUrl, filename = "document.pdf" }: PDFViewerProps) => {
 
       <div className="bg-gray-100 rounded-xl shadow-lg p-4 sm:p-6 w-full h-[calc(100vh-120px)] overflow-auto">
         {isMobile ? (
-          <div className="text-center text-gray-500 text-sm sm:text-base">
-            <p>PDF ދައްކަން މޮބައިލް އިން ސަޕޯޓް ނުކުރޭ.</p>
+          <div className="flex flex-col items-center justify-center h-full text-center text-gray-500 text-sm sm:text-base">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="PDF Preview"
+                className="max-w-full max-h-[50vh] object-contain mb-4 rounded-lg"
+              />
+            ) : (
+              <p className="mb-4">ޕްރިވިއު އިމޭޖެއް ނެތް</p> // "No preview image"
+            )}
             <a
               href={pdfUrl}
               download={filename}
