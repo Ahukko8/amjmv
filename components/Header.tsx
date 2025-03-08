@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,9 +37,13 @@ const Header: React.FC = () => {
             <Link 
               href="/"
             >
-              <h1 className="text-xl sm:text-2xl font-bold text-emerald-100 font-arabicAmj tracking-wide">
-            أَحْمَد مُوسَى جِبْرِيل            
-            </h1>
+            <Image
+              src="/logo.png"
+              width={200}
+              height={150}
+              alt='logo'
+              
+            />
               </Link>
             
           </div>

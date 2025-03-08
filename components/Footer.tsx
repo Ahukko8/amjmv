@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
   const footerLinks = [
@@ -32,9 +33,13 @@ const Footer = () => {
               <Link 
               href="/"
             >
-              <h3 className="text-xl sm:text-2xl font-bold font-faseyha text-white">
-            أَحْمَد مُوسَى جِبْرِيل            
-            </h3>
+               <Image
+                            src="/logo.png"
+                            width={100}
+                            height={100}
+                            alt='logo'
+                            
+                          />
               </Link>
             </div>
             <p className="text-emerald-200 text-sm sm:text-base leading-relaxed">
