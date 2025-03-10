@@ -22,7 +22,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-emerald-50 font-faseyha">
       <Header/>
       {/* Hero Section */}
-      <section className="relative bg-emerald-700 text-white py-16 sm:py-24">
+      <section className="relative bg-white text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial="hidden"
