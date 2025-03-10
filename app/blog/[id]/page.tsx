@@ -79,6 +79,7 @@ export default async function BlogPage({ params }: PageProps) {
 
     return (
       <>
+      <div className="flex flex-col min-h-screen bg-emerald-50 font-faseyha">
         <Header />
         
         <div className="top-0 z-50 w-full">
@@ -108,7 +109,7 @@ export default async function BlogPage({ params }: PageProps) {
               {/* Content Area */}
               <div className="p-6 sm:p-8">
                 {/* Title Below Image */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-right mb-6 sm:mb-8 text-gray-900 break-words font-faseyha leading-tight">
+                <h1 className="text-xl sm:text-xl md:text-5xl font-bold text-right mb-6 sm:mb-8 text-gray-900 break-words font-faseyha leading-tight">
                   {blog.title}
                 </h1>
 
@@ -139,6 +140,7 @@ export default async function BlogPage({ params }: PageProps) {
         </main>
 
         <Footer />
+        </div>
       </>
     );
   } catch (error) {

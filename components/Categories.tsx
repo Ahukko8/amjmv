@@ -39,7 +39,7 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
     return (
       <div className="animate-pulse space-y-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-12 bg-emerald-100/50 rounded-xl shadow-sm" />
+          <div key={i} className="h-12 bg-[#121212]/80 rounded-xl shadow-sm" />
         ))}
       </div>
     );
@@ -50,7 +50,7 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
       <select
         value={selectedCategory || ''}
         onChange={(e) => onSelectCategory(e.target.value || null)}
-        className="w-full p-3 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 text-sm sm:text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-faseyha text-right shadow-sm transition-all duration-200"
+        className="w-full p-3 rounded-xl border border-white bg-white text-[#121212] text-sm sm:text-base focus:ring-2 focus:ring-[#121212] focus:border-[#121212] font-faseyha text-right shadow-sm transition-all duration-200"
       >
         <option value="" className="bg-white">އެންމެހާ ލިޔުންތައް</option>
         {categories.map((category) => (
@@ -68,8 +68,8 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
         onClick={() => onSelectCategory(null)}
         className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
           !selectedCategory
-            ? 'bg-emerald-100 text-emerald-800 shadow-md border border-emerald-200'
-            : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 hover:shadow-md'
+            ? 'bg-[#F5F5F5]/40 text-[#121212] shadow-md border border-[#121212]/20'
+            : 'text-[#121212] bg-[#F5F5F5] hover:[#F5F5F5]/20 hover:text-[#121212]/80 hover:shadow-md border border-[#121212]/10'
         }`}
       >
         އެންމެހާ ލިޔުންތައް
@@ -80,8 +80,8 @@ export default function Categories({ onSelectCategory, selectedCategory, isMobil
           onClick={() => onSelectCategory(category._id)}
           className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
             selectedCategory === category._id
-              ? 'bg-emerald-100 text-emerald-800 shadow-md border border-emerald-200'
-              : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 hover:shadow-md'
+            ? 'bg-[#F5F5F5]/40 text-[#121212] shadow-md border border-[#121212]/20'
+            : 'text-[#121212] bg-[#F5F5F5] hover:[#F5F5F5]/20 hover:text-[#121212]/80 hover:shadow-md border border-[#121212]/10'
           }`}
         >
           {category.name}

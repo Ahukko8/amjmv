@@ -7,12 +7,12 @@ import Header from '@/components/Header';
 
 export default function BlogsPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-emerald-50 font-faseyha">
+    <div className="flex flex-col min-h-screen bg-[#F5F5F5] font-faseyha">
       {/* Header */}
       <Header />
 
       {/* Banner with Image */}
-      <section className="relative py-16 sm:py-20 md:py-24 text-white">
+      <section className="relative py-16 sm:py-20 md:py-24 text-[#F5F5F5]">
         {/* Image */}
         <div className="absolute inset-0">
           <Image
@@ -28,15 +28,15 @@ export default function BlogsPage() {
             }}
           />
           {/* Overlay for text readability */}
-          <div className="absolute inset-0 bg-black/60 z-10"></div>
+          <div className="absolute inset-0 bg-[#121212]/60 z-10"></div>
         </div>
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-faseyha mb-6 sm:mb-8 md:mb-10">
+          <h1 className="text-4xl text-[#F5F5F5] sm:text-5xl md:text-6xl font-bold font-faseyha mb-6 sm:mb-8 md:mb-10">
              ލިޔުންތައް
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-emerald-100 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-[#F5F5F5] max-w-3xl mx-auto">
             ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެވިފައިވާ ލިޔުންތައް
           </p>
         </div>
