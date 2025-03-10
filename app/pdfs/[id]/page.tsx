@@ -46,11 +46,11 @@ export default function PDFReader({ params }: PDFPageProps) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen font-faseyha">
       <Header />
       <main className="flex-grow bg-gray-100 py-6 sm:py-8 font-faseyha">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
+          <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
             {pdf.title}
           </h1>
           <PDFViewer pdfUrl={pdf.pdfFile} filename={`${pdf.title}.pdf`} />
