@@ -19,7 +19,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] font-faseyha">
+    <div className="min-h-screen  font-faseyha">
       <Header/>
       {/* Hero Section */}
       <section className="relative bg-[#121212] text-[#F5F5F5] py-16 sm:py-24">
