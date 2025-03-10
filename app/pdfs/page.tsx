@@ -33,7 +33,7 @@ export default function PDFsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPdfs, setTotalPdfs] = useState(0);
 
-  const ITEMS_PER_PAGE = 12;
+  const ITEMS_PER_PAGE = 2;
 
   // Animation variants
   const fadeInUp = {
@@ -96,11 +96,11 @@ export default function PDFsPage() {
   const pageNumbers = getPageNumbers();
 
   return (
-    <main className="min-h-screen bg-emerald-50 font-faseyha">
+    <main className="min-h-screen bg-[#F5F5F5] font-faseyha">
       <Header />
 
       {/* Hero Section with Title and Description */}
-      <section className="sm:py-16 text-black">
+      <section className="sm:py-16 text-[#121212]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -111,7 +111,7 @@ export default function PDFsPage() {
             <h1 className="text-3xl sm:text-4xl mt-5 md:text-5xl font-bold mb-4">
                ޕީޑީއެފް ލިޔުންތައް
             </h1>
-            <p className="text-lg sm:text-xl max-w-3xl mx-auto text-black">
+            <p className="text-lg sm:text-xl max-w-3xl mx-auto text-[#121212]">
           ޕީޑީއެފް ލިޔުންތަކާއި ފޮތްތައް ޑައުންލޯޑް ކުރުމަށް މިތަނުން ފެންނާނެ
             </p>
           </motion.div>
@@ -124,7 +124,7 @@ export default function PDFsPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
-                <div key={i} className="h-80 bg-emerald-100 rounded-xl animate-pulse shadow-lg" />
+                <div key={i} className="h-80 bg-[#F5F5F5] rounded-xl animate-pulse shadow-lg" />
               ))}
             </div>
           ) : (
@@ -138,7 +138,7 @@ export default function PDFsPage() {
                 {pdfs.map((pdf) => (
                   <motion.div key={pdf._id} variants={fadeInUp}>
                     <Link href={`/pdfs/${pdf._id}`} className="block group h-full">
-                      <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full flex flex-col">
+                      <div className="bg-[#F5F5F5]/20 rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-[#121212]/20 h-full flex flex-col">
                         {pdf.image ? (
                           <div className="relative h-48 w-full overflow-hidden">
                             <Image
@@ -147,10 +147,10 @@ export default function PDFsPage() {
                               fill
                               className="object-cover transition-transform duration-500 group-hover:scale-110"
                             />
-                            <div className="absolute inset-0 bg-emerald-900/10 group-hover:bg-emerald-900/20 transition-all duration-300"></div>
+                            <div className="absolute inset-0 bg-[#121212]/10 group-hover:bg-[#121212]/20 transition-all duration-300"></div>
                           </div>
                         ) : (
-                          <div className="relative h-48 w-full bg-emerald-100 flex items-center justify-center">
+                          <div className="relative h-48 w-full bg-[#F5F5F5] flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
@@ -158,15 +158,15 @@ export default function PDFsPage() {
                         )}
                         <div className="p-5 flex-grow flex flex-col justify-between">
                           <div>
-                            <h3 className="text-lg font-semibold text-right text-emerald-900 line-clamp-2">
+                            <h3 className="text-lg font-semibold text-right text-[#121212] line-clamp-2">
                               {pdf.title}
                             </h3>
-                            <p className="mt-2 text-sm text-emerald-700 text-right line-clamp-2">
+                            <p className="mt-2 text-sm text-[#121212] text-right line-clamp-2">
                               {pdf.description || 'ތަފްޞީލެއް ނެތް'}
                             </p>
                           </div>
                           <div className="mt-4 text-right">
-                            <span className="text-emerald-500 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-[#121212] text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               ޑައުންލޯޑް ކުރޭ →
                             </span>
                           </div>
@@ -180,11 +180,11 @@ export default function PDFsPage() {
               {/* Empty State */}
               {pdfs.length === 0 && !isLoading && (
                 <div className="text-center py-12">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-[#121212]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
-                  <h3 className="mt-4 text-xl font-medium text-emerald-900">ފައިލެއް ނެތް</h3>
-                  <p className="mt-2 text-emerald-700">މިވަގުތު ޕީޑީއެފް ލިޔުންތަކެއް ނެތް، ފަހުން އަނބުރާ ވަޑައިގަންނަވާ</p>
+                  <h3 className="mt-4 text-xl font-medium text-[#121212]">ފައިލެއް ނެތް</h3>
+                  <p className="mt-2 text-[#121212]">މިވަގުތު ޕީޑީއެފް ލިޔުންތަކެއް ނެތް، ފަހުން އަނބުރާ ވަޑައިގަންނަވާ</p>
                 </div>
               )}
 
@@ -196,7 +196,7 @@ export default function PDFsPage() {
                       <PaginationItem className="hidden sm:block">
                         <PaginationPrevious
                           onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                          className={`${currentPage === 1 ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'} text-emerald-700 hover:text-emerald-900 border-emerald-200 hover:bg-emerald-100`}
+                          className={`${currentPage === 1 ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'} text-[#121212] hover:text-[#121212]/80 border-[#121212]/20 hover:bg-[#121212]/10`}
                         />
                       </PaginationItem>
 
@@ -205,12 +205,12 @@ export default function PDFsPage() {
                           <PaginationItem>
                             <PaginationLink 
                               onClick={() => handlePageChange(1)} 
-                              className="cursor-pointer border-emerald-200 text-emerald-700 hover:text-emerald-900 hover:bg-emerald-100"
+                              className="cursor-pointer border-[#121212]/20 text-[#F5F5F5] hover:text-[#F5F5F5]/40 hover:bg-[#121212]/10"
                             >
                               1
                             </PaginationLink>
                           </PaginationItem>
-                          {pageNumbers[0] > 2 && <PaginationItem><PaginationEllipsis className="text-emerald-700" /></PaginationItem>}
+                          {pageNumbers[0] > 2 && <PaginationItem><PaginationEllipsis className="text-[#121212]" /></PaginationItem>}
                         </>
                       )}
 
@@ -221,8 +221,8 @@ export default function PDFsPage() {
                             isActive={currentPage === page}
                             className={`cursor-pointer ${
                               currentPage === page 
-                                ? 'bg-emerald-600 text-white hover:bg-emerald-700 border-emerald-600' 
-                                : 'text-emerald-700 hover:text-emerald-900 border-emerald-200 hover:bg-emerald-100'
+                                ? 'bg-white text-[#121212] hover:bg-[#121212]/10 border-[#121212]/20' 
+                                : 'text-[#121212] hover:text-[#121212] border-border-[#121212]/10 hover:bg-[#121212]/10'
                             }`}
                           >
                             {page}
@@ -233,12 +233,12 @@ export default function PDFsPage() {
                       {pageNumbers[pageNumbers.length - 1] < totalPages && (
                         <>
                           {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
-                            <PaginationItem><PaginationEllipsis className="text-emerald-700" /></PaginationItem>
+                            <PaginationItem><PaginationEllipsis className="text-[#121212]" /></PaginationItem>
                           )}
                           <PaginationItem>
                             <PaginationLink 
                               onClick={() => handlePageChange(totalPages)} 
-                              className="cursor-pointer border-emerald-200 text-emerald-700 hover:text-emerald-900 hover:bg-emerald-100"
+                              className="cursor-pointer border-[#121212]/20 text-[#F5F5F5] hover:text-[#F5F5F5]/40 hover:bg-[#121212]/10"
                             >
                               {totalPages}
                             </PaginationLink>
@@ -249,7 +249,7 @@ export default function PDFsPage() {
                       <PaginationItem className="hidden sm:block">
                         <PaginationNext
                           onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                          className={`${currentPage === totalPages ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'} text-emerald-700 hover:text-emerald-900 border-emerald-200 hover:bg-emerald-100`}
+                          className={`${currentPage === totalPages ? 'pointer-events-none opacity-50 cursor-not-allowed' : 'cursor-pointer'} text-[#121212] hover:[#121212] border-[#121212]/20 hover:bg-[#121212]/10`}
                         />
                       </PaginationItem>
                     </PaginationContent>
@@ -265,8 +265,8 @@ export default function PDFsPage() {
                     disabled={currentPage === 1}
                     className={`px-4 py-2 rounded-lg border ${
                       currentPage === 1
-                        ? 'opacity-50 cursor-not-allowed border-emerald-200 text-emerald-400'
-                        : 'border-emerald-300 text-emerald-700 hover:bg-emerald-100'
+                        ? 'opacity-50 cursor-not-allowed border-[#121212]/20 text-[#121212]'
+                        : 'border-[#121212]/20 text-[#121212] hover:bg-[#121212]/10'
                     }`}
                   >
                     ކުރީގެ ޞަފްޙާ
@@ -276,9 +276,9 @@ export default function PDFsPage() {
                     disabled={currentPage === totalPages}
                     className={`px-4 py-2 rounded-lg border ${
                       currentPage === totalPages
-                        ? 'opacity-50 cursor-not-allowed border-emerald-200 text-emerald-400'
-                        : 'border-emerald-300 text-emerald-700 hover:bg-emerald-100'
-                    }`}
+                      ? 'opacity-50 cursor-not-allowed border-[#121212]/20 text-[#121212]'
+                      : 'border-[#121212]/20 text-[#121212] hover:bg-[#121212]/10'
+                  }`}
                   >
                     ދެން އޮތް ޞަފްޙާ
                   </button>
