@@ -62,7 +62,7 @@ const LatestFeed = () => {
   return (
     <>
       {/* Latest Blogs Section */}
-      <section className="py-12 sm:py-16 bg-emerald-50">
+      <section className="py-12 sm:py-16 bg-[#F5F5F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -71,10 +71,10 @@ const LatestFeed = () => {
             variants={fadeInUp}
             className="text-center mb-10 sm:mb-14"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-headingDhivehi">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#121212] font-headingDhivehi">
               އެންމެ ފަހުގެ ލިޔުންތައް
             </h2>
-            <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
+            <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
               އެންމެ ފަހުގެ ބުލޮގުތަކާއި ލިޔުންތައް މިތަނުން ބައްލަވާ
             </p>
           </motion.div>
@@ -82,7 +82,7 @@ const LatestFeed = () => {
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-72 bg-emerald-100 rounded-xl animate-pulse shadow-sm" />
+                <div key={i} className="h-72 bg-[#F5F5F5] rounded-xl animate-pulse shadow-sm" />
               ))}
             </div>
           ) : (
@@ -97,26 +97,26 @@ const LatestFeed = () => {
                 <motion.div key={blog._id} variants={fadeInUp}>
                   <Link href={`/blog/${blog._id}`} className="block group">
                     <article 
-                      className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
+                      className="bg-[#F5F5F5] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
                       style={{
                         backgroundImage: blog.image ? `url(${blog.image})` : 'none',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                       }}
                     >
-                      <div className="p-5 flex flex-col h-full bg-black/40"> {/* Overlay for readability */}
-                        <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha">
+                      <div className="p-5 flex flex-col h-full bg-[#121212]/40"> {/* Overlay for readability */}
+                        <h3 className="text-base sm:text-lg font-semibold text-right text-[#F5F5F5] line-clamp-2 font-faseyha">
                           {blog.title}
                         </h3>
-                        <div className="text-emerald-200 text-xs sm:text-sm text-right mt-2">
+                        <div className="text-[#F5F5F5] text-xs sm:text-sm text-right mt-2">
                           {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
                         </div>
                         <div
-                          className="mt-3 text-right text-emerald-100 line-clamp-2 text-sm sm:text-base font-faseyha"
+                          className="mt-3 text-right text-[#F5F5F5] line-clamp-2 text-sm sm:text-base font-faseyha"
                           dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 100) + '...' }}
                         />
                         <div className="mt-auto text-right">
-                          <span className="text-emerald-400 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span className="text-[#F5F5F5] text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             އިތުރަށް ބަލާ
                           </span>
                         </div>
@@ -137,7 +137,7 @@ const LatestFeed = () => {
           >
             <Link
               href="/blog"
-              className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
+              className="inline-block px-6 py-3 bg-[#121212] text-[#F5F5F5] text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-[#121212]/80 transition-all duration-300 font-faseyha"
             >
               ހުރިހާ ލިޔުންތައް
             </Link>
@@ -146,7 +146,7 @@ const LatestFeed = () => {
       </section>
 
       {/* Latest PDFs Section */}
-      <section className="py-12 sm:py-16 bg-emerald-50">
+      <section className="py-12 sm:py-16 bg-[#F5F5F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -155,10 +155,10 @@ const LatestFeed = () => {
             variants={fadeInUp}
             className="text-center mb-10 sm:mb-14"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-headingDhivehi">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#121212] font-headingDhivehi">
               އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
-            <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
+            <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
               އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް މިތަނުން ޑައުންލޯޑްކުރައްވާ
             </p>
           </motion.div>
@@ -166,7 +166,7 @@ const LatestFeed = () => {
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-72 bg-emerald-100 rounded-xl animate-pulse shadow-sm" />
+                <div key={i} className="h-72 bg-[#121212] rounded-xl animate-pulse shadow-sm" />
               ))}
             </div>
           ) : (
@@ -180,7 +180,7 @@ const LatestFeed = () => {
               {latestPDFs.map((pdf) => (
                 <motion.div key={pdf._id} variants={fadeInUp}>
                   <Link href={`/pdfs/${pdf._id}`} className="block group">
-                    <article className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full">
+                    <article className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-[#F5F5F5] h-full">
                       {pdf.image && (
                         <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                           <Image
@@ -189,18 +189,18 @@ const LatestFeed = () => {
                             fill
                             className="object-cover rounded-t-xl transition-transform duration-500 group-hover:scale-110"
                           />
-                          <div className="absolute inset-0 bg-emerald-900/10 group-hover:bg-emerald-900/20 transition-all duration-300"></div>
+                          <div className="absolute inset-0 bg-[#121212]/10 group-hover:bg-[#121212]/20 transition-all duration-300"></div>
                         </div>
                       )}
                       <div className="p-5 flex flex-col h-full">
-                        <h3 className="text-base sm:text-lg font-semibold text-right text-emerald-900 line-clamp-2 font-faseyha">
+                        <h3 className="text-base sm:text-lg font-semibold text-right text-[#F5F5F5] line-clamp-2 font-faseyha">
                           {pdf.title}
                         </h3>
-                        <p className="mt-2 text-sm sm:text-base text-emerald-700 text-right line-clamp-2 font-faseyha">
+                        <p className="mt-2 text-sm sm:text-base text-[#F5F5F5] text-right line-clamp-2 font-faseyha">
                           {pdf.description || 'ތަފްޞީލެއް ނެތް'}
                         </p>
                         <div className="mt-auto text-right">
-                          <span className="text-emerald-500 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span className="text-[#F5F5F5] text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             ޑައުންލޯޑް ކުރޭ
                           </span>
                         </div>
@@ -221,7 +221,7 @@ const LatestFeed = () => {
           >
             <Link
               href="/pdfs"
-              className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-emerald-700 transition-all duration-300 font-faseyha"
+              className="inline-block px-6 py-3 bg-[#121212] text-[#F5F5F5] text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-[#121212]/80 transition-all duration-300 font-faseyha"
             >
           ހުރިހާ ޕީ.ޑީ.އެފް
             </Link>
