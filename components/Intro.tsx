@@ -29,7 +29,7 @@ const Intro: React.FC = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-emerald-50">
+    <section className="py-12 sm:py-16 bg-[#121212]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -39,10 +39,10 @@ const Intro: React.FC = () => {
           variants={fadeInUp}
           className="text-center mb-10 sm:mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-emerald-900 font-faseyha">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#F5F5F5] font-faseyha">
             ދިވެހި ތަރުޖަމާތައް ނެގިފައިވާ ބައެއް ޓެލެގްރާމް ޗެނަލްތައް
           </h2>
-          <p className="mt-4 text-base sm:text-lg md:text-xl text-emerald-700 max-w-3xl mx-auto font-faseyha">
+          <p className="mt-4 text-base sm:text-lg md:text-xl text-[#F5F5F5] max-w-3xl mx-auto font-faseyha">
             މި ބޭފުޅުންގެ މަސައްކަތުގައި الله تعالى ބަރަކާތް ލައްވައި ޤަބޫލްކުރައްވާށި. އާމީން!
           </p>
         </motion.div>
@@ -68,7 +68,7 @@ const Intro: React.FC = () => {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-emerald-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-white text-base sm:text-lg font-semibold font-faseyha drop-shadow-md">
                     {img.alt}
                   </span>

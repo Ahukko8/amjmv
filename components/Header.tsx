@@ -16,13 +16,13 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <nav className="relative bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 shadow-lg">
+    <nav className="relative bg-[#121212] shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo/Title */}
           <div className="flex-shrink-0 flex items-center gap-2">
             <svg 
-              className="w-8 h-8 text-emerald-300"
+              className="w-8 h-8 text-[#F5F5F5]"
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -54,10 +54,10 @@ const Header: React.FC = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-emerald-100 hover:text-white text-lg font-medium transition-all duration-300 group"
+                className="relative text-[#F5F5F5] hover:text-[#ECEFF1] text-lg font-medium transition-all duration-300 group"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right"></span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#F5F5F5] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right"></span>
               </Link>
             ))}
           </div>
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-emerald-200 hover:text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all duration-200"
+              className="text-[#F5F5F5] hover:text-[#ECEFF1] p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F5F5F5] transition-all duration-200"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
 
       {/* Mobile Navigation */}
       <div 
-        className={`lg:hidden fixed inset-0 bg-emerald-900/95 backdrop-blur-lg z-50 transition-all duration-300 ease-in-out ${
+        className={`lg:hidden fixed inset-0 bg-[#121212] backdrop-blur-lg z-50 transition-all duration-300 ease-in-out ${
           isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
         }`}
       >
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
           <div className="flex justify-end p-4">
             <button
               onClick={() => setIsOpen(false)}
-              className="text-emerald-200 hover:text-white p-2"
+              className="text-[#F5F5F5] hover:text-white p-2"
             >
               <X size={28} />
             </button>
@@ -95,7 +95,7 @@ const Header: React.FC = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-emerald-100 hover:text-white text-xl font-medium py-2 px-6 rounded-lg hover:bg-emerald-800/50 transition-all duration-200 transform hover:scale-105"
+                className="text-[#F5F5F5] hover:text-white text-xl font-medium py-2 px-6 rounded-lg hover:bg-[#121212] transition-all duration-200 transform hover:scale-105"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
