@@ -33,7 +33,7 @@ export default function PDFsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPdfs, setTotalPdfs] = useState(0);
 
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 12;
 
   // Animation variants
   const fadeInUp = {
