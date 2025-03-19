@@ -8,6 +8,7 @@ const Footer = () => {
     { name: 'ޝައިޚްގެ ތަޢާރރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '/blog' },
     { name: 'ޕީ.ޑީ.އެފް', href: '/pdfs' },
+    { name: 'އެހެންް ލިޔުންތައް', href: '/otherChannel' },
   ];
 
   return (

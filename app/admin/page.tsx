@@ -5,6 +5,7 @@ import { SignInButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
+
 export default function AdminHome() {
   const { isSignedIn } = useAuth();
 
@@ -19,6 +20,8 @@ export default function AdminHome() {
             ? 'އަޅާލާގޮތް ހަމަޖެހިފައި، ޑޭޝްބޯޑްއަށް ދާންދޭ'
             : 'އެޑްމިން ޕޭޖަށް ލޮގިން ކުރޭ'}
         </p>
+
+        
 
         {isSignedIn ? (
           <Link href="/admin/dashboard">

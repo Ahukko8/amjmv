@@ -3,6 +3,8 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 // import type { OrganizationMembership } from "@clerk/nextjs/server";
 import '@/app/globals.css';
+import AdminHeader from "@/components/AdminHeader";
+import { yourFont } from "../fonts";
 
 export default async function AdminLayout({
   children,
@@ -27,23 +29,11 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <span className="text-2xl font-bold font-faseyha">އެޑްމިން ޑޭޝްބޯޑް</span>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <span className="text-gray-700 mr-4 font-faseyha">
+    <div className={`${yourFont.variable} min-h-screen bg-gray-100`}>
+       <AdminHeader />
+       <span className="text-gray-700 mr-4 font-faseyha">
                 މަރުޙަބާ, {user.firstName || user.username}
               </span>
-            </div>
-          </div>
-        </div>
-      </nav>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 font-faseyha">
         {children}
       </main>
