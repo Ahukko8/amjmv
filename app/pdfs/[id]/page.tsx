@@ -5,6 +5,7 @@ import PDFViewer from "@/components/PDFViewer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import React from "react";
+import Loading from "@/components/Loading";
 
 // Define the PDF data structure
 interface PDFData {
@@ -40,7 +41,9 @@ export default function PDFReader({ params }: PDFPageProps) {
   if (!pdf) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center py-12 font-faseyha text-lg">ލޯޑިން...</div>
+        <div className="text-center py-12 font-faseyha text-lg">
+          <Loading />
+        </div>
       </div>
     );
   }
