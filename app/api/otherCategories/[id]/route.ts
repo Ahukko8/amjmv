@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
 // import Category from "@/models/Category";
-import  OtherCategory  from "@/models/OtherCategory";
+// import  OtherCategory  from "@/models/OtherCategory";
 import Blog from "@/models/Blog";
 import { isValidObjectId } from "mongoose";
+import { OtherCategory } from "@/models";
 
 export async function DELETE(
   request: NextRequest,
