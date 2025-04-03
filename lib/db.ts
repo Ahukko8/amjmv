@@ -1,6 +1,7 @@
 // lib/db.ts
 
 import mongoose from 'mongoose';
+import '@/models/index'
 
 interface DatabaseConnection {
   conn: mongoose.Connection | null;
