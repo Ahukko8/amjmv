@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import BlogEditor from '@/components/BlogEditor';
+import OtherChannelBlogEditor from '@/components/OtherChannelBlogEditor';
+
 
 interface BlogData {
   title: string;
@@ -56,7 +57,8 @@ export default function CreateBlog() {
           {error}
         </div>
       )}
-      <BlogEditor onSubmit={handleSubmit} loading={loading} />
+      {/* <BlogEditor onSubmit={handleSubmit} loading={loading} /> */}
+      <OtherChannelBlogEditor  onSubmit={handleSubmit} loading={loading} />
     </div>
   );
 }

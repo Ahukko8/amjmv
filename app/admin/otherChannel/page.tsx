@@ -6,11 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import Loading from '@/components/Loading';
 
-interface Author {
-  _id: string;
-  name: string;
-}
-
 interface Category {
   _id: string;
   name: string;
@@ -22,7 +17,6 @@ interface OtherBlog {
   title: string;
   content: string;
   status: 'draft' | 'published';
-  author: Author;
   categories: Category[];
   createdAt: string;
   updatedAt: string;
@@ -151,9 +145,6 @@ export default function OtherChannelDashboard() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
         <div className="gap-2 flex flex-row">
-          {/* <Link href="/admin/dashboard/pdfs" className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
-            PDF މެނޭޖްމަންޓް
-          </Link> */}
           <Link href="/admin/otherChannel/categories" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
             ކެޓަގަރީތައް
           </Link>
@@ -305,7 +296,7 @@ export default function OtherChannelDashboard() {
                     {blog.status === 'published' ? 'އަންޕަބްލިޝް' : 'ޕަބްލިޝް'}
                   </button>
                   <button
-                    onClick={() => router.push(`/admin/dashboard/edit/${blog._id}`)}
+                    onClick={() => router.push(`/admin/otherChannel/edit/${blog._id}`)}
                     className="text-indigo-600 hover:text-indigo-900"
                   >
                     އެޑިޓް

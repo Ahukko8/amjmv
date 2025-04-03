@@ -22,7 +22,7 @@ export default function CategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories');
+      const response = await fetch('/api/otherCategories');
       if (!response.ok) throw new Error('Failed to fetch categories');
       const data = await response.json();
       setCategories(data.categories);
@@ -42,7 +42,7 @@ export default function CategoriesPage() {
     }
 
     try {
-      const response = await fetch('/api/categories', {
+      const response = await fetch('/api/otherCategories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function CategoriesPage() {
     if (!window.confirm('މި ކެޓަގަރީ ޑިލީޓް ކުރަންވީތަ؟')) return;
 
     try {
-      const response = await fetch(`/api/categories/${categoryId}`, {
+      const response = await fetch(`/api/otherCategories/${categoryId}`, {
         method: 'DELETE',
       });
 

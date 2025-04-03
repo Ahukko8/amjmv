@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import BlogEditor from '@/components/BlogEditor';
+import Loading from '@/components/Loading';
+import OtherChannelBlogEditor from '@/components/OtherChannelBlogEditor';
 
 interface BlogData {
   title: string;
   content: string;
   categories: string[];
   image?: File | string | null;
+  fontFamily?: string;
+  fontSize?: string;
 }
 
 interface BlogEditProps {
@@ -22,6 +25,8 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
     content?: string; 
     categories?: string[];
     image?: string;
+    fontFamily?: string;
+    fontSize?: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,18 +56,26 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
         setLoading(true);
         const response = await fetch(`/api/otherChannelBlogs/${id}`);
         if (!response.ok) throw new Error('Failed to fetch blog');
+        
         const data = await response.json();
         console.log('Fetched blog data:', data);
+        
+        // Check if data.otherBlog exists before accessing properties
+        if (!data.otherBlog) {
+          throw new Error('Blog data not found in response');
+        }
+        
         setInitialData({
-          title: data.blog.title,
-          content: data.blog.content,
-          categories: data.blog.categories.map((cat: { _id: string }) => cat._id),
-          image: data.blog.image, // Include existing image URL
+          title: data.otherBlog.title,
+          content: data.otherBlog.content,
+          categories: data.otherBlog.categories.map((cat: { _id: string }) => cat._id),
+          image: data.otherBlog.image,
+          fontFamily: data.otherBlog.fontFamily,
+          fontSize: data.otherBlog.fontSize
         });
       } catch (err) {
         console.error('Error fetching blog:', err);
         setError('Failed to load blog details');
-        router.push('/admin/dashboard');
       } finally {
         setLoading(false);
       }
@@ -81,6 +94,16 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
       formData.append('title', blogData.title);
       formData.append('content', blogData.content);
       formData.append('categories', JSON.stringify(blogData.categories));
+      
+      // Add font family and size if they exist
+      if (blogData.fontFamily) {
+        formData.append('fontFamily', blogData.fontFamily);
+      }
+      
+      if (blogData.fontSize) {
+        formData.append('fontSize', blogData.fontSize);
+      }
+      
       if (blogData.image instanceof File) {
         formData.append('image', blogData.image);
       }
@@ -94,6 +117,7 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update blog');
       }
+      
       console.log('Blog update successful');
       router.push('/admin/otherChannel');
     } catch (err) {
@@ -112,8 +136,8 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
     );
   }
 
-  if (!id || !initialData) {
-    return <div className="text-center py-12 font-faseyha">ލޯޑިން...</div>;
+  if (loading || !id || !initialData) {
+    return <Loading />
   }
 
   return (
@@ -124,7 +148,16 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
           {error}
         </div>
       )}
-      <BlogEditor initialData={initialData} onSubmit={handleSubmit} loading={loading} />
+      {/* <BlogEditor 
+        initialData={initialData} 
+        onSubmit={handleSubmit} 
+        loading={loading} 
+      /> */}
+      <OtherChannelBlogEditor    
+        initialData={initialData} 
+        onSubmit={handleSubmit} 
+        loading={loading} 
+      />
     </div>
   );
 }
