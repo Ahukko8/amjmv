@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
-import OtherCategory from "@/models/OtherCategory";
+import OtherCategory from "@/models/othercategories";
 
 
 

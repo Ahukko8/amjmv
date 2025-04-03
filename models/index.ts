@@ -1,7 +1,8 @@
-// import Category from './Category';
-// import Blog from './Blog';
-// import OtherChannelBlog from './otherChannelsBlogs';
+import Category from './Category';
+import Blog from './Blog';
+import OtherChannelBlog from './otherChannelsBlogs';
+import OtherCategory from './othercategories';
 
 
 
-// export { Category, Blog, OtherChannelBlog};
+export { Category, Blog, OtherChannelBlog, OtherCategory };

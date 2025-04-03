@@ -32,6 +32,6 @@ otherCategorySchema.pre('save', function(next) {
 });
 
 // Changed to singular 'OtherCategory' to match the reference
-const OtherCategory = models.OtherCategory || model('OtherCategory', otherCategorySchema);
+const OtherCategory = models.OtherCategory || model('othercategories', otherCategorySchema);
 
 export default OtherCategory;
