@@ -5,7 +5,8 @@ import connectDB from "@/lib/db";
 // import  OtherCategory  from "@/models/OtherCategory";
 import Blog from "@/models/Blog";
 import { isValidObjectId } from "mongoose";
-import { OtherCategory } from "@/models";
+import OtherCategory from "@/models/OtherCategory";
+
 
 export async function DELETE(
   request: NextRequest,
