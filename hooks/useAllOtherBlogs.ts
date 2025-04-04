@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-// import { Blog } from '@/types/blog';
 import { otherBlog } from '@/types/otherBlog';
 
 interface FetchBlogsParams {
@@ -17,7 +16,7 @@ interface FetchBlogsResult {
   error: string | null;
 }
 
-export const useAllBlogs = ({ page, limit, categoryId }: FetchBlogsParams): FetchBlogsResult => {
+export const useAllOtherBlogs = ({ page, limit, categoryId }: FetchBlogsParams): FetchBlogsResult => {
   const [blogs, setBlogs] = useState<otherBlog[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
