@@ -1,9 +1,8 @@
-// app/otherChannel/[id]/ClientReadingProgress.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 
-export default function ClientReadingProgress() {
+export default function ReadingProgress() {
   const [readingProgress, setReadingProgress] = useState(0);
 
   useEffect(() => {

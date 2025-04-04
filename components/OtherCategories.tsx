@@ -3,12 +3,6 @@
 import { otherCategory } from '@/types/otherCategory';
 import { useEffect, useState } from 'react';
 
-// interface Category {
-//   _id: string;
-//   name: string;
-//   slug: string;
-// }
-
 interface CategoriesProps {
   onSelectCategory: (categoryId: string | null) => void;
   selectedCategory: string | null;

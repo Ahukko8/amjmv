@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation';
 import connectDB from '@/lib/db';
-// import Blog from '@/models/Blog';
-import  OtherChannelsBlog  from '@/models/otherChannelsBlogs';
+import  OtherChannelBlog  from '@/models/otherChannelsBlogs';
 import { Clock, Calendar } from 'lucide-react';
-import ClientReadingProgress from './ClientReadingProgress';
+import ReadingProgress from './ReadingProgress';
 import { Suspense } from 'react';
 import Footer from '@/components/Footer';
 import DOMPurify from 'dompurify';
@@ -15,16 +14,10 @@ import Image from 'next/image';
 const window = new JSDOM('').window;
 const purify = DOMPurify(window);
 
-interface BlogAuthor {
-  _id: string;
-  name: string;
-}
-
 interface BlogDocument {
   _id: string;
   title: string;
   content: string;
-  author: BlogAuthor;
   status: 'draft' | 'published';
   fontFamily: string;
   fontSize: 'small' | 'medium' | 'large';
@@ -40,17 +33,16 @@ interface PageProps {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default async function BlogPage({ params }: PageProps) {
+export default async function OtherChannelBlogPage({ params }: PageProps) {
   const { id } = await params;
 
   try {
     await connectDB();
     
-    const blog = await OtherChannelsBlog.findOne({
+    const blog = await OtherChannelBlog.findOne({
       _id: id,
       status: 'published'
     })
-    .populate('author', 'name')
     .lean<BlogDocument>();
 
     if (!blog) {
@@ -85,7 +77,7 @@ export default async function BlogPage({ params }: PageProps) {
         
         <div className="top-0 z-50 w-full">
           <Suspense fallback={<div className="h-1 bg-gray-200" />}>
-            <ClientReadingProgress />
+            <ReadingProgress />
           </Suspense>
         </div>
 
@@ -156,7 +148,7 @@ export async function generateMetadata({ params }: PageProps) {
   try {
     await connectDB();
     
-    const blog = await OtherChannelsBlog.findOne({
+    const blog = await OtherChannelBlog.findOne({
       _id: id,
       status: 'published'
     }).lean<BlogDocument>();
@@ -178,7 +170,6 @@ export async function generateMetadata({ params }: PageProps) {
         title: blog.title,
         description,
         type: 'article',
-        authors: [blog.author.name],
         publishedTime: new Date(blog.createdAt).toISOString(),
         modifiedTime: new Date(blog.updatedAt).toISOString(),
         images: blog.image ? [{ url: blog.image }] : undefined,

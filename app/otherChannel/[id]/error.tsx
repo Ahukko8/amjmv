@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Error({
+export default function OtherError({
   error,
   reset,
 }: {

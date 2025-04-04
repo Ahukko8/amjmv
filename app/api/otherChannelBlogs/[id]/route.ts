@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import connectDB from "@/lib/db";
-// import Blog from "@/models/Blog";
-import otherChannelBlogs from "@/models/otherChannelsBlogs";
+import OtherChannelBlog from "@/models/otherChannelsBlogs";
 import { isValidObjectId } from "mongoose";
 
 // Spaces configuration
@@ -27,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     await connectDB();
-    const otherBlog = await otherChannelBlogs.findById(id)
+    const otherBlog = await OtherChannelBlog.findById(id)
       .populate('categories', 'name slug');
 
     if (!otherBlog) {
@@ -78,7 +77,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       categories: formData.get('categories') ? JSON.parse(formData.get('categories') as string) : undefined,
     };
 
-    const otherExistingBlog = await otherChannelBlogs.findById(id);
+    const otherExistingBlog = await OtherChannelBlog.findById(id);
     if (!otherExistingBlog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
@@ -109,7 +108,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       imageUrl = `https://${process.env.DO_SPACES_BUCKET}.${ENDPOINT}/blog-images/${imageFileName}`;
     }
 
-    const otherUpdatedBlog = await otherChannelBlogs.findByIdAndUpdate(
+    const otherUpdatedBlog = await OtherChannelBlog.findByIdAndUpdate(
       id,
       {
         ...updates,
@@ -160,7 +159,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     await connectDB();
 
-    const blog = await otherChannelBlogs.findById(id);
+    const blog = await OtherChannelBlog.findById(id);
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
@@ -204,7 +203,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     await connectDB();
 
-    const blog = await otherChannelBlogs.findById(id);
+    const blog = await OtherChannelBlog.findById(id);
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
@@ -219,7 +218,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       );
     }
 
-    await otherChannelBlogs.findByIdAndDelete(id);
+    await OtherChannelBlog.findByIdAndDelete(id);
 
     return NextResponse.json({ message: "Blog deleted successfully" }, { status: 200 });
   } catch (error: any) {

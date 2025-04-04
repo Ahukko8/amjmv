@@ -12,7 +12,6 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
-// import Categories from './Categories';
 import OtherCategories from './OtherCategories';
 import { useAllOtherBlogs } from '@/hooks/useAllOtherBlogs';
 
@@ -68,7 +67,7 @@ export default function BlogList() {
       <div className="lg:w-64 shrink-0">
         <div className="lg:sticky lg:top-6">
           <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-right text-[#121212] font-faseyha">
-            ކެޓަގަރީތައް
+            ޗެނަލްތައް
           </h3>
           <div className="block lg:hidden mb-6">
             <OtherCategories
@@ -101,7 +100,7 @@ export default function BlogList() {
         ) : (
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {blogs.map((blog) => (
-              <Link key={blog._id} href={`/blog/${blog._id}`} className="block group">
+              <Link key={blog._id} href={`/otherChannel/${blog._id}`} className="block group">
                 <article 
                   className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
                   style={{
