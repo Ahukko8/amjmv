@@ -13,7 +13,7 @@ const Header: React.FC = () => {
     { name: 'ޝައިޚްގެ ތަޢާރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '/blog' },
     { name: 'ޕި.ޑީ.އެފް', href: '/pdfs' },
-    { name: 'އެހެންް ލިޔުންތައް', href: '/otherChannel' },
+    { name: 'އެހެންް ޗެނަލްތައް', href: '/otherChannel' },
   ];
 
   return (

@@ -16,7 +16,7 @@ export default function OtherChannelPage() {
         {/* Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/blogImg.jpg" // Path relative to /public
+            src="/images/other.jpg" // Path relative to /public
             alt="Blog Banner"
             fill
             style={{ objectFit: 'cover' }}
@@ -34,7 +34,7 @@ export default function OtherChannelPage() {
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
           <h1 className="text-4xl text-[#F5F5F5] sm:text-5xl md:text-6xl font-bold font-faseyha mb-6 sm:mb-8 md:mb-10">
-             އެހެން ލިޔުންތައްް
+          އެހެން ޗެނަލްތައް
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-[#F5F5F5] max-w-3xl mx-auto">
             ޓެލެގްރާމް ޗެނަލްތަކުގެ ތެރެއިން ހޮވާލެވިފައިވާ ބައެއް މުހިންމު ޗެނަލްތަކުގެ ލިޔުންތައް
