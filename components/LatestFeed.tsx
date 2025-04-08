@@ -75,7 +75,7 @@ const LatestFeed = () => {
               އެންމެ ފަހުގެ ލިޔުންތައް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
-              އެންމެ ފަހުގެ ބުލޮގުތަކާއި ލިޔުންތައް މިތަނުން ބައްލަވާ
+              އެންމެ ފަހުގެ ލިޔުންތައް މިތަނުން ބައްލަވާ
             </p>
           </motion.div>
           
@@ -159,7 +159,7 @@ const LatestFeed = () => {
               އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
             <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
-              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް މިތަނުން ޑައުންލޯޑްކުރައްވާ
+              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތަކާއި ލިޔުންތައް ޑައުންލޯޑްކުރައްވާ
             </p>
           </motion.div>
           

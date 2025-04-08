@@ -5,7 +5,7 @@ import Image from 'next/image';
 const Footer = () => {
   const footerLinks = [
     { name: 'ހޯމް', href: '/' },
-    { name: 'ޝައިޚްގެ ތަޢާރރަފް', href: '/about' },
+    { name: 'ޝައިޚްގެ ތަޢާރަފް', href: '/about' },
     { name: 'ލިޔުންތައް', href: '/blog' },
     { name: 'ޕީ.ޑީ.އެފް', href: '/pdfs' },
     { name: 'އެހެންް ލިޔުންތައް', href: '/otherChannel' },
@@ -44,7 +44,7 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-[#F5F5F5] text-sm sm:text-base leading-relaxed">
-              ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލްގެ ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެިވފައިވާ ލިޔުންތައް.
+              ޝައިޚް އަޙްމަދު މޫސާ ޖިބްރީލްގެ ދިވެހި ބަހަށް ތަރުޖަމާ ކުރެވިފައިވާ ލިޔުންތައް.
             </p>
           </div>
 
