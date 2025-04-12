@@ -145,6 +145,9 @@ export default function OtherChannelDashboard() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">ބުލޮގްތައް</h1>
         <div className="gap-2 flex flex-row">
+        <Link href="/admin/otherChannel/pdfs" className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
+          PDF މެނޭޖްމަންޓް
+        </Link>
           <Link href="/admin/otherChannel/categories" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
             ކެޓަގަރީތައް
           </Link>

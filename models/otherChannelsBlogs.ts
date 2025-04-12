@@ -7,7 +7,6 @@ const otherChannelsBlogSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   status: { type: String, enum: ['draft', 'published'], default: 'draft' },
-  // Removed the author field completely
   categories: [{ type: Schema.Types.ObjectId, ref: 'othercategories' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
