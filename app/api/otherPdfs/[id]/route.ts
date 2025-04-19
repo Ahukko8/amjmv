@@ -27,9 +27,9 @@ const s3Client = new S3Client({
 // GET a single PDF by ID
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params;
+  const { id } = params;
 
   try {
     await connectDB();
@@ -52,9 +52,9 @@ export async function GET(
 // PUT: Update a PDF
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params;
+  const { id } = params;
 
   try {
     const { userId } = await auth();
@@ -163,9 +163,9 @@ export async function PUT(
 // DELETE a PDF by ID
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params;
+  const { id } = params;
 
   try {
     const { userId } = await auth();
