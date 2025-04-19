@@ -1,16 +1,17 @@
 "use client";
 
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import OtherBloglist from '@/components/OtherBloglist';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function OtherChannelPage() {
+// Create a client component that uses the search params
+function OtherChannelContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [activeView, setActiveView] = useState('blogs'); // Start with default "blogs"
+  const [activeView, setActiveView] = useState('blogs');
 
   useEffect(() => {
     const view = searchParams.get('view');
@@ -25,38 +26,7 @@ export default function OtherChannelPage() {
   };
 
   return (
-    <div className="font-faseyha flex flex-col min-h-screen bg-gray-50">
-      {/* Header */}
-      <Header />
-
-      {/* Banner with Image */}
-      <div className="relative w-full h-64 md:h-80">
-        <Image
-          src="/images/other.jpg"
-          alt="Channel Banner"
-          fill
-          style={{ objectFit: 'cover' }}
-          quality={85}
-          priority
-          className="z-0"
-          onError={(e) => {
-            console.error('Failed to load banner image:', e);
-          }}
-        />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
-        {/* Banner Text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            އެހެން ޗެނަލްތައް
-          </h1>
-          <p className="text-white text-lg md:text-xl max-w-3xl">
-            ޓެލެގްރާމް ޗެނަލްތަކުގެ ތެރެއިން ހޮވާލެވިފައިވާ ބައެއް މުހިންމު ޗެނަލްތަކުގެ ލިޔުންތައް
-          </p>
-        </div>
-      </div>
-
+    <>
       {/* Toggle Buttons */}
       <div className="container mx-auto mt-4 mb-2 flex justify-center">
         <button
@@ -103,6 +73,48 @@ export default function OtherChannelPage() {
           </div>
         )}
       </div>
+    </>
+  );
+}
+
+export default function OtherChannelPage() {
+  return (
+    <div className="font-faseyha flex flex-col min-h-screen bg-gray-50">
+      {/* Header */}
+      <Header />
+
+      {/* Banner with Image */}
+      <div className="relative w-full h-64 md:h-80">
+        <Image
+          src="/images/other.jpg"
+          alt="Channel Banner"
+          fill
+          style={{ objectFit: 'cover' }}
+          quality={85}
+          priority
+          className="z-0"
+          onError={(e) => {
+            console.error('Failed to load banner image:', e);
+          }}
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+        {/* Banner Text */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            އެހެން ޗެނަލްތައް
+          </h1>
+          <p className="text-white text-lg md:text-xl max-w-3xl">
+            ޓެލެގްރާމް ޗެނަލްތަކުގެ ތެރެއިން ހޮވާލެވިފައިވާ ބައެއް މުހިންމު ޗެނަލްތަކުގެ ލިޔުންތައް
+          </p>
+        </div>
+      </div>
+
+      {/* Wrap content in Suspense */}
+      <Suspense fallback={<div className="container mx-auto py-8 text-center">Loading...</div>}>
+        <OtherChannelContent />
+      </Suspense>
 
       {/* Footer */}
       <Footer />
