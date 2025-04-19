@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import connectDB from "@/lib/db";
 import OtherPDF from "@/models/otherpdf";
 import OtherCategory from "@/models/othercategories";
@@ -27,9 +23,9 @@ const s3Client = new S3Client({
 // GET a single PDF by ID
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = params.id;
 
   try {
     await connectDB();
@@ -42,19 +38,16 @@ export async function GET(
     return NextResponse.json({ pdf });
   } catch (error: any) {
     console.error("Error fetching PDF:", error);
-    return NextResponse.json(
-      { message: "Error fetching PDF", error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Error fetching PDF", error: error.message }, { status: 500 });
   }
 }
 
 // PUT: Update a PDF
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = params.id;
 
   try {
     const { userId } = await auth();
@@ -86,22 +79,18 @@ export async function PUT(
     if (pdfFile) {
       const pdfFileName = `${Date.now()}-${pdfFile.name}`;
       const pdfBuffer = Buffer.from(await pdfFile.arrayBuffer());
-      await s3Client.send(
-        new PutObjectCommand({
-          Bucket: BUCKET,
-          Key: pdfFileName,
-          Body: pdfBuffer,
-          ACL: "public-read",
-          ContentType: pdfFile.type,
-        })
-      );
+      await s3Client.send(new PutObjectCommand({
+        Bucket: BUCKET,
+        Key: pdfFileName,
+        Body: pdfBuffer,
+        ACL: "public-read",
+        ContentType: pdfFile.type,
+      }));
       pdfPath = `https://${BUCKET}.${ENDPOINT}/${pdfFileName}`;
 
       const oldPdfKey = existingPDF.pdfFile?.split("/").pop();
       if (oldPdfKey) {
-        await s3Client.send(
-          new DeleteObjectCommand({ Bucket: BUCKET, Key: oldPdfKey })
-        );
+        await s3Client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: oldPdfKey }));
       }
     }
 
@@ -109,22 +98,18 @@ export async function PUT(
     if (imageFile) {
       const imageFileName = `${Date.now()}-${imageFile.name}`;
       const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-      await s3Client.send(
-        new PutObjectCommand({
-          Bucket: BUCKET,
-          Key: imageFileName,
-          Body: imageBuffer,
-          ACL: "public-read",
-          ContentType: imageFile.type,
-        })
-      );
+      await s3Client.send(new PutObjectCommand({
+        Bucket: BUCKET,
+        Key: imageFileName,
+        Body: imageBuffer,
+        ACL: "public-read",
+        ContentType: imageFile.type,
+      }));
       imagePath = `https://${BUCKET}.${ENDPOINT}/${imageFileName}`;
 
       const oldImageKey = existingPDF.image?.split("/").pop();
       if (oldImageKey) {
-        await s3Client.send(
-          new DeleteObjectCommand({ Bucket: BUCKET, Key: oldImageKey })
-        );
+        await s3Client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: oldImageKey }));
       }
     }
 
@@ -153,19 +138,16 @@ export async function PUT(
     return NextResponse.json({ pdf: updatedPDF });
   } catch (error: any) {
     console.error("Error updating PDF:", error);
-    return NextResponse.json(
-      { message: "Error updating PDF", error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Error updating PDF", error: error.message }, { status: 500 });
   }
 }
 
 // DELETE a PDF by ID
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = params.id;
 
   try {
     const { userId } = await auth();
@@ -197,9 +179,6 @@ export async function DELETE(
     return NextResponse.json({ message: "PDF deleted successfully" });
   } catch (error: any) {
     console.error("Error deleting PDF:", error);
-    return NextResponse.json(
-      { message: "Error deleting PDF", error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Error deleting PDF", error: error.message }, { status: 500 });
   }
 }
