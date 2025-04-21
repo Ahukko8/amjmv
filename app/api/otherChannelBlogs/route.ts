@@ -4,12 +4,10 @@ import { NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import connectDB from '@/lib/db';
-// import { Blog, Category } from '@/models';
-// import { otherChannelBlogs, OtherCategory } from '@/models';
 import OtherChannelBlog from '@/models/otherChannelsBlogs'
 import { FilterQuery, isValidObjectId } from 'mongoose';
 
-// Spaces configuration
+
 const ENDPOINT = process.env.DO_SPACES_ENDPOINT || 'blr1.digitaloceanspaces.com';
 const REGION = ENDPOINT.split('.')[0];
 const s3Client = new S3Client({

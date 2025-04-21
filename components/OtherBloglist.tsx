@@ -100,7 +100,7 @@ export default function BlogList() {
         ) : (
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {blogs.map((blog) => (
-              <Link key={blog._id} href={`/otherChannel/${blog._id}`} className="block group">
+              <Link key={blog._id} href={`/otherChannel/blog/${blog._id}`} className="block group">
                 <article 
                   className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
                   style={{
