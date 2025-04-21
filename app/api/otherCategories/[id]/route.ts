@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/db";
-// import Category from "@/models/Category";
-// import  OtherCategory  from "@/models/OtherCategory";
 import Blog from "@/models/Blog";
 import { isValidObjectId } from "mongoose";
 import OtherCategory from "@/models/othercategories";
+import OtherPDF from "@/models/otherpdf";
 
 
 export async function DELETE(
@@ -39,6 +38,11 @@ export async function DELETE(
       { categories: id },
       { $pull: { categories: id } }
     );
+
+    await OtherPDF.updateMany(
+      { categories: id },
+      { $pull: { categories: id } }
+    )
 
     const deletedCategory = await OtherCategory.findByIdAndDelete(id);
 

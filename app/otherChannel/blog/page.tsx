@@ -8,9 +8,7 @@ import React from 'react'
 const page = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#F5F5F5] font-faseyha">
-    {/* Header */}
     <Header />
-
     {/* Banner with Image */}
     <section className="relative py-16 sm:py-20 md:py-24 text-[#F5F5F5]">
       {/* Image */}

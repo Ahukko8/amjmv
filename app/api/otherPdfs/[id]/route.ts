@@ -5,6 +5,7 @@ import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client
 import connectDB from "@/lib/db";
 import OtherPDF from "@/models/otherpdf";
 import OtherCategory from "@/models/othercategories";
+import { isValidObjectId } from "mongoose";
 
 // DigitalOcean Spaces config
 const ENDPOINT = process.env.DO_SPACES_ENDPOINT || "blr1.digitaloceanspaces.com";
@@ -28,14 +29,17 @@ export async function GET(
   const id = await params;
 
   try {
+    if (!isValidObjectId(id)) {
+      return NextResponse.json({message: "Invalid pdf ID format"}, {status: 400 })
+    }
     await connectDB();
-    const pdf = await OtherPDF.findById(id).populate("categories").lean();
+    const otherPdf = await OtherPDF.findById(id).populate("categories", "name slug");
 
-    if (!pdf) {
+    if (!otherPdf) {
       return NextResponse.json({ message: "PDF not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ pdf });
+    return NextResponse.json({ otherPdf });
   } catch (error: any) {
     console.error("Error fetching PDF:", error);
     return NextResponse.json({ message: "Error fetching PDF", error: error.message }, { status: 500 });
@@ -70,12 +74,12 @@ export async function PUT(
       return NextResponse.json({ message: "Title is required" }, { status: 400 });
     }
 
-    const existingPDF = await OtherPDF.findById(id);
-    if (!existingPDF) {
+    const otherExistingPDF = await OtherPDF.findById(id);
+    if (!otherExistingPDF) {
       return NextResponse.json({ message: "PDF not found" }, { status: 404 });
     }
 
-    let pdfPath = existingPDF.pdfFile;
+    let pdfPath = otherExistingPDF.pdfFile;
     if (pdfFile) {
       const pdfFileName = `${Date.now()}-${pdfFile.name}`;
       const pdfBuffer = Buffer.from(await pdfFile.arrayBuffer());
@@ -88,13 +92,13 @@ export async function PUT(
       }));
       pdfPath = `https://${BUCKET}.${ENDPOINT}/${pdfFileName}`;
 
-      const oldPdfKey = existingPDF.pdfFile?.split("/").pop();
+      const oldPdfKey = otherExistingPDF.pdfFile?.split("/").pop();
       if (oldPdfKey) {
         await s3Client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: oldPdfKey }));
       }
     }
 
-    let imagePath = existingPDF.image;
+    let imagePath = otherExistingPDF.image;
     if (imageFile) {
       const imageFileName = `${Date.now()}-${imageFile.name}`;
       const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
@@ -107,7 +111,7 @@ export async function PUT(
       }));
       imagePath = `https://${BUCKET}.${ENDPOINT}/${imageFileName}`;
 
-      const oldImageKey = existingPDF.image?.split("/").pop();
+      const oldImageKey = otherExistingPDF.image?.split("/").pop();
       if (oldImageKey) {
         await s3Client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: oldImageKey }));
       }
@@ -127,7 +131,7 @@ export async function PUT(
       {
         title,
         description,
-        categories: categoryId ? [categoryId] : existingPDF.categories,
+        categories: categoryId ? [categoryId] : otherExistingPDF.categories,
         pdfFile: pdfPath,
         image: imagePath,
         updatedAt: new Date(),

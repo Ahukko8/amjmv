@@ -12,17 +12,17 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination';
 import OtherCategories from './OtherCategories';
-import { useAllOtherBlogs } from '@/hooks/useAllOtherBlogs';
+import { useAllOtherPdfs } from '@/hooks/useAllOtherPdfs';
 
 
 const ITEMS_PER_PAGE = 6;
 const MAX_VISIBLE_PAGES = 10;
 
-export default function BlogList() {
+export default function OtherPdfList() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { blogs, total, isLoading, error } = useAllOtherBlogs({
+  const { pdfs, total, isLoading, error } = useAllOtherPdfs({
     page: currentPage,
     limit: ITEMS_PER_PAGE,
     categoryId: selectedCategory,
@@ -62,7 +62,7 @@ export default function BlogList() {
       <div className="lg:w-64 shrink-0">
         <div className="lg:sticky lg:top-6">
           <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-right text-[#121212] font-faseyha">
-            ޗެނަލްތައް
+             ޗެނަލްތައް
           </h3>
           <div className="block lg:hidden mb-6">
             <OtherCategories
@@ -94,36 +94,44 @@ export default function BlogList() {
           </div>
         ) : (
           <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog) => (
-              <Link key={blog._id} href={`/otherChannel/blog/${blog._id}`} className="block group">
-                <article 
-                  className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
-                  style={{
-                    backgroundImage: blog.image ? `url(${blog.image})` : 'none',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                >
-                  <div className="p-5 flex flex-col h-full bg-[#121212]/40">
-                    <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha">
-                      {blog.title}
-                    </h3>
-                    <div className="text-white text-xs sm:text-sm text-right mt-2">
-                      {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
+            {Array.isArray(pdfs) && pdfs.length > 0 ? (
+              pdfs.map((pdf) => (
+                <Link key={pdf._id} href={`/otherChannel/pdf/${pdf._id}`} className="block group">
+                  <article 
+                    className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
+                    style={{
+                      backgroundImage: pdf.image ? `url(${pdf.image})` : 'none',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div className="p-5 flex flex-col h-full bg-[#121212]/40">
+                      <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha">
+                        {pdf.title}
+                      </h3>
+                      <div className="text-white text-xs sm:text-sm text-right mt-2">
+                        {new Date(pdf.createdAt).toLocaleDateString('dv-MV')}
+                      </div>
+                      <div
+                        className="mt-3 text-right text-white line-clamp-2 text-sm sm:text-base font-faseyha"
+                        dangerouslySetInnerHTML={{
+                          __html: (pdf.content ? pdf.content.slice(0, 100) : 'No content available') + '...',
+                        }}
+                      />
+                      <div className="mt-auto text-right">
+                        <span className="text-white text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                           ކިޔާ
+                        </span>
+                      </div>
                     </div>
-                    <div
-                      className="mt-3 text-right text-white line-clamp-2 text-sm sm:text-base font-faseyha"
-                      dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 100) + '...' }}
-                    />
-                    <div className="mt-auto text-right">
-                      <span className="text-white text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        ލިޔުން ކިޔާ
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            ))}
+                  </article>
+                </Link>
+              ))
+            ) : (
+              <div className="text-center text-red-600 py-10 sm:py-12 font-faseyha text-base sm:text-lg">
+                No PDFs available
+              </div>
+            )}
           </div>
         )}
 
