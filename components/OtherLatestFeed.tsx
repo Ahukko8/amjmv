@@ -179,7 +179,7 @@ const OtherLatestFeed = () => {
             >
               {latestPDFs.map((pdf) => (
                 <motion.div key={pdf._id} variants={fadeInUp}>
-                  <Link href={`/otherChannel/${pdf._id}`} className="block group">
+                  <Link href={`/otherChannel/pdf/${pdf._id}`} className="block group">
                     <article className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-[#F5F5F5] h-full">
                       {pdf.image && (
                         <div className="relative h-40 sm:h-48 w-full overflow-hidden">
