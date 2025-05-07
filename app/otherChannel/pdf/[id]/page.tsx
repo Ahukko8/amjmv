@@ -29,7 +29,7 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
         const response = await fetch(`/api/otherPdfs/${id}`);
         if (!response.ok) throw new Error("Failed to fetch PDF");
         const data = await response.json();
-        setPdf(data.pdf); // Assuming your API returns { pdf: {...} }
+        setPdf(data.otherPdf); // Assuming your API returns { pdf: {...} }
       } catch (error) {
         console.error("Error fetching PDF:", error);
         router.push("/otherChannel/pdf"); // Redirect on error

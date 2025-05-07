@@ -26,14 +26,14 @@ export async function GET(
   request: NextRequest,
 { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = await params;
+  const { id } = await params;
 
   try {
     if (!isValidObjectId(id)) {
       return NextResponse.json({message: "Invalid pdf ID format"}, {status: 400 })
     }
     await connectDB();
-    const otherPdf = await OtherPDF.findById(id).populate("categories", "name slug");
+    const otherPdf = await OtherPDF.findById(id).lean();
 
     if (!otherPdf) {
       return NextResponse.json({ message: "PDF not found" }, { status: 404 });
