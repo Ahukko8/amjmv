@@ -128,8 +128,8 @@ export default function OtherPdfList() {
                 </Link>
               ))
             ) : (
-              <div className="text-center text-red-600 py-10 sm:py-12 font-faseyha text-base sm:text-lg">
-                No PDFs available
+              <div className="text-center text-gray-600 py-10 sm:py-12 font-faseyha text-base sm:text-lg">
+                ޕީ.ޑީ.އެފް އެއް ނެތް
               </div>
             )}
           </div>

@@ -71,8 +71,7 @@ export default function PDFsPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setIsLoading(true); // Show loading state during page change
-    // Scroll to top when changing pages
+    setIsLoading(true); 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -98,8 +97,6 @@ export default function PDFsPage() {
   return (
     <main className="min-h-screen bg-[#F5F5F5] font-faseyha">
       <Header />
-
-      {/* Hero Section with Title and Description */}
       <section className="sm:py-16 text-[#121212]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
