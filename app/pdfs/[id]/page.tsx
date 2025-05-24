@@ -12,6 +12,7 @@ interface PDFData {
   _id: string;
   title: string;
   pdfFile: string; // URL to the PDF
+  description?: string;
 }
 
 interface PDFPageProps {
@@ -56,6 +57,9 @@ export default function PDFReader({ params }: PDFPageProps) {
           <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
             {pdf.title}
           </h1>
+          <p className="text-lg sm:text-2xl mb-4 text-center">
+            {pdf.description}
+          </p>
           <PDFViewer pdfUrl={pdf.pdfFile} filename={`${pdf.title}.pdf`} />
         </div>
       </main>
