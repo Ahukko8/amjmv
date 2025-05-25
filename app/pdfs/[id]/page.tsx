@@ -11,11 +11,10 @@ import { ArrowLeftCircleIcon } from "lucide-react";
 import Link from "next/link";
 
 
-// Define the PDF data structure
 interface PDFData {
   _id: string;
   title: string;
-  pdfFile: string; // URL to the PDF
+  pdfFile: string; 
   description?: string;
   image?: string;
 }
@@ -25,7 +24,7 @@ interface PDFPageProps {
 }
 
 export default function PDFReader({ params }: PDFPageProps) {
-  const { id } = React.use(params); // Unwrap params with React.use()
+  const { id } = React.use(params);
   const [pdf, setPdf] = useState<PDFData | null>(null);
   const router = useRouter();
 
@@ -35,10 +34,10 @@ export default function PDFReader({ params }: PDFPageProps) {
         const response = await fetch(`/api/pdfs/${id}`);
         if (!response.ok) throw new Error("Failed to fetch PDF");
         const data = await response.json();
-        setPdf(data.pdf); // Assuming your API returns { pdf: {...} }
+        setPdf(data.pdf); 
       } catch (error) {
         console.error("Error fetching PDF:", error);
-        router.push("/pdfs"); // Redirect on error
+        router.push("/pdfs"); 
       }
     };
     fetchPDF();
@@ -59,10 +58,10 @@ export default function PDFReader({ params }: PDFPageProps) {
       <Header />
       <main className="flex-grow bg-gray-100 py-6 sm:py-8 font-faseyha">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+          <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center text-black">
             {pdf.title}
           </h1>
-          <p className="text-lg sm:text-2xl mb-4 text-center">
+          <p className="text-lg sm:text-2xl mb-4 text-center text-black">
             {pdf.description}
           </p>
           {pdf.image ? (

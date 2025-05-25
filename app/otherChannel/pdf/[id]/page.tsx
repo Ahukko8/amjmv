@@ -9,11 +9,11 @@ import Link from "next/link";
 import { ArrowLeftCircleIcon } from "lucide-react";
 import Image from "next/image";
 
-// Define the PDF data structure
+
 interface OtherPDFData {
   __id: string;
   title: string;
-  pdfFile: string; // URL to the PDF
+  pdfFile: string; 
   description?: string;
   image?: string;
 }
@@ -36,7 +36,7 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
         setPdf(data.otherPdf); 
       } catch (error) {
         console.error("Error fetching PDF:", error);
-        router.push("/otherChannel/pdf"); // Redirect on error
+        router.push("/otherChannel/pdf"); 
       }
     };
     fetchPDF();
@@ -57,10 +57,10 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
       <Header />
       <main className="flex-grow bg-gray-100 py-6 sm:py-8 font-faseyha">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+          <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center text-black">
             {pdf.title}
           </h1>
-          <p className="text-lg sm:text-2xl mb-4 text-center">
+          <p className="text-lg sm:text-2xl mb-4 text-center text-black">
             {pdf.description}
           </p>
           {pdf.image ? (
