@@ -34,7 +34,7 @@ export default function OtherCategories({ onSelectCategory, selectedCategory, is
     return (
       <div className="animate-pulse space-y-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-12 bg-[#121212]/80 rounded-xl shadow-sm" />
+          <div key={i} className="h-12 bg-gray-200 rounded-xl shadow-sm" />
         ))}
       </div>
     );
@@ -45,11 +45,11 @@ export default function OtherCategories({ onSelectCategory, selectedCategory, is
       <select
         value={selectedCategory || ''}
         onChange={(e) => onSelectCategory(e.target.value === '' ? null : e.target.value)}
-        className="w-full p-3 rounded-xl border border-white bg-white text-[#121212] text-sm sm:text-base focus:ring-2 focus:ring-[#121212] focus:border-[#121212] font-faseyha text-right shadow-sm transition-all duration-200"
+        className="w-full p-3 rounded-xl border border-gray-300 bg-white text-[#121212] text-sm sm:text-base focus:ring-2 focus:ring-[#121212] focus:border-[#121212] font-faseyha text-right shadow-sm transition-all duration-200"
       >
-        <option value="" className="bg-white">އެންމެހާ ލިޔުންތައް</option>
+        <option value="" className="bg-white text-[#121212]">އެންމެހާ ލިޔުންތައް</option>
         {categories.map((category) => (
-          <option key={category._id} value={category._id} className="bg-white">
+          <option key={category._id} value={category._id} className="bg-white text-[#121212]">
             {category.name}
           </option>
         ))}
@@ -63,8 +63,8 @@ export default function OtherCategories({ onSelectCategory, selectedCategory, is
         onClick={() => onSelectCategory(null)}
         className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
           !selectedCategory
-            ? 'bg-[#F5F5F5]/40 text-[#121212] shadow-md border border-[#121212]/20'
-            : 'text-[#121212] bg-[#F5F5F5] hover:[#F5F5F5]/20 hover:text-[#121212]/80 hover:shadow-md border border-[#121212]/10'
+            ? 'bg-[#121212] text-white shadow-lg border border-[#121212]'
+            : 'text-[#121212] bg-white hover:bg-gray-50 hover:shadow-md border border-gray-200'
         }`}
       >
         އެންމެހާ ލިޔުންތައް
@@ -75,8 +75,8 @@ export default function OtherCategories({ onSelectCategory, selectedCategory, is
           onClick={() => onSelectCategory(category._id)}
           className={`w-full text-right px-5 py-3 rounded-xl text-base font-medium font-faseyha transition-all duration-300 ${
             selectedCategory === category._id
-            ? 'bg-[#F5F5F5]/40 text-[#121212] shadow-md border border-[#121212]/20'
-            : 'text-[#121212] bg-[#F5F5F5] hover:[#F5F5F5]/20 hover:text-[#121212]/80 hover:shadow-md border border-[#121212]/10'
+              ? 'bg-[#121212] text-white shadow-lg border border-[#121212]'
+              : 'text-[#121212] bg-white hover:bg-gray-50 hover:shadow-md border border-gray-200'
           }`}
         >
           {category.name}
