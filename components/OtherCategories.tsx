@@ -44,7 +44,7 @@ export default function OtherCategories({ onSelectCategory, selectedCategory, is
     return (
       <select
         value={selectedCategory || ''}
-        onChange={(e) => onSelectCategory(e.target.value || null)}
+        onChange={(e) => onSelectCategory(e.target.value === '' ? null : e.target.value)}
         className="w-full p-3 rounded-xl border border-white bg-white text-[#121212] text-sm sm:text-base focus:ring-2 focus:ring-[#121212] focus:border-[#121212] font-faseyha text-right shadow-sm transition-all duration-200"
       >
         <option value="" className="bg-white">އެންމެހާ ލިޔުންތައް</option>
