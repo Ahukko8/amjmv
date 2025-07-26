@@ -13,7 +13,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="dv" dir="rtl" className={`${headingDhivehi.variable}, ${arabicFont.variable}`}>
         <body className={`${yourFont.variable}`}>
-          <ErrorBoundary>
+          <ErrorBoundary >
             {children}
           </ErrorBoundary>
         </body>
