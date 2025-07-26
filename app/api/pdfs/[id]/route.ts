@@ -3,6 +3,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import connectDB from "@/lib/db";
 import PDF from "@/models/PDF";
+import Category from "@/models/Category";
 
 // DigitalOcean Spaces configuration
 const ENDPOINT = process.env.DO_SPACES_ENDPOINT || "blr1.digitaloceanspaces.com";
@@ -25,7 +26,7 @@ export async function GET(
   const { id } = await params;
   try {
     await connectDB();
-    const pdf = await PDF.findById(id).lean();
+    const pdf = await PDF.findById(id).populate('category', 'name slug').lean();
     if (!pdf) {
       console.log("PDF not found:", id);
       return NextResponse.json({ message: "PDF not found" }, { status: 404 });
@@ -66,12 +67,22 @@ export async function PUT(
     const formData = await request.formData();
     const title = formData.get("title") as string;
     const description = formData.get("description") as string | null;
+    const categoryId = formData.get("categoryId") as string;
     const pdfFile = formData.get("pdfFile") as File | null;
     const imageFile = formData.get("image") as File | null;
 
-    if (!title) {
-      console.log("Missing title");
-      return NextResponse.json({ message: "Title is required" }, { status: 400 });
+    if (!title || !categoryId) {
+      console.log("Missing required fields:", { title, categoryId });
+      return NextResponse.json({ message: "Title and category are required" }, { status: 400 });
+    }
+
+    // Verify category exists
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return NextResponse.json(
+        { message: "Invalid category" },
+        { status: 400 }
+      );
     }
 
     const existingPDF = await PDF.findById(id);
@@ -134,9 +145,16 @@ export async function PUT(
 
     const updatedPDF = await PDF.findByIdAndUpdate(
       id,
-      { title, description, pdfFile: pdfPath, image: imagePath, updatedAt: new Date() },
+      { 
+        title, 
+        description, 
+        pdfFile: pdfPath, 
+        image: imagePath, 
+        category: categoryId,
+        updatedAt: new Date() 
+      },
       { new: true }
-    ).lean();
+    ).populate('category', 'name slug').lean();
 
     console.log("PDF updated:", id);
     return NextResponse.json({ pdf: updatedPDF });

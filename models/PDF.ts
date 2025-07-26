@@ -1,5 +1,6 @@
 import mongoose, { Schema, model, Model, Document } from "mongoose";
 
+
 // Define the PDF document interface
 interface IPDF extends Document {
   title: string;
@@ -7,6 +8,7 @@ interface IPDF extends Document {
   pdfFile: string; // URL to the uploaded PDF
   image?: string; // URL to preview image
   author: string; // Clerk userId
+  category: mongoose.Schema.Types.ObjectId; // Reference to Category
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,6 +20,11 @@ const pdfSchema = new Schema<IPDF>(
     pdfFile: { type: String, required: true }, // URL to the uploaded PDF
     image: { type: String, default: undefined }, // URL to preview image
     author: { type: String, required: true }, // Clerk userId
+    category: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'Category', 
+      required: true 
+    }, // Reference to Category
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
