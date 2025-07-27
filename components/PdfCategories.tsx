@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Pagination as PaginationComponent,
@@ -11,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import Loading from './Loading';
 
 interface Category {
   _id: string;
@@ -29,6 +30,8 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCategories, setTotalCategories] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, right: 0 });
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const ITEMS_PER_PAGE = 5;
 
@@ -49,6 +52,31 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
   useEffect(() => {
     fetchCategories();
   }, [currentPage]);
+
+  // Close dropdown when clicking outside and handle scroll
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    const handleScroll = () => {
+      setIsDropdownOpen(false);
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('resize', handleScroll);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [isDropdownOpen]);
 
   const fetchCategories = async () => {
     try {
@@ -97,10 +125,22 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
     setIsDropdownOpen(false);
   };
 
+  const toggleDropdown = () => {
+    if (!isDropdownOpen && dropdownRef.current) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 8,
+        left: rect.left,
+        right: window.innerWidth - rect.right
+      });
+    }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   const getSelectedCategoryName = () => {
-    if (selectedCategory === 'all') return 'ހުރިހާ ބައި';
+    if (selectedCategory === 'all') return 'ހުރިހާ';
     const category = categories.find(cat => cat._id === selectedCategory);
-    return category?.name || 'ބާވަތެއް ހޮއްވާ';
+    return category?.name || 'ކެޓަގަރީ ނަގާ';
   };
 
   return (
@@ -113,7 +153,7 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
           variants={fadeInUp}
           className="mb-6"
         >
-          <h2 className="text-2xl font-semibold text-black mb-4 text-center">ބާވަތްތައް</h2>
+          <h2 className="text-2xl font-semibold text-black mb-4 text-center">ކެޓަގަރީތައް</h2>
           
           {isLoading ? (
             <div className="flex flex-wrap justify-center gap-3">
@@ -137,7 +177,7 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
                     : 'bg-black/10 text-black border-black/20 hover:bg-black/20'
                 }`}
               >
-                ހުރިހާ ބައި
+                ހުރިހާ
               </motion.button>
               
               {categories.map((category) => (
@@ -219,14 +259,14 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="mb-6"
+          className="mb-6 relative z-[100]"
         >
-          <h2 className="text-xl font-semibold text-black mb-4 text-center">ބާވަތް ހޮއްވާ</h2>
+          <h2 className="text-xl font-semibold text-black mb-4 text-center">ކެޓަގަރީ ނަގާ</h2>
           
-          <div className="relative">
+          <div className="relative z-[100]" ref={dropdownRef}>
             <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full px-4 py-3 bg-black/10 backdrop-blur-sm rounded-xl border border-black/20 text-black text-sm font-medium flex items-center justify-between hover:bg-black/20 transition-all duration-300 shadow-sm"
+              onClick={toggleDropdown}
+              className="w-full px-4 py-3 bg-black/10 backdrop-blur-sm rounded-xl border border-black/20 text-black text-sm font-medium flex items-center justify-between hover:bg-black/20 transition-all duration-300 shadow-sm relative z-[101]"
             >
               <span>{getSelectedCategoryName()}</span>
               <svg 
@@ -239,73 +279,94 @@ export default function PdfCategories({ selectedCategory, onCategoryChange }: Ca
               </svg>
             </button>
 
+            {/* Portal-like dropdown using fixed positioning */}
             {isDropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-xl border border-black/20 shadow-lg z-50 max-h-64 overflow-y-auto"
-              >
-                <button
-                  onClick={() => handleCategorySelect('all')}
-                  className={`w-full px-4 py-3 text-sm font-medium text-right hover:bg-black/10 transition-all duration-200 ${
-                    selectedCategory === 'all' ? 'bg-black/20 text-black' : 'text-black/80'
-                  }`}
-                >
-                  ހުރިހާ ބައި
-                </button>
+              <>
+                {/* Backdrop overlay */}
+                <div 
+                  className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[998]"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
                 
-                {isLoading ? (
-                  <div className="p-4 text-center text-black/60 text-sm">ލޯޑުވަނީ...</div>
-                ) : (
-                  categories.map((category) => (
+                {/* Dropdown content with fixed positioning */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="fixed bg-white border border-black/20 shadow-2xl z-[999] max-h-80 overflow-hidden rounded-xl"
+                  style={{ 
+                    top: `${dropdownPosition.top}px`,
+                    left: `${dropdownPosition.left}px`,
+                    right: `${dropdownPosition.right}px`,
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)' 
+                  }}
+                >
+                  <div className="max-h-64 overflow-y-auto">
                     <button
-                      key={category._id}
-                      onClick={() => handleCategorySelect(category._id)}
-                      className={`w-full px-4 py-3 text-sm font-medium text-right hover:bg-black/10 transition-all duration-200 ${
-                        selectedCategory === category._id ? 'bg-black/20 text-black' : 'text-black/80'
+                      onClick={() => handleCategorySelect('all')}
+                      className={`w-full px-4 py-3 text-sm font-medium text-right hover:bg-black/10 transition-all duration-200 border-b border-black/5 last:border-b-0 ${
+                        selectedCategory === 'all' ? 'bg-black/15 text-black font-semibold' : 'text-black/80'
                       }`}
                     >
-                      {category.name}
+                      ހުރިހާ 
                     </button>
-                  ))
-                )}
-
-                {/* Mobile Categories Pagination */}
-                {totalPages > 1 && (
-                  <div className="border-t border-black/10 p-3">
-                    <div className="flex justify-between items-center gap-2">
-                      <button
-                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 ${
-                          currentPage === 1
-                            ? 'opacity-30 cursor-not-allowed bg-black/5 text-black'
-                            : 'bg-black/10 text-black hover:bg-black/20'
-                        }`}
-                      >
-                        ކުރީގެ
-                      </button>
-                      
-                      <span className="text-xs text-black/70 font-medium">
-                        {currentPage} / {totalPages}
-                      </span>
-                      
-                      <button
-                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 ${
-                          currentPage === totalPages
-                            ? 'opacity-30 cursor-not-allowed bg-black/5 text-black'
-                            : 'bg-black/10 text-black hover:bg-black/20'
-                        }`}
-                      >
-                        ދެން އޮތް
-                      </button>
-                    </div>
+                    
+                    {isLoading ? (
+                      <div className="p-4 text-center text-black/60 text-sm">
+                        <Loading />
+                      </div>
+                    ) : (
+                      categories.map((category) => (
+                        <button
+                          key={category._id}
+                          onClick={() => handleCategorySelect(category._id)}
+                          className={`w-full px-4 py-3 text-sm font-medium text-right hover:bg-black/10 transition-all duration-200 border-b border-black/5 last:border-b-0 ${
+                            selectedCategory === category._id ? 'bg-black/15 text-black font-semibold' : 'text-black/80'
+                          }`}
+                        >
+                          {category.name}
+                        </button>
+                      ))
+                    )}
                   </div>
-                )}
-              </motion.div>
+
+                  {/* Mobile Categories Pagination */}
+                  {totalPages > 1 && (
+                    <div className="border-t border-black/10 p-3 bg-black/5">
+                      <div className="flex justify-between items-center gap-2">
+                        <button
+                          onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 ${
+                            currentPage === 1
+                              ? 'opacity-30 cursor-not-allowed bg-black/5 text-black'
+                              : 'bg-black/10 text-black hover:bg-black/20'
+                          }`}
+                        >
+                          ކުރީގެ
+                        </button>
+                        
+                        <span className="text-xs text-black/70 font-medium">
+                          {currentPage} / {totalPages}
+                        </span>
+                        
+                        <button
+                          onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 ${
+                            currentPage === totalPages
+                              ? 'opacity-30 cursor-not-allowed bg-black/5 text-black'
+                              : 'bg-black/10 text-black hover:bg-black/20'
+                          }`}
+                        >
+                          ދެން އޮތް
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </>
             )}
           </div>
         </motion.div>

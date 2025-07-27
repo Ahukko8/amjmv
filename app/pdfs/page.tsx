@@ -45,6 +45,11 @@ export default function PDFsPage() {
   const ITEMS_PER_PAGE = 8;
 
   // Animation variants
+  const slideInDown = {
+    hidden: { opacity: 0, y: -40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  };
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -113,42 +118,76 @@ export default function PDFsPage() {
   const pageNumbers = getPageNumbers();
 
   return (
-    <main className="min-h-screen bg-white font-faseyha relative overflow-hidden">
-      {/* Background Elements */}
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-slate-50 font-faseyha relative overflow-hidden">
+      {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] pointer-events-none"></div>
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gray-100/50 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-0 w-80 h-80 bg-gray-50/30 rounded-full blur-3xl translate-x-1/2 animate-pulse delay-1000"></div>
+      
+      {/* Animated Background Orbs */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute top-1/4 -right-32 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-rose-200/40 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse delay-2000"></div>
       
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative z-10 py-12 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="text-center"
-          >
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-2xl bg-black/10 backdrop-blur-sm border border-black/20 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-black">
-              ޕީޑީއެފް ލިޔުންތައް
-            </h1>
-            <p className="text-xl sm:text-2xl max-w-4xl mx-auto text-black/70 font-light leading-relaxed">
-              ޕީޑީއެފް ލިޔުންތަކާއި ފޮތްތައް ޑައުންލޯޑް ކުރައްވާ
-            </p>
-          </motion.div>
+      {/* Dark Glassmorphic Hero Section - Full Width */}
+      <section className="relative">
+        {/* Dark Background with Glassmorphic Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03]"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+        
+        {/* Content */}
+        <div className="relative py-20 sm:py-24 lg:py-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={slideInDown}
+              className="text-center"
+            >
+              {/* Icon */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5, rotateY: 180 }}
+                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="inline-flex items-center gap-4 mb-8 sm:mb-12"
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-2xl blur-lg"></div>
+                  <div className="relative p-4 sm:p-5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Main Title */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="sm:h-[20vh] text-4xl sm:text-7xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 bg-gradient-to-br from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-tight"
+              >
+                ޕީޑީއެފް ލިޔުންތައް
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-4xl mx-auto text-gray-300 font-light leading-relaxed mb-12 sm:mb-16 lg:mb-20 px-4"
+              >
+                ޕީޑީއެފް ލިޔުންތަކާއި ފޮތްތައް ޑައުންލޯޑް ކުރައްވާ
+              </motion.p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="relative z-10 py-4">
+      {/* Categories Section - Higher z-index to allow dropdown to appear above cards */}
+      <section className="relative z-[200] py-4 mt-[60] mb-[30]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <PdfCategories 
             selectedCategory={selectedCategory} 
@@ -157,7 +196,7 @@ export default function PDFsPage() {
         </div>
       </section>
 
-      {/* Main Content */}
+      {/* Main Content - Lower z-index than categories */}
       <section className="relative z-10 py-8 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {isLoading ? (
@@ -179,9 +218,10 @@ export default function PDFsPage() {
                     key={pdf._id} 
                     variants={fadeInUp}
                     custom={index}
+                    className="relative"
                   >
                     <Link href={`/pdfs/${pdf._id}`} className="block group h-full">
-                      <div className="bg-black/5 backdrop-blur-xl rounded-2xl overflow-hidden transition-all duration-500 group-hover:bg-black/10 group-hover:-translate-y-3 border border-black/10 group-hover:border-black/20 h-full flex flex-col shadow-lg group-hover:shadow-2xl group-hover:shadow-black/10">
+                      <div className="bg-black/5 backdrop-blur-xl rounded-2xl overflow-hidden transition-all duration-500 group-hover:bg-black/10 group-hover:-translate-y-3 border border-black/10 group-hover:border-black/20 h-full flex flex-col shadow-lg group-hover:shadow-2xl group-hover:shadow-black/10 relative">
                         {pdf.image ? (
                           <div className="relative h-48 w-full overflow-hidden">
                             <Image
@@ -225,7 +265,7 @@ export default function PDFsPage() {
                           </div>
                           <div className="mt-6 text-right">
                             <div className="inline-flex items-center gap-2 px-4 py-2 bg-black/10 backdrop-blur-sm rounded-xl border border-black/20 text-black/70 text-sm group-hover:bg-black group-hover:text-white transition-all duration-300 shadow-sm">
-                              <span>ޑائުންލޯޑް ކުރޭ</span>
+                              <span>ޑައުންލޯޑް ކުރޭ</span>
                               <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                               </svg>
