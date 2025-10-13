@@ -10,7 +10,7 @@ import { ArrowLeft, Download, FileText } from "lucide-react";
 import Link from "next/link";
 
 interface OtherPDFData {
-  __id: string;
+  _id: string;
   title: string;
   pdfFile: string; 
   description?: string;
