@@ -84,7 +84,7 @@ export default function OtherPdfList() {
       </div>
 
       {/* PDFs Grid Section */}
-      <div className="flex-1 w-full min-w-0">
+      <div className="flex-1 min-w-0 w-full lg:w-auto">
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
