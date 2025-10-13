@@ -5,6 +5,7 @@ import { otherBlog } from '@/types/otherBlog';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Download, BookOpen } from 'lucide-react';
 
 interface PDF {
   _id: string;
@@ -23,16 +24,21 @@ const OtherLatestFeed = () => {
 
   // Animation variants for scroll
   const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
   };
 
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 },
+      transition: { staggerChildren: 0.15 },
     },
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   useEffect(() => {
@@ -60,21 +66,26 @@ const OtherLatestFeed = () => {
   }, []);
 
   return (
-    <>
+    <div className="bg-gradient-to-b from-gray-50 via-white to-gray-100">
       {/* Latest Blogs Section */}
-      <section className="py-12 sm:py-16 bg-[#F5F5F5]">
+      <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="text-center mb-10 sm:mb-14"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#121212] font-headingDhivehi">
+            <div className="flex items-center justify-center mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-1" />
+              <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-gray-600 mx-4" />
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-1" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 font-headingDhivehi mb-4">
               އެންމެ ފަހުގެ ލިޔުންތައް
             </h2>
-            <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-faseyha leading-relaxed">
               އެންމެ ފަހުގެ ލިޔުންތައް މިތަނުން ބައްލަވާ
             </p>
           </motion.div>
@@ -82,7 +93,7 @@ const OtherLatestFeed = () => {
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-72 bg-[#F5F5F5] rounded-xl animate-pulse shadow-sm" />
+                <div key={i} className="h-80 backdrop-blur-sm bg-black/5 border border-black/10 rounded-2xl animate-pulse shadow-lg" />
               ))}
             </div>
           ) : (
@@ -94,31 +105,38 @@ const OtherLatestFeed = () => {
               className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
               {latestBlogs.map((blog) => (
-                <motion.div key={blog._id} variants={fadeInUp}>
+                <motion.div key={blog._id} variants={scaleIn}>
                   <Link href={`/otherChannel/blog/${blog._id}`} className="block group">
-                    <article 
-                      className="bg-[#F5F5F5] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full"
-                      style={{
-                        backgroundImage: blog.image ? `url(${blog.image})` : 'none',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                      }}
-                    >
-                      <div className="p-5 flex flex-col h-full bg-[#121212]/40"> {/* Overlay for readability */}
-                        <h3 className="text-base sm:text-lg font-semibold text-right text-[#F5F5F5] line-clamp-2 font-faseyha">
-                          {blog.title}
-                        </h3>
-                        <div className="text-[#F5F5F5] text-xs sm:text-sm text-right mt-2">
-                          {new Date(blog.createdAt).toLocaleDateString('dv-MV')}
-                        </div>
-                        <div
-                          className="mt-3 text-right text-[#F5F5F5] line-clamp-2 text-sm sm:text-base font-faseyha"
-                          dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 100) + '...' }}
-                        />
-                        <div className="mt-auto text-right">
-                          <span className="text-[#F5F5F5] text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <article className="h-full backdrop-blur-lg bg-white/90 border border-gray-200 rounded-2xl overflow-hidden transition-all duration-500 group-hover:bg-white group-hover:border-gray-300 group-hover:scale-105 group-hover:shadow-2xl shadow-lg">
+                      {/* Background image with overlay */}
+                      <div 
+                        className="relative h-48 sm:h-52 overflow-hidden"
+                        style={{
+                          backgroundImage: blog.image ? `url(${blog.image})` : 'linear-gradient(135deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02))',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500" />
+                        
+                        {/* Date badge */}
+                        <div className="absolute top-4 right-4 backdrop-blur-sm bg-white/90 border border-gray-200 rounded-full px-3 py-1 shadow-md">
+                          <span className="text-gray-700 text-sm font-medium font-faseyha mr-2">
                             އިތުރަށް ބަލާ
                           </span>
+                        </div>
+                      </div>
+
+                      <div className="p-6 flex flex-col justify-between h-48">
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-gray-900 text-right line-clamp-2 font-faseyha mb-3 group-hover:text-gray-800 transition-colors duration-300">
+                            {blog.title}
+                          </h3>
+                          <div
+                            className="text-gray-600 text-sm sm:text-base text-right line-clamp-3 font-faseyha leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: blog.content.slice(0, 120) + '...' }}
+                          />
                         </div>
                       </div>
                     </article>
@@ -133,11 +151,11 @@ const OtherLatestFeed = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="mt-10 sm:mt-14 text-center"
+            className="mt-12 sm:mt-16 text-center"
           >
             <Link
               href="/otherChannel/blog"
-              className="inline-block px-6 py-3 bg-[#121212] text-[#F5F5F5] text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-[#121212]/80 transition-all duration-300 font-faseyha"
+              className="inline-flex items-center justify-center px-8 py-4 backdrop-blur-md bg-white/20 hover:bg-white/30 border-2 border-gray-300 hover:border-gray-400 text-gray-900 font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl font-faseyha shadow-lg"
             >
               ހުރިހާ ލިޔުންތައް
             </Link>
@@ -146,19 +164,24 @@ const OtherLatestFeed = () => {
       </section>
 
       {/* Latest PDFs Section */}
-      <section className="py-12 sm:py-16 bg-[#F5F5F5]">
+      <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="text-center mb-10 sm:mb-14"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#121212] font-headingDhivehi">
+            <div className="flex items-center justify-center mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-1" />
+              <Download className="w-8 h-8 sm:w-10 sm:h-10 text-gray-600 mx-4" />
+              <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent flex-1" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 font-headingDhivehi mb-4">
               އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
-            <p className="mt-4 text-base sm:text-lg md:text-xl text-[#121212] max-w-3xl mx-auto font-faseyha">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-faseyha leading-relaxed">
               އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތައް 
             </p>
           </motion.div>
@@ -166,7 +189,7 @@ const OtherLatestFeed = () => {
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-72 bg-[#121212] rounded-xl animate-pulse shadow-sm" />
+                <div key={i} className="h-80 backdrop-blur-sm bg-black/5 border border-black/10 rounded-2xl animate-pulse shadow-lg" />
               ))}
             </div>
           ) : (
@@ -178,31 +201,37 @@ const OtherLatestFeed = () => {
               className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
               {latestPDFs.map((pdf) => (
-                <motion.div key={pdf._id} variants={fadeInUp}>
+                <motion.div key={pdf._id} variants={scaleIn}>
                   <Link href={`/otherChannel/pdf/${pdf._id}`} className="block group">
-                    <article className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-[#F5F5F5] h-full">
-                      {pdf.image && (
-                        <div className="relative h-40 sm:h-48 w-full overflow-hidden">
+                    <article className="h-full backdrop-blur-lg bg-white/90 border border-gray-200 rounded-2xl overflow-hidden transition-all duration-500 group-hover:bg-white group-hover:border-gray-300 group-hover:scale-105 group-hover:shadow-2xl shadow-lg">
+                      {pdf.image ? (
+                        <div className="relative h-48 sm:h-52 overflow-hidden">
                           <Image
                             src={pdf.image}
                             alt={pdf.title}
                             fill
-                            className="object-cover rounded-t-xl transition-transform duration-500 group-hover:scale-110"
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
                           />
-                          <div className="absolute inset-0 bg-[#121212]/10 group-hover:bg-[#121212]/20 transition-all duration-300"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500" />
+                          
+                          {/* PDF indicator */}
+                          <div className="absolute top-4 right-4 backdrop-blur-sm border border-gray-400/50 rounded-full px-3 py-1 shadow-md">
+                            <span className="text-white text-xs font-medium"><Download className="size-5" /></span>
+                          </div>
                         </div>
+                      ) : (
+                        <div className="h-48 sm:h-52 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"></div>
                       )}
-                      <div className="p-5 flex flex-col h-full">
-                        <h3 className="text-base sm:text-lg font-semibold text-right text-[#F5F5F5] line-clamp-2 font-faseyha">
-                          {pdf.title}
-                        </h3>
-                        <p className="mt-2 text-sm sm:text-base text-[#F5F5F5] text-right line-clamp-2 font-faseyha">
-                          {pdf.description || 'ތަފްޞީލެއް ނެތް'}
-                        </p>
-                        <div className="mt-auto text-right">
-                          <span className="text-[#F5F5F5] text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            ޑައުންލޯޑް ކުރޭ
-                          </span>
+
+                      <div className="p-6 flex flex-col justify-between h-48">
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-gray-900 text-right line-clamp-2 font-faseyha mb-3 group-hover:text-gray-800 transition-colors duration-300">
+                            {pdf.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm sm:text-base text-right line-clamp-3 font-faseyha leading-relaxed">
+                            {pdf.description || 'ތަފްޞީލެއް ނެތް'}
+                          </p>
                         </div>
                       </div>
                     </article>
@@ -217,18 +246,18 @@ const OtherLatestFeed = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
-            className="mt-10 sm:mt-14 text-center"
+            className="mt-12 sm:mt-16 text-center"
           >
             <Link
               href="/otherChannel/pdf"
-              className="inline-block px-6 py-3 bg-[#121212] text-[#F5F5F5] text-sm sm:text-base font-medium rounded-lg shadow-md hover:bg-[#121212]/80 transition-all duration-300 font-faseyha"
+              className="inline-flex items-center justify-center px-8 py-4 backdrop-blur-md bg-white/20 hover:bg-white/30 border-2 border-gray-300 hover:border-gray-400 text-gray-900 font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl font-faseyha shadow-lg"
             >
-          ހުރިހާ ޕީ.ޑީ.އެފް
+              ހުރިހާ ޕީ.ޑީ.އެފް
             </Link>
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
