@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import connectDB from '@/lib/db';
 import OtherChannelBlog from '@/models/otherChannelsBlogs'
-import { FilterQuery, isValidObjectId } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 
 
 const ENDPOINT = process.env.DO_SPACES_ENDPOINT || 'blr1.digitaloceanspaces.com';
@@ -21,11 +20,8 @@ const s3Client = new S3Client({
 
 export async function GET(request: Request) {
   try {
-    console.log('GET request received for /api/otherChannelBlogs');
-    const { userId } = await auth();
-    console.log('User ID from auth:', userId);
-    const user = await currentUser();
-    console.log('User object:', user);
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search');
@@ -33,13 +29,10 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '6', 10);
 
-    console.log('Connecting to DB...');
     await connectDB();
-    console.log('DB connected');
 
     const query: FilterQuery<any> = {};
     if (!userId || user?.publicMetadata.role !== 'admin') {
-      console.log('User is not admin or not authenticated, filtering published blogs');
       query.status = 'published';
     }
     if (search) {
@@ -50,20 +43,19 @@ export async function GET(request: Request) {
     }
 
     const skip = (page - 1) * limit;
-    console.log('Fetching blogs with query:', query);
     const [blogs, total] = await Promise.all([
       OtherChannelBlog.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('categories', 'name slug'),
+        .populate('categories', 'name slug')
+        .lean(),
       OtherChannelBlog.countDocuments(query),
     ]);
 
-    console.log('Blogs fetched successfully:', blogs.length);
     return NextResponse.json({ blogs, total });
   } catch (error: any) {
-    console.error('Error fetching blogs:', error.message, error.stack);
+    console.error('Error fetching blogs:', error);
     return NextResponse.json(
       { message: 'Error fetching blogs', error: error.message },
       { status: 500 }
@@ -72,8 +64,8 @@ export async function GET(request: Request) {
 }
 export async function POST(request: Request) {
   try {
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     if (!userId || !user) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -116,7 +108,7 @@ export async function POST(request: Request) {
       imageUrl = `https://${process.env.DO_SPACES_BUCKET}.${ENDPOINT}/blog-images/${imageFileName}`;
     }
 
-    const otherBlog = await  OtherChannelBlog.create({
+    const otherBlog = await OtherChannelBlog.create({
       title,
       content,
       fontFamily: fontFamily || 'default',
@@ -128,7 +120,8 @@ export async function POST(request: Request) {
     });
 
     const populatedBlog = await OtherChannelBlog.findById(otherBlog._id)
-      .populate('categories', 'name slug');
+      .populate('categories', 'name slug')
+      .lean();
 
     return NextResponse.json({ blog: populatedBlog }, { status: 201 });
   } catch (error: any) {
