@@ -28,7 +28,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     await connectDB();
     const blog = await Blog.findById(id)
       .populate('author', 'name')
-      .populate('categories', 'name slug');
+      .populate('categories', 'name slug')
+      .lean();
 
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
@@ -51,8 +52,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ message: "Invalid blog ID format" }, { status: 400 });
     }
 
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     if (!userId || !user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -78,15 +79,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       categories: formData.get('categories') ? JSON.parse(formData.get('categories') as string) : undefined,
     };
 
-    const existingBlog = await Blog.findById(id);
+    // Only fetch image field if we need to delete it
+    const existingBlog = await Blog.findById(id).select('image').lean();
     if (!existingBlog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
 
-    let imageUrl = existingBlog.image;
+    let imageUrl = (existingBlog as any).image;
     if (imageFile) {
-      if (existingBlog.image) {
-        const oldImageKey = existingBlog.image.split('/').pop();
+      if ((existingBlog as any).image) {
+        const oldImageKey = (existingBlog as any).image.split('/').pop();
         await s3Client.send(
           new DeleteObjectCommand({
             Bucket: process.env.DO_SPACES_BUCKET,
@@ -119,7 +121,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       { new: true, runValidators: true }
     )
       .populate('author', 'name')
-      .populate('categories', 'name slug');
+      .populate('categories', 'name slug')
+      .lean();
 
     return NextResponse.json({ blog: updatedBlog });
   } catch (error: any) {
@@ -138,8 +141,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ message: "Invalid blog ID format" }, { status: 400 });
     }
 
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     if (!userId || !user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -161,13 +164,11 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     await connectDB();
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findByIdAndUpdate(id, { status }, { new: true }).lean();
+
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
-
-    blog.status = status;
-    await blog.save();
 
     return NextResponse.json(
       {
@@ -191,8 +192,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ message: "Invalid blog ID format" }, { status: 400 });
     }
 
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     if (!userId || !user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -205,13 +206,13 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     await connectDB();
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(id).select('image').lean();
     if (!blog) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
 
-    if (blog.image) {
-      const imageKey = blog.image.split('/').pop();
+    if ((blog as any).image) {
+      const imageKey = (blog as any).image.split('/').pop();
       await s3Client.send(
         new DeleteObjectCommand({
           Bucket: process.env.DO_SPACES_BUCKET,
