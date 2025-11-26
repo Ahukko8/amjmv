@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import connectDB from '@/lib/db';
-import { Blog, Category } from '@/models';
-import { FilterQuery, isValidObjectId } from 'mongoose';
+import { Blog } from '@/models';
+import { FilterQuery } from 'mongoose';
 
 // Spaces configuration
 const ENDPOINT = process.env.DO_SPACES_ENDPOINT || 'blr1.digitaloceanspaces.com';
@@ -21,8 +20,9 @@ const s3Client = new S3Client({
 
 export async function GET(request: Request) {
   try {
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search');
     const category = searchParams.get('category');
@@ -43,21 +43,24 @@ export async function GET(request: Request) {
     }
 
     const skip = (page - 1) * limit;
+
+    // Use .lean() for better performance as we don't need full Mongoose documents
     const [blogs, total] = await Promise.all([
       Blog.find(query)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .populate('author', 'name')
-        .populate('categories', 'name slug'),
+        .populate('categories', 'name slug')
+        .lean(),
       Blog.countDocuments(query),
     ]);
 
     return NextResponse.json({ blogs, total });
   } catch (error: any) {
     console.error('Error fetching blogs:', error);
-    return NextResponse.json({ 
-      message: 'Error fetching blogs', 
+    return NextResponse.json({
+      message: 'Error fetching blogs',
       error: error.toString(),
       stack: error.stack || 'No stack trace'
     }, { status: 500 });
@@ -66,8 +69,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await auth();
-    const user = await currentUser();
+    const [authResult, user] = await Promise.all([auth(), currentUser()]);
+    const { userId } = authResult;
 
     if (!userId || !user) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -77,6 +80,7 @@ export async function POST(request: Request) {
       throw new Error('Spaces credentials or bucket not configured');
     }
 
+    // Connect to DB only after auth checks pass
     await connectDB();
 
     const formData = await request.formData();
@@ -98,6 +102,7 @@ export async function POST(request: Request) {
     if (imageFile) {
       const imageFileName = `${Date.now()}-${imageFile.name}`;
       const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+
       await s3Client.send(
         new PutObjectCommand({
           Bucket: process.env.DO_SPACES_BUCKET,
@@ -123,7 +128,8 @@ export async function POST(request: Request) {
 
     const populatedBlog = await Blog.findById(blog._id)
       .populate('author', 'name')
-      .populate('categories', 'name slug');
+      .populate('categories', 'name slug')
+      .lean();
 
     return NextResponse.json({ blog: populatedBlog }, { status: 201 });
   } catch (error: any) {
