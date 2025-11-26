@@ -27,11 +27,7 @@ export default function PDFManagement() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [categories, setCategories] = useState<Category[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalPdfs, setTotalPdfs] = useState(0);
   const router = useRouter();
-  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchCategories();
