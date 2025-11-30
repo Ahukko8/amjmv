@@ -23,7 +23,7 @@ interface EditPDFProps {
 }
 
 export default function OtherEditPDF({ params }: EditPDFProps) {
-  const [id, setId] = useState<string | null>(null);
+  const { id } = React.use(params);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
@@ -33,15 +33,6 @@ export default function OtherEditPDF({ params }: EditPDFProps) {
   const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState<PDF | null>(null);
   const router = useRouter();
-
-  // Unwrap params
-  useEffect(() => {
-    const unwrapParams = async () => {
-      const resolved = await params;
-      setId(resolved.id);
-    };
-    unwrapParams();
-  }, [params]);
 
   // Fetch categories and PDF
   useEffect(() => {

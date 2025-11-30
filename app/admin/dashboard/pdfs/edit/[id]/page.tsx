@@ -38,8 +38,13 @@ export default function EditPDF({ params }: EditPDFProps) {
 
   useEffect(() => {
     fetchCategories();
-    fetchPDF();
-  });
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      fetchPDF();
+    }
+  }, [id]);
 
   const fetchCategories = async () => {
     try {
@@ -69,7 +74,7 @@ export default function EditPDF({ params }: EditPDFProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!categoryId) {
       alert('ބާވަތެއް ހޮއްވާ');
       return;

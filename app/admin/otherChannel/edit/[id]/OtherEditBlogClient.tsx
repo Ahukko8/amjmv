@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Loading from '@/components/Loading';
 import OtherChannelBlogEditor from '@/components/OtherChannelBlogEditor';
@@ -19,10 +19,11 @@ interface BlogEditProps {
 }
 
 export default function OtherBlogEdit({ params }: BlogEditProps) {
-  const [id, setId] = useState<string | null>(null);
-  const [initialData, setInitialData] = useState<{ 
-    title?: string; 
-    content?: string; 
+  const { id } = React.use(params);
+
+  const [initialData, setInitialData] = useState<{
+    title?: string;
+    content?: string;
     categories?: string[];
     image?: string;
     fontFamily?: string;
@@ -31,21 +32,6 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  // Unwrap params safely with error handling
-  useEffect(() => {
-    const unwrapParams = async () => {
-      try {
-        const resolvedParams = await params;
-        console.log('Resolved params:', resolvedParams);
-        setId(resolvedParams.id);
-      } catch (err) {
-        console.error('Error unwrapping params:', err);
-        setError('Failed to load blog ID');
-      }
-    };
-    unwrapParams();
-  }, [params]);
 
   // Fetch blog data once ID is available
   useEffect(() => {
@@ -56,15 +42,15 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
         setLoading(true);
         const response = await fetch(`/api/otherChannelBlogs/${id}`);
         if (!response.ok) throw new Error('Failed to fetch blog');
-        
+
         const data = await response.json();
         console.log('Fetched blog data:', data);
-        
+
         // Check if data.otherBlog exists before accessing properties
         if (!data.otherBlog) {
           throw new Error('Blog data not found in response');
         }
-        
+
         setInitialData({
           title: data.otherBlog.title,
           content: data.otherBlog.content,
@@ -94,16 +80,16 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
       formData.append('title', blogData.title);
       formData.append('content', blogData.content);
       formData.append('categories', JSON.stringify(blogData.categories));
-      
+
       // Add font family and size if they exist
       if (blogData.fontFamily) {
         formData.append('fontFamily', blogData.fontFamily);
       }
-      
+
       if (blogData.fontSize) {
         formData.append('fontSize', blogData.fontSize);
       }
-      
+
       if (blogData.image instanceof File) {
         formData.append('image', blogData.image);
       }
@@ -117,7 +103,7 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update blog');
       }
-      
+
       console.log('Blog update successful');
       router.push('/admin/otherChannel');
     } catch (err) {
@@ -153,10 +139,10 @@ export default function OtherBlogEdit({ params }: BlogEditProps) {
         onSubmit={handleSubmit} 
         loading={loading} 
       /> */}
-      <OtherChannelBlogEditor    
-        initialData={initialData} 
-        onSubmit={handleSubmit} 
-        loading={loading} 
+      <OtherChannelBlogEditor
+        initialData={initialData}
+        onSubmit={handleSubmit}
+        loading={loading}
       />
     </div>
   );

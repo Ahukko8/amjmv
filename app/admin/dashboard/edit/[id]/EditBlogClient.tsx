@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BlogEditor from '@/components/BlogEditor';
 
@@ -16,31 +16,17 @@ interface BlogEditProps {
 }
 
 export default function BlogEdit({ params }: BlogEditProps) {
-  const [id, setId] = useState<string | null>(null);
-  const [initialData, setInitialData] = useState<{ 
-    title?: string; 
-    content?: string; 
+  const { id } = React.use(params); // Unwrap params directly using React.use()
+
+  const [initialData, setInitialData] = useState<{
+    title?: string;
+    content?: string;
     categories?: string[];
     image?: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  // Unwrap params safely with error handling
-  useEffect(() => {
-    const unwrapParams = async () => {
-      try {
-        const resolvedParams = await params;
-        console.log('Resolved params:', resolvedParams);
-        setId(resolvedParams.id);
-      } catch (err) {
-        console.error('Error unwrapping params:', err);
-        setError('Failed to load blog ID');
-      }
-    };
-    unwrapParams();
-  }, [params]);
 
   // Fetch blog data once ID is available
   useEffect(() => {
