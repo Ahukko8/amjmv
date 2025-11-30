@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose, { Schema, model, Model, Document } from "mongoose";
 
 // Define the PDF document interface
