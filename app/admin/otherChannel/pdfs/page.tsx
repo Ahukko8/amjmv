@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface PDF {
   _id: string;
@@ -56,68 +55,116 @@ export default function OtherPDFManagement() {
     <div className="space-y-6 p-4 sm:p-6 font-faseyha">
       <div className="flex justify-between items-center">
         <h1 className="text-xl sm:text-2xl font-semibold text-right">PDF މެނޭޖްމަންޓް</h1>
-          <div className='flex gap-2 flex-row'>
+        <div className='flex gap-2 flex-row'>
           <Link
-                href="/admin/otherChannel/pdfs/upload"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-              >
-                PDF އަޅާލަން
-              </Link>
-            <Link
-                href="/admin/otherChannel"
-                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
-
-              >
-                އަނބުރާ
-              </Link>
-           </div>
+            href="/admin/otherChannel/pdfs/upload"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            PDF އަޅާލަން
+          </Link>
+          <Link
+            href="/admin/otherChannel"
+            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+          >
+            އަނބުރާ
+          </Link>
+        </div>
       </div>
 
       {loading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-72 bg-gray-200 rounded-2xl animate-pulse shadow-md" />
-          ))}
+        <div className="flex justify-center items-center min-h-[200px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pdfs.map((pdf) => (
-            <div
-              key={pdf._id}
-              className="bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl"
-            >
-              {pdf.image && (
-                <div className="relative h-40 w-full mb-4">
-                  <Image
-                    src={pdf.image}
-                    alt={pdf.title}
-                    fill
-                    className="object-cover rounded-md"
-                  />
+        <div className="bg-white shadow rounded-lg overflow-hidden">
+          {/* Table for medium screens and up */}
+          <div className="hidden md:block">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ސުރުޙީ
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ތަފްޞީލް
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ތާރީޚު
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ހަދަންވީގޮތް
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {pdfs.map((pdf) => (
+                  <tr key={pdf._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 text-right">
+                      <div className="text-sm font-medium text-gray-900">{pdf.title}</div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="text-sm text-gray-500 max-w-xs truncate">
+                        {pdf.description || 'ތަފްޞީލެއް ނެތް'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                      {new Date(pdf.createdAt).toLocaleDateString('dv-MV')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <button
+                        onClick={() => router.push(`/admin/otherChannel/pdfs/edit/${pdf._id}`)}
+                        className="text-indigo-600 hover:text-indigo-900 mx-2"
+                      >
+                        އެޑިޓް
+                      </button>
+                      <button
+                        onClick={() => handleDelete(pdf._id)}
+                        className="text-red-600 hover:text-red-900 mx-2"
+                      >
+                        ޑިލީޓް
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Card layout for mobile screens */}
+          <div className="md:hidden space-y-4 p-4">
+            {pdfs.map((pdf) => (
+              <div
+                key={pdf._id}
+                className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <h2 className="text-sm font-medium text-gray-900 text-right">{pdf.title}</h2>
+                {pdf.description && (
+                  <p className="text-xs text-gray-500 text-right mt-1 line-clamp-2">
+                    {pdf.description}
+                  </p>
+                )}
+                <div className="mt-2 text-right">
+                  <p className="text-xs text-gray-500">
+                    {new Date(pdf.createdAt).toLocaleDateString('dv-MV')}
+                  </p>
                 </div>
-              )}
-              <h3 className="text-xl font-bold text-right text-gray-900 line-clamp-2">
-                {pdf.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600 text-right line-clamp-3">
-                {pdf.description || 'ތަފްޞީލެއް ނެތް'}
-              </p>
-              <div className="mt-4 flex justify-end gap-4">
-                <button
-                  onClick={() => router.push(`/admin/otherChannel/pdfs/edit/${pdf._id}`)}
-                  className="text-indigo-600 hover:text-indigo-900"
-                >
-                  އެޑިޓް
-                </button>
-                <button
-                  onClick={() => handleDelete(pdf._id)}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  ޑިލީޓް
-                </button>
+                <div className="mt-3 flex justify-end gap-2 text-sm">
+                  <button
+                    onClick={() => router.push(`/admin/otherChannel/pdfs/edit/${pdf._id}`)}
+                    className="text-indigo-600 hover:text-indigo-900"
+                  >
+                    އެޑިޓް
+                  </button>
+                  <button
+                    onClick={() => handleDelete(pdf._id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    ޑިލީޓް
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>

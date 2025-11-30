@@ -50,10 +50,13 @@ export default function OtherEditPDF({ params }: EditPDFProps) {
         const pdfData = await pdfRes.json();
         const catData = await catRes.json();
 
-        setInitialData(pdfData.pdf);
-        setTitle(pdfData.pdf.title);
-        setDescription(pdfData.pdf.description || "");
-        setCategoryId(pdfData.pdf.category?._id || "");
+        const pdf = pdfData.otherPdf;
+        if (!pdf) throw new Error("PDF data not found");
+
+        setInitialData(pdf);
+        setTitle(pdf.title);
+        setDescription(pdf.description || "");
+        setCategoryId(pdf.category?._id || "");
         setCategories(catData.categories || []);
       } catch (error) {
         console.error("Error loading data:", error);

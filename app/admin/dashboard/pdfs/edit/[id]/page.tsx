@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -36,28 +36,7 @@ export default function EditPDF({ params }: EditPDFProps) {
 
   const { id } = React.use(params); // Unwrap params with React.use()
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    if (id) {
-      fetchPDF();
-    }
-  }, [id]);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/categories?limit=100');
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      const data = await response.json();
-      setCategories(data.categories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
-
-  const fetchPDF = async () => {
+  const fetchPDF = useCallback(async () => {
     try {
       const response = await fetch(`/api/pdfs/${id}`);
       if (!response.ok) throw new Error('Failed to fetch PDF');
@@ -70,7 +49,28 @@ export default function EditPDF({ params }: EditPDFProps) {
       console.error('Error fetching PDF:', error);
       router.push('/admin/dashboard/pdfs');
     }
+  }, [id, router]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories?limit=100');
+      if (!response.ok) throw new Error('Failed to fetch categories');
+      const data = await response.json();
+      setCategories(data.categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      fetchPDF();
+    }
+  }, [id, fetchPDF]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
