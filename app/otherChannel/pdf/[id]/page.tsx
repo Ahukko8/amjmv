@@ -12,7 +12,7 @@ import Link from "next/link";
 interface OtherPDFData {
   _id: string;
   title: string;
-  pdfFile: string; 
+  pdfFile: string;
   description?: string;
   image?: string;
 }
@@ -35,7 +35,7 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
         const response = await fetch(`/api/otherPdfs/${id}`);
         if (!response.ok) throw new Error("Failed to fetch PDF");
         const data = await response.json();
-        setPdf(data.otherPdf); 
+        setPdf(data.otherPdf);
       } catch (error) {
         console.error("Error fetching PDF:", error);
         setError("Failed to load PDF. Please try again.");
@@ -90,8 +90,8 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Back Button */}
             <div className="mb-8 sm:mb-12">
-              <Link 
-                href="/otherChannel/pdf" 
+              <Link
+                href="/otherChannel/pdf"
                 className="inline-flex items-center gap-3 backdrop-blur-md bg-white/20 hover:bg-white/30 border-2 border-gray-300 hover:border-gray-400 px-6 py-3 rounded-full text-gray-900 font-medium transition-all duration-300 hover:scale-105 shadow-lg group"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
