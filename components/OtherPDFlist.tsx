@@ -101,14 +101,14 @@ export default function OtherPdfList() {
               pdfs.map((pdf) => (
                 <Link key={pdf._id} href={`/otherChannel/pdf/${pdf._id}`} className="block group w-full">
                   <article
-                    className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full min-h-[14rem] sm:min-h-[16rem]"
+                    className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full min-h-[14rem] sm:min-h-[16rem] relative z-0"
                     style={{
                       backgroundImage: pdf.image ? `url(${pdf.image})` : 'none',
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     }}
                   >
-                    <div className="p-4 sm:p-5 flex flex-col h-full bg-[#121212]/40 min-h-[14rem] sm:min-h-[16rem]">
+                    <div className="p-4 sm:p-5 flex flex-col h-full bg-[#121212]/40 min-h-[14rem] sm:min-h-[16rem] relative z-10">
                       <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha leading-tight">
                         {pdf.title}
                       </h3>
@@ -147,8 +147,8 @@ export default function OtherPdfList() {
                   <PaginationPrevious
                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
                     className={`${currentPage === 1
-                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                        : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                      ? 'pointer-events-none opacity-50 cursor-not-allowed'
+                      : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
                       } text-sm`}
                   />
                 </PaginationItem>
@@ -177,8 +177,8 @@ export default function OtherPdfList() {
                       onClick={() => handlePageChange(page)}
                       isActive={currentPage === page}
                       className={`cursor-pointer text-sm ${currentPage === page
-                          ? 'bg-[#121212] text-white hover:bg-[#121212]/90'
-                          : 'text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                        ? 'bg-[#121212] text-white hover:bg-[#121212]/90'
+                        : 'text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
                         }`}
                     >
                       {page}
@@ -208,8 +208,8 @@ export default function OtherPdfList() {
                   <PaginationNext
                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
                     className={`${currentPage === totalPages
-                        ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                        : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                      ? 'pointer-events-none opacity-50 cursor-not-allowed'
+                      : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
                       } text-sm`}
                   />
                 </PaginationItem>
