@@ -5,19 +5,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import React from "react";
 import Loading from "@/components/Loading";
-import { ArrowLeft, Download, FileText, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, Download, FileText } from "lucide-react";
 import Link from "next/link";
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
-
-// Configure PDF worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface OtherPDFData {
   _id: string;
   title: string;
-  pdfFile: string;
+  pdfFile: string; 
   description?: string;
   image?: string;
 }
@@ -31,9 +26,6 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
   const [pdf, setPdf] = useState<OtherPDFData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [numPages, setNumPages] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pdfLoading, setPdfLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +35,7 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
         const response = await fetch(`/api/otherPdfs/${id}`);
         if (!response.ok) throw new Error("Failed to fetch PDF");
         const data = await response.json();
-        setPdf(data.otherPdf);
+        setPdf(data.otherPdf); 
       } catch (error) {
         console.error("Error fetching PDF:", error);
         setError("Failed to load PDF. Please try again.");
@@ -54,23 +46,6 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
     };
     fetchPDF();
   }, [id, router]);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-    setPdfLoading(false);
-  }
-
-  function changePage(offset: number) {
-    setPageNumber(prevPageNumber => prevPageNumber + offset);
-  }
-
-  function previousPage() {
-    changePage(-1);
-  }
-
-  function nextPage() {
-    changePage(1);
-  }
 
   if (isLoading) {
     return (
@@ -115,8 +90,8 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Back Button */}
             <div className="mb-8 sm:mb-12">
-              <Link
-                href="/otherChannel/pdf"
+              <Link 
+                href="/otherChannel/pdf" 
                 className="inline-flex items-center gap-3 backdrop-blur-md bg-white/20 hover:bg-white/30 border-2 border-gray-300 hover:border-gray-400 px-6 py-3 rounded-full text-gray-900 font-medium transition-all duration-300 hover:scale-105 shadow-lg group"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
@@ -143,62 +118,23 @@ export default function OtherPDFReader({ params }: PDFPageProps) {
               </div>
 
               <div className="px-4 sm:px-6 lg:px-12 pb-6 sm:pb-8 lg:pb-12">
-                {/* PDF Viewer */}
-                <div className="flex flex-col items-center justify-center mb-6 sm:mb-8 lg:mb-10 w-full">
-                  <div className="w-full max-w-3xl bg-gray-100 rounded-xl overflow-hidden shadow-inner border border-gray-200 min-h-[500px] relative">
-                    {pdfLoading && (
-                      <div className="absolute inset-0 flex items-center justify-center z-10 bg-gray-100/80 backdrop-blur-sm">
-                        <Loading />
-                      </div>
-                    )}
-                    <Document
-                      file={pdf.pdfFile}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                      loading={
-                        <div className="flex items-center justify-center h-[500px]">
-                          <Loading />
-                        </div>
-                      }
-                      error={
-                        <div className="flex flex-col items-center justify-center h-[500px] text-red-500 p-4 text-center">
-                          <FileText className="w-12 h-12 mb-2" />
-                          <p>ޕީ.ޑީ.އެފް ލޯޑުކުރުމުގައި މައްސަލައެއް ދިމާވެއްޖެ</p>
-                        </div>
-                      }
-                      className="flex justify-center"
-                    >
-                      <Page
-                        pageNumber={pageNumber}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                        className="max-w-full h-auto shadow-lg my-4"
-                        width={Math.min(600, typeof window !== 'undefined' ? window.innerWidth - 64 : 600)}
+                {/* PDF Image/Preview */}
+                <div className="flex justify-center mb-6 sm:mb-8 lg:mb-10 w-full">
+                  {pdf.image ? (
+                    <div className="relative group w-full max-w-sm">
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-200/50 to-gray-300/50 rounded-2xl blur-xl transform scale-105 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                      <Image
+                        src={pdf.image}
+                        alt={pdf.title}
+                        width={320}
+                        height={200}
+                        className="relative object-cover w-full h-40 sm:h-48 rounded-2xl shadow-xl transition-transform duration-500 group-hover:scale-105 border border-gray-200"
+                        priority
                       />
-                    </Document>
-                  </div>
-
-                  {/* PDF Controls */}
-                  {numPages > 0 && (
-                    <div className="flex items-center gap-4 mt-6 bg-white/80 backdrop-blur-md px-6 py-3 rounded-full shadow-md border border-gray-200">
-                      <button
-                        type="button"
-                        disabled={pageNumber <= 1}
-                        onClick={previousPage}
-                        className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
-                      <p className="text-sm font-medium text-gray-700">
-                        Page {pageNumber} of {numPages}
-                      </p>
-                      <button
-                        type="button"
-                        disabled={pageNumber >= numPages}
-                        onClick={nextPage}
-                        className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-full max-w-sm h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-xl flex items-center justify-center border border-gray-200 group hover:shadow-2xl transition-all duration-500">
+                      <FileText className="w-16 h-16 text-gray-600 group-hover:text-gray-700 transition-colors duration-300" />
                     </div>
                   )}
                 </div>

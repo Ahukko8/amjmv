@@ -1,7 +1,6 @@
 "use client";
 
 import Link from 'next/link';
-import NextImage from 'next/image';
 import { useState } from 'react';
 import {
   Pagination as PaginationComponent,
@@ -63,7 +62,7 @@ export default function OtherPdfList() {
       <div className="w-full lg:w-64 lg:shrink-0">
         <div className="lg:sticky lg:top-6">
           <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-right text-[#121212] font-faseyha">
-            ޗެނަލްތައް
+             ޗެނަލްތައް
           </h3>
           {/* Mobile Categories */}
           <div className="block lg:hidden mb-6">
@@ -101,22 +100,15 @@ export default function OtherPdfList() {
             {Array.isArray(pdfs) && pdfs.length > 0 ? (
               pdfs.map((pdf) => (
                 <Link key={pdf._id} href={`/otherChannel/pdf/${pdf._id}`} className="block group w-full">
-                  <article
-                    className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full min-h-[14rem] sm:min-h-[16rem] relative"
+                  <article 
+                    className="bg-[#121212] rounded-xl shadow-md overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 border border-emerald-100 h-full min-h-[14rem] sm:min-h-[16rem]"
+                    style={{
+                      backgroundImage: pdf.image ? `url(${pdf.image})` : 'none',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
                   >
-                    {pdf.image && (
-                      <div className="absolute inset-0 z-0">
-                        <NextImage
-                          src={pdf.image}
-                          alt={pdf.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                        <div className="absolute inset-0 bg-[#121212]/60 z-10" />
-                      </div>
-                    )}
-                    <div className="p-4 sm:p-5 flex flex-col h-full relative z-20 min-h-[14rem] sm:min-h-[16rem]">
+                    <div className="p-4 sm:p-5 flex flex-col h-full bg-[#121212]/40 min-h-[14rem] sm:min-h-[16rem]">
                       <h3 className="text-base sm:text-lg font-semibold text-right text-white line-clamp-2 font-faseyha leading-tight">
                         {pdf.title}
                       </h3>
@@ -131,7 +123,7 @@ export default function OtherPdfList() {
                       />
                       <div className="mt-auto pt-3 text-right">
                         <span className="text-white text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 px-3 py-1 rounded-full">
-                          ކިޔާ
+                           ކިޔާ
                         </span>
                       </div>
                     </div>
@@ -154,18 +146,19 @@ export default function OtherPdfList() {
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    className={`${currentPage === 1
-                      ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                      : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
-                      } text-sm`}
+                    className={`${
+                      currentPage === 1 
+                        ? 'pointer-events-none opacity-50 cursor-not-allowed' 
+                        : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                    } text-sm`}
                   />
                 </PaginationItem>
 
                 {pageNumbers[0] > 1 && (
                   <>
                     <PaginationItem>
-                      <PaginationLink
-                        onClick={() => handlePageChange(1)}
+                      <PaginationLink 
+                        onClick={() => handlePageChange(1)} 
                         className="cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10 text-sm"
                       >
                         1
@@ -184,10 +177,11 @@ export default function OtherPdfList() {
                     <PaginationLink
                       onClick={() => handlePageChange(page)}
                       isActive={currentPage === page}
-                      className={`cursor-pointer text-sm ${currentPage === page
-                        ? 'bg-[#121212] text-white hover:bg-[#121212]/90'
-                        : 'text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
-                        }`}
+                      className={`cursor-pointer text-sm ${
+                        currentPage === page 
+                          ? 'bg-[#121212] text-white hover:bg-[#121212]/90' 
+                          : 'text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                      }`}
                     >
                       {page}
                     </PaginationLink>
@@ -202,8 +196,8 @@ export default function OtherPdfList() {
                       </PaginationItem>
                     )}
                     <PaginationItem>
-                      <PaginationLink
-                        onClick={() => handlePageChange(totalPages)}
+                      <PaginationLink 
+                        onClick={() => handlePageChange(totalPages)} 
                         className="cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10 text-sm"
                       >
                         {totalPages}
@@ -215,10 +209,11 @@ export default function OtherPdfList() {
                 <PaginationItem>
                   <PaginationNext
                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                    className={`${currentPage === totalPages
-                      ? 'pointer-events-none opacity-50 cursor-not-allowed'
-                      : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
-                      } text-sm`}
+                    className={`${
+                      currentPage === totalPages 
+                        ? 'pointer-events-none opacity-50 cursor-not-allowed' 
+                        : 'cursor-pointer text-[#121212] hover:text-[#121212]/80 hover:bg-[#121212]/10'
+                    } text-sm`}
                   />
                 </PaginationItem>
               </PaginationContent>
