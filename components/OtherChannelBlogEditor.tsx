@@ -93,7 +93,7 @@ export default function OtherChannelBlogEditor({ initialData, onSubmit, loading 
       categories: selectedCategory ? [selectedCategory] : [],
       image: image || imagePreview,
     };
-    
+
     onSubmit(blogData);
   };
 
@@ -113,7 +113,7 @@ export default function OtherChannelBlogEditor({ initialData, onSubmit, loading 
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full h-10 sm:h-8 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-base"
+          className="mt-1 block w-full h-10 sm:h-8 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-base text-black"
           required
         />
       </div>
@@ -126,7 +126,7 @@ export default function OtherChannelBlogEditor({ initialData, onSubmit, loading 
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="mt-1 block w-full h-10 sm:h-8 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-base"
+            className="mt-1 block w-full h-10 sm:h-8 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm sm:text-base text-black"
           >
             <option value="">ކެޓަގަރީއެއް ހޮވާ</option>
             {categories.map((category) => (
@@ -153,9 +153,9 @@ export default function OtherChannelBlogEditor({ initialData, onSubmit, loading 
         />
         {imagePreview && (
           <div className="mt-2">
-            <Image 
-              src={imagePreview} 
-              alt="Preview" 
+            <Image
+              src={imagePreview}
+              alt="Preview"
               className="max-w-xs rounded-md"
               width={50}
               height={50}
@@ -167,8 +167,8 @@ export default function OtherChannelBlogEditor({ initialData, onSubmit, loading 
       <div>
         <label className="block text-sm sm:text-base font-medium text-gray-700">މައިގަނޑު</label>
         <div className="mt-1 border rounded-md shadow-sm">
-          <EditorContent 
-            editor={editor} 
+          <EditorContent
+            editor={editor}
             className="p-3 sm:p-4 font-faseyha"
           />
         </div>

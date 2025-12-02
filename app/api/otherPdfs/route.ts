@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     await connectDB();
     console.log('DB connected');
 
-    const query: FilterQuery<any> = {};
+    const query: FilterQuery<unknown> = {};
     if (!userId || user?.publicMetadata.role !== 'admin') {
       console.log('User is not admin or not authenticated, filtering published blogs');
       query.status = 'published';
@@ -65,10 +65,11 @@ export async function GET(request: Request) {
 
     console.log('Blogs fetched successfully:', pdfs.length);
     return NextResponse.json({ pdfs, total });
-  } catch (error: any) {
-    console.error('Error fetching blogs:', error.message, error.stack);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error fetching blogs:', errorMessage, error);
     return NextResponse.json(
-      { message: 'Error fetching blogs', error: error.message },
+      { message: 'Error fetching blogs', error: errorMessage },
       { status: 500 }
     );
   }
