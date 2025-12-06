@@ -33,10 +33,10 @@ const Intro: React.FC = () => {
   };
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-gradient-to-br from-gray-50 via-white to-slate-50 overflow-hidden">
+    <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 md:pt-48 md:pb-24 lg:pt-52 lg:pb-32 xl:pt-60 xl:pb-40 bg-gradient-to-br from-gray-50 via-white to-slate-50 overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] pointer-events-none"></div>
-      
+
       {/* Animated Background Orbs */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-rose-200/40 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -57,13 +57,13 @@ const Intro: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 lg:mb-10 bg-gradient-to-br from-slate-900 via-gray-800 to-slate-700 bg-clip-text text-transparent leading-tight tracking-tight font-faseyha px-4"
-            style={{ lineHeight: '1.2' }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 lg:mb-10 bg-gradient-to-br from-slate-900 via-gray-800 to-slate-700 bg-clip-text text-transparent leading-relaxed tracking-tight font-faseyha px-4 py-2"
+            style={{ lineHeight: '1.6' }}
           >
             ދިވެހި ތަރުޖަމާތައް ނެގިފައިވާ<br className="hidden sm:block" />
             <span className="block mt-2 sm:mt-3 lg:mt-4">ބައެއް ޓެލެގްރާމް ޗެނަލްތައް</span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ const Intro: React.FC = () => {
               <Link href={img.telegram} target="_blank" rel="noopener noreferrer">
                 {/* Gradient Border Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400/50 via-purple-400/50 to-pink-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-                
+
                 {/* Image Container */}
                 <div className="relative w-full h-full bg-white rounded-2xl overflow-hidden">
                   <Image
@@ -104,19 +104,19 @@ const Intro: React.FC = () => {
                     fill
                     className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-75"
                   />
-                  
+
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500"></div>
-                  
+
                   {/* Text Content */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8">
-                    <span 
+                    <span
                       className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-faseyha drop-shadow-2xl text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 leading-tight tracking-wide px-2"
                       style={{ lineHeight: '1.3' }}
                     >
                       {img.alt}
                     </span>
-                    
+
                     {/* Telegram Icon */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -126,7 +126,7 @@ const Intro: React.FC = () => {
                     >
                       <div className="flex items-center gap-2 sm:gap-3 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg">
                         <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.85 5.18-4.68c.223-.198-.054-.308-.346-.11l-6.4 4.03-2.76-.918c-.6-.187-.612-.6.125-.89l10.782-4.156c.5-.18.943.114.78.89z"/>
+                          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.85 5.18-4.68c.223-.198-.054-.308-.346-.11l-6.4 4.03-2.76-.918c-.6-.187-.612-.6.125-.89l10.782-4.156c.5-.18.943.114.78.89z" />
                         </svg>
                         <span className="text-white text-sm sm:text-base font-semibold tracking-wide">ބައްލަވާ</span>
                       </div>
