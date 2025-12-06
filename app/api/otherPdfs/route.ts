@@ -122,7 +122,7 @@ export async function POST(request: Request) {
     );
     const pdfUrl = `https://${BUCKET}.${ENDPOINT}/${pdfFileName}`;
 
-    // Upload image to Spaces (if provided)
+    // Upload image to Spaces 
     let imageUrl: string | undefined;
     if (imageFile) {
       const imageFileName = `${Date.now()}-${imageFile.name}`;
