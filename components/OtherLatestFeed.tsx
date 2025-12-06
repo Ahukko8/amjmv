@@ -89,7 +89,7 @@ const OtherLatestFeed = () => {
               އެންމެ ފަހުގެ ލިޔުންތައް މިތަނުން ބައްލަވާ
             </p>
           </motion.div>
-          
+
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -100,16 +100,16 @@ const OtherLatestFeed = () => {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={staggerChildren}
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
               {latestBlogs.map((blog) => (
                 <motion.div key={blog._id} variants={scaleIn}>
                   <Link href={`/otherChannel/blog/${blog._id}`} className="block group">
                     <article className="h-full backdrop-blur-lg bg-white/90 border border-gray-200 rounded-2xl overflow-hidden transition-all duration-500 group-hover:bg-white group-hover:border-gray-300 group-hover:scale-105 group-hover:shadow-2xl shadow-lg">
                       {/* Background image with overlay */}
-                      <div 
+                      <div
                         className="relative h-48 sm:h-52 overflow-hidden"
                         style={{
                           backgroundImage: blog.image ? `url(${blog.image})` : 'linear-gradient(135deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02))',
@@ -119,7 +119,7 @@ const OtherLatestFeed = () => {
                       >
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500" />
-                        
+
                         {/* Date badge */}
                         <div className="absolute top-4 right-4 backdrop-blur-sm bg-white/90 border border-gray-200 rounded-full px-3 py-1 shadow-md">
                           <span className="text-gray-700 text-sm font-medium font-faseyha mr-2">
@@ -145,7 +145,7 @@ const OtherLatestFeed = () => {
               ))}
             </motion.div>
           )}
-          
+
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -182,10 +182,10 @@ const OtherLatestFeed = () => {
               އެންމެ ފަހުގެ ޕީ.ޑީ.އެފް
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-faseyha leading-relaxed">
-              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތައް 
+              އެންމެ ފަހުގެ ޕީޑީއެފް ފައިލްތައް
             </p>
           </motion.div>
-          
+
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -196,9 +196,9 @@ const OtherLatestFeed = () => {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={staggerChildren}
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
               {latestPDFs.map((pdf) => (
                 <motion.div key={pdf._id} variants={scaleIn}>
@@ -214,7 +214,7 @@ const OtherLatestFeed = () => {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-500" />
-                          
+
                           {/* PDF indicator */}
                           <div className="absolute top-4 right-4 backdrop-blur-sm border border-gray-400/50 rounded-full px-3 py-1 shadow-md">
                             <span className="text-white text-xs font-medium"><Download className="size-5" /></span>
@@ -240,7 +240,7 @@ const OtherLatestFeed = () => {
               ))}
             </motion.div>
           )}
-          
+
           <motion.div
             initial="hidden"
             whileInView="visible"

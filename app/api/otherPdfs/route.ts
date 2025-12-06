@@ -41,10 +41,10 @@ export async function GET(request: Request) {
     console.log('DB connected');
 
     const query: FilterQuery<unknown> = {};
-    if (!userId || user?.publicMetadata.role !== 'admin') {
-      console.log('User is not admin or not authenticated, filtering published blogs');
-      query.status = 'published';
-    }
+    // if (!userId || user?.publicMetadata.role !== 'admin') {
+    //   console.log('User is not admin or not authenticated, filtering published blogs');
+    //   query.status = 'published';
+    // }
     if (search) {
       query.title = { $regex: search, $options: 'i' };
     }
