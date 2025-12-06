@@ -115,12 +115,12 @@ export default function OtherPdfList() {
                       <div className="text-white text-xs sm:text-sm text-right mt-2 opacity-90">
                         {new Date(pdf.createdAt).toLocaleDateString('dv-MV')}
                       </div>
-                      <div
+                      {/* <div
                         className="mt-3 text-right text-white line-clamp-3 text-sm sm:text-base font-faseyha opacity-90 flex-1"
                         dangerouslySetInnerHTML={{
                           __html: (pdf.content ? pdf.content.slice(0, 100) : 'No content available') + '...',
                         }}
-                      />
+                      /> */}
                       <div className="mt-auto pt-3 text-right">
                         <span className="text-white text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 px-3 py-1 rounded-full">
                           ކިޔާ
