@@ -44,14 +44,14 @@ const OtherLatestFeed = () => {
   useEffect(() => {
     const fetchLatestContent = async () => {
       try {
-        // Fetch latest 4 blogs
-        const blogResponse = await fetch('/api/otherChannelBlogs?page=1&limit=4');
+        // Fetch latest 3 blogs
+        const blogResponse = await fetch('/api/otherChannelBlogs?page=1&limit=3');
         if (!blogResponse.ok) throw new Error('Failed to fetch blogs');
         const blogData = await blogResponse.json();
         setLatestBlogs(blogData.blogs);
 
-        // Fetch latest 4 PDFs
-        const pdfResponse = await fetch('/api/otherPdfs?page=1&limit=4');
+        // Fetch latest 3 PDFs
+        const pdfResponse = await fetch('/api/otherPdfs?page=1&limit=3');
         if (!pdfResponse.ok) throw new Error('Failed to fetch PDFs');
         const pdfData = await pdfResponse.json();
         setLatestPDFs(pdfData.pdfs);
