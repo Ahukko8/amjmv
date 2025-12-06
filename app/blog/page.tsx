@@ -21,21 +21,21 @@ export default function BlogsPage() {
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-slate-50 font-faseyha relative overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] pointer-events-none"></div>
-      
+
       {/* Animated Background Orbs */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute top-1/4 -right-32 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-rose-200/40 rounded-full blur-3xl animate-pulse delay-1000"></div>
       <div className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse delay-2000"></div>
-      
+
       <Header />
-      
+
       {/* Dark Glassmorphic Hero Section - Full Width */}
       <section className="relative">
         {/* Dark Background with Glassmorphic Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black"></div>
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03]"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-        
+
         {/* Content */}
         <div className="relative py-20 sm:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,17 +63,17 @@ export default function BlogsPage() {
               </motion.div>
 
               {/* Main Title */}
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 bg-gradient-to-br from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-tight"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 bg-gradient-to-br from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-relaxed py-6"
               >
                 ލިޔުންތައް
               </motion.h1>
 
               {/* Subtitle */}
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}

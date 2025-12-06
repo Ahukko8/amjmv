@@ -88,7 +88,7 @@ export default function PDFsPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setIsLoading(true); 
+    setIsLoading(true);
     window.scrollTo({ top: 400, behavior: 'smooth' });
   };
 
@@ -121,21 +121,21 @@ export default function PDFsPage() {
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-slate-50 font-faseyha relative overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] pointer-events-none"></div>
-      
+
       {/* Animated Background Orbs */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute top-1/4 -right-32 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-rose-200/40 rounded-full blur-3xl animate-pulse delay-1000"></div>
       <div className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl animate-pulse delay-2000"></div>
-      
+
       <Header />
-      
+
       {/* Dark Glassmorphic Hero Section - Full Width */}
       <section className="relative">
         {/* Dark Background with Glassmorphic Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black"></div>
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03]"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-        
+
         {/* Content */}
         <div className="relative py-20 sm:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -163,17 +163,17 @@ export default function PDFsPage() {
               </motion.div>
 
               {/* Main Title */}
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="sm:h-[20vh] text-4xl sm:text-7xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 bg-gradient-to-br from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-tight"
+                className="text-4xl sm:text-7xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 bg-gradient-to-br from-white via-gray-100 to-gray-200 bg-clip-text text-transparent leading-relaxed py-6"
               >
                 ޕީޑީއެފް ލިޔުންތައް
               </motion.h1>
 
               {/* Subtitle */}
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -189,9 +189,9 @@ export default function PDFsPage() {
       {/* Categories Section - Higher z-index to allow dropdown to appear above cards */}
       <section className="relative z-[200] py-4 mt-[60] mb-[30]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <PdfCategories 
-            selectedCategory={selectedCategory} 
-            onCategoryChange={handleCategoryChange} 
+          <PdfCategories
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
           />
         </div>
       </section>
@@ -214,8 +214,8 @@ export default function PDFsPage() {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
               >
                 {pdfs.map((pdf, index) => (
-                  <motion.div 
-                    key={pdf._id} 
+                  <motion.div
+                    key={pdf._id}
                     variants={fadeInUp}
                     custom={index}
                     className="relative"
@@ -311,19 +311,18 @@ export default function PDFsPage() {
                         <PaginationItem className="hidden sm:block">
                           <PaginationPrevious
                             onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                            className={`${
-                              currentPage === 1 
-                                ? 'pointer-events-none opacity-30 cursor-not-allowed' 
-                                : 'cursor-pointer hover:scale-105'
-                            } text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300`}
+                            className={`${currentPage === 1
+                              ? 'pointer-events-none opacity-30 cursor-not-allowed'
+                              : 'cursor-pointer hover:scale-105'
+                              } text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300`}
                           />
                         </PaginationItem>
 
                         {pageNumbers[0] > 1 && (
                           <>
                             <PaginationItem>
-                              <PaginationLink 
-                                onClick={() => handlePageChange(1)} 
+                              <PaginationLink
+                                onClick={() => handlePageChange(1)}
                                 className="cursor-pointer border-black/20 text-black hover:text-black hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                               >
                                 1
@@ -342,11 +341,10 @@ export default function PDFsPage() {
                             <PaginationLink
                               onClick={() => handlePageChange(page)}
                               isActive={currentPage === page}
-                              className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
-                                currentPage === page 
-                                  ? 'bg-black text-white hover:bg-black/90 border-black shadow-lg' 
-                                  : 'text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm'
-                              }`}
+                              className={`cursor-pointer transition-all duration-300 hover:scale-105 ${currentPage === page
+                                ? 'bg-black text-white hover:bg-black/90 border-black shadow-lg'
+                                : 'text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm'
+                                }`}
                             >
                               {page}
                             </PaginationLink>
@@ -361,8 +359,8 @@ export default function PDFsPage() {
                               </PaginationItem>
                             )}
                             <PaginationItem>
-                              <PaginationLink 
-                                onClick={() => handlePageChange(totalPages)} 
+                              <PaginationLink
+                                onClick={() => handlePageChange(totalPages)}
                                 className="cursor-pointer border-black/20 text-black hover:text-black hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                               >
                                 {totalPages}
@@ -374,11 +372,10 @@ export default function PDFsPage() {
                         <PaginationItem className="hidden sm:block">
                           <PaginationNext
                             onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                            className={`${
-                              currentPage === totalPages 
-                                ? 'pointer-events-none opacity-30 cursor-not-allowed' 
-                                : 'cursor-pointer hover:scale-105'
-                            } text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300`}
+                            className={`${currentPage === totalPages
+                              ? 'pointer-events-none opacity-30 cursor-not-allowed'
+                              : 'cursor-pointer hover:scale-105'
+                              } text-black hover:text-black border-black/20 hover:bg-black/20 bg-black/10 backdrop-blur-sm transition-all duration-300`}
                           />
                         </PaginationItem>
                       </PaginationContent>
@@ -393,27 +390,25 @@ export default function PDFsPage() {
                   <button
                     onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className={`px-4 py-3 rounded-2xl border backdrop-blur-sm transition-all duration-300 flex-1 text-sm font-medium ${
-                      currentPage === 1
-                        ? 'opacity-30 cursor-not-allowed border-black/20 text-black bg-black/5'
-                        : 'border-black/20 text-black hover:bg-black/20 bg-black/10 hover:scale-105 shadow-sm'
-                    }`}
+                    className={`px-4 py-3 rounded-2xl border backdrop-blur-sm transition-all duration-300 flex-1 text-sm font-medium ${currentPage === 1
+                      ? 'opacity-30 cursor-not-allowed border-black/20 text-black bg-black/5'
+                      : 'border-black/20 text-black hover:bg-black/20 bg-black/10 hover:scale-105 shadow-sm'
+                      }`}
                   >
                     ކުރީގެ ޞަފްޙާ
                   </button>
-                  
+
                   <div className="flex items-center px-4 py-3 rounded-2xl bg-black/10 backdrop-blur-sm border border-black/20 text-black text-sm font-medium shadow-sm">
                     <span className="whitespace-nowrap">{currentPage} / {totalPages}</span>
                   </div>
-                  
+
                   <button
                     onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className={`px-4 py-3 rounded-2xl border backdrop-blur-sm transition-all duration-300 flex-1 text-sm font-medium ${
-                      currentPage === totalPages
-                        ? 'opacity-30 cursor-not-allowed border-black/20 text-black bg-black/5'
-                        : 'border-black/20 text-black hover:bg-black/20 bg-black/10 hover:scale-105 shadow-sm'
-                    }`}
+                    className={`px-4 py-3 rounded-2xl border backdrop-blur-sm transition-all duration-300 flex-1 text-sm font-medium ${currentPage === totalPages
+                      ? 'opacity-30 cursor-not-allowed border-black/20 text-black bg-black/5'
+                      : 'border-black/20 text-black hover:bg-black/20 bg-black/10 hover:scale-105 shadow-sm'
+                      }`}
                   >
                     ދެން އޮތް ޞަފްޙާ
                   </button>
